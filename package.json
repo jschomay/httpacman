@@ -23,8 +23,7 @@
     "uglify-js-brunch": ">= 1.0 < 1.6",
     "clean-css-brunch": ">= 1.0 < 1.6",
     "less-brunch": "1.5.1",
-    "underscore-brunch": "1.4.0",
-    "underscore-template-brunch": "1.4.4"
+    "underscore-brunch": "1.4.0"
   },
   "devDependencies": {
   }
