@@ -11,3 +11,5 @@ Put constant transparent header bar at top of each page wtih branding, level#, p
 Eating links turns you into 'gobble mode' to eat ghosts/enemies
 
 One link is the escape route to 'hyperjump' to the next site
+
+Detect error: getaddrinfo ENOTFOUND from request module -- handle it better...

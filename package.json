@@ -23,7 +23,10 @@
     "uglify-js-brunch": ">= 1.0 < 1.6",
     "clean-css-brunch": ">= 1.0 < 1.6",
     "less-brunch": "1.5.1",
-    "underscore-brunch": "1.4.0"
+    "underscore-brunch": "1.4.0",
+    "sass-brunch": "1.5.2",
+    "jade-brunch": "1.5.1",
+    "coffee-script-brunch": "1.5.1"
   },
   "devDependencies": {
   }
