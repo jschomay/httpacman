@@ -23,19 +23,23 @@ server.on('request', function(req, res) {
   // });
 
   res.writeHead(200, { 'content-type': 'text/html'});
-  request('http://www.randomwebsite.com/cgi-bin/random.pl', function(err, response, body) {
+  request('http://www.uroulette.com/visit', function(err, response, body) {
     if(err) {
       console.log("error:", err.message);
     } else {
-      host = response.request.uri.host;
-
-
+      // host = response.request.uri.host;
+      host = 'TESTING_HOST'
+      body = '<script>alert("BANG");</script>'+
+      '<script src="killthings.js"/>'+
+      '<img src="/start_with_slash.jpg">'+
+      '<img src="start_with_no_slash.jpg">'+
+      '<img src="http://local.com/start_with_http.jpg">'
 
       // parse for relative paths
-      pattern1 = /src=["']\/?/gi;
-      pattern2 = /href=["']\/?/gi;
-      body = body.replace(pattern1, 'src="http://'+host+'/');
-      body = body.replace(pattern2, 'href="http://'+host+'/');
+      pattern1 = /src=(["'])(?!http)\/?/gi;
+      pattern2 = /href=(["'])(?!http)\/?/gi;
+      body = body.replace(pattern1, 'src=$1http://'+host+'/');
+      body = body.replace(pattern2, 'href=$http://'+host+'/');
 
 
       // write 
