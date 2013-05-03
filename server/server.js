@@ -27,19 +27,18 @@ server.on('request', function(req, res) {
     if(err) {
       console.log("error:", err.message);
     } else {
-      // host = response.request.uri.host;
-      host = 'TESTING_HOST'
-      body = '<script>alert("BANG");</script>'+
-      '<script src="killthings.js"/>'+
-      '<img src="/start_with_slash.jpg">'+
-      '<img src="start_with_no_slash.jpg">'+
-      '<img src="http://local.com/start_with_http.jpg">'
+      host = response.request.uri.host;
+
 
       // parse for relative paths
-      pattern1 = /src=(["'])(?!http)\/?/gi;
-      pattern2 = /href=(["'])(?!http)\/?/gi;
-      body = body.replace(pattern1, 'src=$1http://'+host+'/');
-      body = body.replace(pattern2, 'href=$http://'+host+'/');
+      fixSrcUrls = /src=(["'])(?!http)\/?/gi;
+      fixLinkUrls = /href=(["'])(?!http)\/?/gi;
+      nixScriptTags = /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi
+      nixSelfClosingScriptTags = /<script\b.*\/>/gi
+      body = body.replace(fixSrcUrls, 'src=$1http://'+host+'/');
+      body = body.replace(fixLinkUrls, 'href=$1http://'+host+'/');
+      body = body.replace(nixScriptTags, '<!-- script removed by geniuses -->');
+      body = body.replace(nixSelfClosingScriptTags, '<!-- script removed by geniuses -->');
 
 
       // write 
