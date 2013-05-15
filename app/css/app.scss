@@ -1,5 +1,22 @@
-$color: #333;
-
-body {
-  background: $color;
+.hp-header-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: gray;
+  box-shadow: 0 1px 3px #333;
+  z-index: 9999;
+  padding: 9px;
+  .hp-logo {
+    font-size: 18px;
+    line-height: 18px;
+    margin: 0 0 3px 0;
+    color: white;
+  }
+  .hp-level--title {
+    font-size: 15px;
+    line-height: 15px;
+    color: white;
+    margin: 0;
+  }
 }

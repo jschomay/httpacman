@@ -3,7 +3,7 @@
 
 module.exports = class HeaderBar extends Backbone.View
 
-  class: '#header-bar'
+  className: 'hp-header-bar'
   template: require 'views/templates/header_bar'
 
   initialize: (@level=1)->
