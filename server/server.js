@@ -7,9 +7,9 @@ var server = http.createServer();
 
 server.on('request', function(req, res) {
 
-  // if(req.url === '/' && req.method === 'GET') {
-  //   req.url = "/index.htm";
-  // } 
+  if(req.url === '/' && req.method === 'GET') {
+    req.url = "/index.htm";
+  } 
 
 
   
