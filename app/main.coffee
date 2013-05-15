@@ -13,7 +13,7 @@ $ ->
   $('body').append playerView.el
 
   # start off game loop
-  game = new Game
+  game = new Game {player: playerView}
   game.run()
   window.onblur = -> game.stop()
   window.onfocus = -> game.run()
