@@ -48,6 +48,10 @@
 
 - What if hitting a link does a google query for the text of that link, sending you to the first page result.  That way we hopefully get better quality pages, and the content has some consistant thread.  Plus you get to influence where you end up.  But you'd end up seaching "home", "about us", "here", etc a lot.  We need some way to randomize that so we don't get the same web page each time.  One thought is to randomize the search result rank number we pull.  Or to add a random word to the link work.  Or keep a record of all visited sites or searched terms and adjust as necessary if it's a repeat.  Here's an idea - disable all inbound links (or make them give Harry some powerup or points or something, or make them solid?), and only let outbound links end the level.  That should help with getting rid of "home", "contact", etc, plus allow for more time on each level/site, since you could immediately leave a site from any nav bar or header logo usually.  There might be a case when a site has no outbound links.  In that case, we'd have to inject a random one somewhere, or put in a special "emergency exit" powerup item.
 
+- Yahoo pipes can give us access to search results from a custom query.  Like... this:
+  http://pipes.yahoo.com/pipes/pipe.run?_id=1b71cfefcc9933e084970aef476518ab&_render=json&searchInput=pacman+game
+  But the problem with this is that we are getting specific news posts mostly instead of random home pages.  Maybe that is ok.  Test drive it.
+
 - Images make you slow down, headers or something are always blocks.  Or look at css properties to influence game properties.  Could that work?
 
 
