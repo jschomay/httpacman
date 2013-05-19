@@ -52,6 +52,8 @@
   http://pipes.yahoo.com/pipes/pipe.run?_id=1b71cfefcc9933e084970aef476518ab&_render=json&searchInput=pacman+game
   But the problem with this is that we are getting specific news posts mostly instead of random home pages.  Maybe that is ok.  Test drive it.
 
+- fyi, http://www.randomwebsitemachine.com/random_website/   seems better than urlroulette.com
+
 - Images make you slow down, headers or something are always blocks.  Or look at css properties to influence game properties.  Could that work?
 
 
@@ -72,7 +74,7 @@
 
 - Animation/transition ideas:
   - On enter/exit world Harry fades in/out with 0's and 1's particles effect.  Same on die, only bigger?
-  - On level end, walk the DOM from bottom up, randomly sliding each element to the left or right off screen at different speeds and staggered start times to "take away" the page.  This could be awesome, would it work?
+  - On level end, walk the DOM from bottom up, randomly sliding each element to the left or right off screen at different speeds and staggered start times to "take away" the page.  This could be awesome, would it work? - Yes it works! https://gist.github.com/jschomay/5608377
 
 - Pacing: use some map of special level numbers to display instructions, notes/story, and add mechanics/entities.
 
