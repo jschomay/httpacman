@@ -43,11 +43,8 @@ module.exports = class DirectorView extends Backbone.View
   $entityDivs: {}
 
   draw: =>
-    startDraw = Date.now()
-
     # render each entity in scene
     for id, entity of @entities
       #use proper render function on the right element for each entity
       @renderFunctons[entity.type].call entity, @$entityDivs[id]
 
-    console.log "draw time", (Date.now() - startDraw)/1000

@@ -68,11 +68,8 @@ module.exports = class DirectorModel extends Backbone.Model
     delete @entities[id]
 
   update: (dt) =>
-    startUpdate = Date.now()
-
     # call update on each entity
     # TODO, consider just firing the `enterframe` event
     # make sure to bind each new entity's update function to that event in @initialize
     for id, entity of @entities
       entity.update dt
-    console.log "update time", (Date.now() - startUpdate)/1000

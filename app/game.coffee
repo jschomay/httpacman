@@ -17,7 +17,7 @@ module.exports = class Game extends window.atom.Game
     # fps widget
     @stats = new Stats();
     @stats.setMode 0 # 0: fps, 1: ms
-    @stats.domElement.style.position = 'absolute'
+    @stats.domElement.style.position = 'fixed'
     @stats.domElement.style['z-index'] = 9999
     @stats.domElement.style.right = '0px'
     @stats.domElement.style.top = '0px'
@@ -28,12 +28,10 @@ module.exports = class Game extends window.atom.Game
   update: (dt) ->
     # update fps widget
     @stats.update()
-    console.log "update tick", dt
     # tell director to update everything
     @directorModel.update dt
 
   draw: ->
-    console.log "draw tick"
     # tell director to draw everything
     @directorView.draw()
 

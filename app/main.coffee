@@ -14,7 +14,6 @@ $ ->
   game = new Game()
   game.run()
   # stop the game after a few seconds to help view console for debugging
-  setTimeout (-> game.stop()), 5000
   window.onblur = -> game.stop()
   window.onfocus = -> game.run()
 
