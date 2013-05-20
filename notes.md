@@ -8,6 +8,9 @@
 
 - Some regexes don't work, seems case-insensitive isn't working, don't know why, it's clearly there...
 
+- sites that can still hyjack our window:
+  - view-source:http://www.fedspending.org/apidoc.php
+
 
 
 
