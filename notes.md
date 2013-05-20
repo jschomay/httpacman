@@ -31,6 +31,8 @@
 
 - Impliment timeout in server to give up on slow urls and try again 
 
+- Some servers (ex: www.retailmenot.com and www.whitepages.com) have given a 403 status (forbidden).  Maybe this is because it checks server agents?  Maybe we need to define ourself as a browser on our request.  Or maybe it's just because we're running on local host right now?
+
 
 
 
