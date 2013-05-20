@@ -17,7 +17,7 @@
 
 - Use dt in game loop for constant speeds
 
-- Consider nixing or changing use of backbone?
+- disable scrolling (use player position to scroll programitically)
 
 - think of way to make sure player doesn't start on a page over a link (or other active element?)
 

@@ -31,8 +31,8 @@ body {
   }
 }
 
-.hp-player {
-  background: yellow;
+.hp-entity {
   position: absolute;
   z-index: 9999;
+  color: black;
 }

@@ -3,6 +3,11 @@
 module.exports = class Game extends window.atom.Game
   constructor: (@entities) ->
     super
+    # director manages all game entities
+    @directorModel = new (require 'models/director')()
+    @directorView = new (require 'views/director')(@directorModel.entities)
+
+    # key bindings
     atom.input.bind atom.key.LEFT_ARROW, 'left'
     atom.input.bind atom.key.RIGHT_ARROW, 'right'
     atom.input.bind atom.key.DOWN_ARROW, 'down'
@@ -10,29 +15,11 @@ module.exports = class Game extends window.atom.Game
     console.log "We have a game!"
 
   update: (dt) ->
-    console.log "loop"
-
-    directionX = 0
-    directionY = 0
-    # if atom.input.pressed 'left'
-    # console.log "player started moving left"
-    if atom.input.down 'left'
-      directionX = -1
-    if atom.input.down 'right'
-      directionX = 1
-    if atom.input.down 'up'
-      directionY = -1
-    if atom.input.down 'down'
-      directionY = 1
-
-    @entities.player.position.x += @entities.player.speed * directionX
-    @entities.player.position.y += @entities.player.speed * directionY
+    console.log "update tick", dt
+    # tell director to update everything
+    @directorModel.update dt
 
   draw: ->
-    @entities.player.render()
-    # atom.context.fillStyle = 'black'
-    # atom.context.fillRect 0, 0, atom.width, atom.height
-    # Carry on.
-
-
-
+    console.log "draw tick"
+    # tell director to draw everything
+    @directorView.draw()

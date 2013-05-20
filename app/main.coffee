@@ -5,17 +5,16 @@ $ ->
   $("a").click (e) -> console.log "click on link prevented"; e.preventDefault(); return false;
 
   HeaderBarView = require 'views/header_bar'
-  PlayerView = require 'views/player'
 
   headerBarView = new HeaderBarView()
-  playerView = new PlayerView()
 
   $('body').append headerBarView.el
-  $('body').append playerView.el
 
   # start off game loop
-  game = new Game {player: playerView}
+  game = new Game()
   game.run()
+  # stop the game after a few seconds to help view console for debugging
+  setTimeout (-> game.stop()), 5000
   window.onblur = -> game.stop()
   window.onfocus = -> game.run()
 

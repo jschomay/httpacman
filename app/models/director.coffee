@@ -4,16 +4,39 @@
 # backbone for game objects
 
 class Player
-  constructor: (@position, @speed = 3) ->
+  # expects and object with 'id', 'position', and 'speed'.  Only 'id' is required.
+  constructor: (options) ->
+    {@position, @speed} = options
     @type = "player"
+    @id = @type + options.id
     @w = 40
     @h = 40
 
+    @speed ?= 3
     if !@position
       windowSize = $('body').width()
       @position = 
         x: windowSize/2
         y: 200
+
+  update: (dt) =>
+    directionX = 0
+    directionY = 0
+    # if atom.input.pressed 'left'
+    # console.log "player started moving left"
+    if atom.input.down 'left'
+      directionX = -1
+    if atom.input.down 'right'
+      directionX = 1
+    if atom.input.down 'up'
+      directionY = -1
+    if atom.input.down 'down'
+      directionY = 1
+
+    @position.x += @speed * directionX
+    @position.y += @speed * directionY
+
+
 
 ###
 The director model is in charge of initializing (and destroying) all game entities based on level data.
@@ -27,16 +50,29 @@ module.exports = class DirectorModel extends Backbone.Model
 
     # create a player entity
     console.log "Putting the player on screen"
-    player = new Player()
+    @addEntity(new Player({id: @lastId, speed: 3}))
+
 
     # crate playing field objects from the DirectorModel
 
     # create enemies
 
+  lastId: 1
 
-  update: =>
-    startUpdate = new Date.now()
+  entities: {}
+
+  addEntity: (entity) =>
+    @entities[entity.id] = entity
+
+  removeEntity: (id) =>
+    delete @entities[id]
+
+  update: (dt) =>
+    startUpdate = Date.now()
+
     # call update on each entity
-    # or more likely, just fire the `enterframe` event
+    # TODO, consider just firing the `enterframe` event
     # make sure to bind each new entity's update function to that event in @initialize
-    console.log "update time", new Date.now() - startUpdate
+    for id, entity of @entities
+      entity.update dt
+    console.log "update time", (Date.now() - startUpdate)/1000
