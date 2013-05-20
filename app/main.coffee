@@ -2,6 +2,7 @@ Game = require 'game'
 
 $ ->
   console.log 'Main app starting...'
+  $("a").click (e) -> console.log "click on link prevented"; e.preventDefault(); return false;
 
   HeaderBarView = require 'views/header_bar'
   PlayerView = require 'views/player'
