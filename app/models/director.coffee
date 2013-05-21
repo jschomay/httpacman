@@ -18,7 +18,7 @@ module.exports = class DirectorModel extends Backbone.Model
     console.log "Putting the player on screen"
     @addEntity(new Entities.Player({id: @lastId}))
 
-    numEnemies = 100
+    numEnemies = 50
     console.log "Putting #{numEnemies} enemies on screen"
     for [1..numEnemies]
       @addEntity(new Entities.Enemy {id:@lastId})

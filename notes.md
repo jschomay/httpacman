@@ -4,8 +4,6 @@
 
 ### BUGS
 
-- Forgot to use backbone properly - player data shouldn't be in the view, rather model
-
 - Some regexes don't work, seems case-insensitive isn't working, don't know why, it's clearly there...
 
 - sites that can still hyjack our window:
@@ -18,7 +16,7 @@
 
 #### Do soon
 
-- Use dt in game loop for constant speeds
+- play with easing on movement
 
 - disable scrolling (use player position to scroll programitically)
 
