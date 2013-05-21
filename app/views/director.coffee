@@ -17,35 +17,25 @@ module.exports = class DirectorView extends Backbone.View
     #  - some might alrady be in the dom, like the game field elements
     #  - what about elements that get added/removed during the game?
     $body = $ 'body'
-    @$entitiesContainer = $ '<div id="hp-entities"></div>'
-    $body.append @$entitiesContainer
-    console.log "entities", @entities
-    @addEntties @entities
-
-  addEntties: (entities) =>
-    for id, entity of entities
-      console.log "drawing to the dom:", id
-      @entityDivs[id] = $("<div id=\"hp-#{id}\" class=\"hp-entity\">#{id}</div>")[0]
-      $.extend @entityDivs[id].style,
-        background: entity.background
-        width: entity.w + 'px'
-        height: entity.h + 'px'
-        top: 0
-        left: 0
-
-      @$entitiesContainer.append @entityDivs[id]
-
-  removeEntities: (entities) =>
-    # TODO
-    false
-
-  entityDivs: {}
+    headerBarHeight = 58
+    canvasWidth = window.innerWidth
+    canvasHeight = window.innerHeight - headerBarHeight
+    @canvas = $('<canvas id="hp-canvas"></canvas>')[0]
+    window.onresize = (e) =>
+      @canvas.width = window.innerWidth
+      @canvas.height = window.innerHeight - headerBarHeight
+    window.onresize()
+    @ctx = @canvas.getContext '2d'
+    $.extend @canvas.style,
+      position: 'fixed'
+      top: headerBarHeight + 'px'
+      left: '0px'
+      'z-index': 9999
+    $body.append @canvas
 
   draw: =>
+    @ctx.clearRect 0, 0, @canvas.width, @canvas.height
     # render each entity in scene
     for id, entity of @entities
-      # update position
-      # we may need a better solution for updating visual properties
-      @entityDivs[id].style['-webkit-transform'] = "translate(#{entity.position.x}px, #{entity.position.y}px)"
-      @entityDivs[id].style['transform'] = "translate(#{entity.position.x}px, #{entity.position.y}px)"
-
+      @ctx.fillStyle = entity.background
+      @ctx.fillRect entity.position.x, entity.position.y, entity.w, entity.h
