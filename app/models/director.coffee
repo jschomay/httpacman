@@ -6,13 +6,13 @@
 class Player
   # expects and object with 'id', 'position', and 'speed'.  Only 'id' is required.
   constructor: (options) ->
-    {@position, @speed} = options
+    {@positiond} = options
     @type = "player"
     @id = @type + options.id
     @w = 40
     @h = 40
 
-    @speed ?= 3
+    @speed = 200 # px/s
     if !@position
       windowSize = $('body').width()
       @position = 
@@ -22,8 +22,7 @@ class Player
   update: (dt) =>
     directionX = 0
     directionY = 0
-    # if atom.input.pressed 'left'
-    # console.log "player started moving left"
+
     if atom.input.down 'left'
       directionX = -1
     if atom.input.down 'right'
@@ -33,8 +32,13 @@ class Player
     if atom.input.down 'down'
       directionY = 1
 
-    @position.x += @speed * directionX
-    @position.y += @speed * directionY
+    # divide speed by sqrt 2 to get constant speed on diagonals
+    _speed = if (directionX and directionY) then (@speed/1.41421) else @speed
+    # console.log _speed
+    # console.log dt
+    # distance (px) = speed (px/s) * time (s)
+    @position.x += _speed * directionX * dt
+    @position.y += _speed * directionY * dt
 
 
 
@@ -50,7 +54,7 @@ module.exports = class DirectorModel extends Backbone.Model
 
     # create a player entity
     console.log "Putting the player on screen"
-    @addEntity(new Player({id: @lastId, speed: 3}))
+    @addEntity(new Player({id: @lastId}))
 
 
     # crate playing field objects from the DirectorModel
