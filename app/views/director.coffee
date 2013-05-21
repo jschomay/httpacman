@@ -40,6 +40,14 @@ module.exports = class DirectorView extends Backbone.View
         top: @position.y
         left: @position.x
 
+    "enemy": ($el) ->
+      $el.css
+        background: 'brown'
+        width: @w
+        height: @h
+        top: @position.y
+        left: @position.x
+
   $entityDivs: {}
 
   draw: =>
