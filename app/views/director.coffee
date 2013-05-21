@@ -12,47 +12,40 @@ TODO
 module.exports = class DirectorView extends Backbone.View
   initialize: (@entities) ->
     # for each entity, add a div to the html with it's id as type+id
-    # and put a handle to the div in @$entityDivs under it's id
+    # and put a handle to the div in @entityDivs under it's id
     # ISSUES, ** NEED TO FIGURE THESE OUT:
     #  - some might alrady be in the dom, like the game field elements
     #  - what about elements that get added/removed during the game?
-    @$body = $ 'body'
+    $body = $ 'body'
+    @$entitiesContainer = $ '<div id="hp-entities"></div>'
+    $body.append @$entitiesContainer
     console.log "entities", @entities
     @addEntties @entities
 
   addEntties: (entities) =>
     for id, entity of entities
       console.log "drawing to the dom:", id
-      @$entityDivs[id] = $("<div id=\"hp-#{id}\" class=\"hp-entity\">#{id}</div>")
-      @$body.append @$entityDivs[id]
-      @renderFunctons[entity.type].call entity, @$entityDivs[id]
+      @entityDivs[id] = $("<div id=\"hp-#{id}\" class=\"hp-entity\">#{id}</div>")[0]
+      $.extend @entityDivs[id].style,
+        background: entity.background
+        width: entity.w + 'px'
+        height: entity.h + 'px'
+        top: 0
+        left: 0
+
+      @$entitiesContainer.append @entityDivs[id]
 
   removeEntities: (entities) =>
     # TODO
     false
 
-  renderFunctons:
-    "player": ($el) ->
-      $el.css
-        background: 'yellow'
-        width: @w
-        height: @h
-        top: @position.y
-        left: @position.x
-
-    "enemy": ($el) ->
-      $el.css
-        background: 'brown'
-        width: @w
-        height: @h
-        top: @position.y
-        left: @position.x
-
-  $entityDivs: {}
+  entityDivs: {}
 
   draw: =>
     # render each entity in scene
     for id, entity of @entities
-      #use proper render function on the right element for each entity
-      @renderFunctons[entity.type].call entity, @$entityDivs[id]
+      # update position
+      # we may need a better solution for updating visual properties
+      @entityDivs[id].style['-webkit-transform'] = "translate(#{entity.position.x}px, #{entity.position.y}px)"
+      @entityDivs[id].style['transform'] = "translate(#{entity.position.x}px, #{entity.position.y}px)"
 

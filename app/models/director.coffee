@@ -43,5 +43,6 @@ module.exports = class DirectorModel extends Backbone.Model
     # call update on each entity
     # TODO, consider just firing the `enterframe` event
     # make sure to bind each new entity's update function to that event in @initialize
+    # so far this doesn't seem to be necessary performance-wise
     for id, entity of @entities
       entity.update dt

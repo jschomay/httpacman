@@ -6,6 +6,7 @@ module.exports = class Player
     @id = @type + options.id
     @w = 40
     @h = 40
+    @background = 'yellow'
 
     @speed = 200 # px/s
     if !@position

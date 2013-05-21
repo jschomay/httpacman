@@ -5,6 +5,7 @@ module.exports = class Enemy
     @id = @type + options.id
     @w = 30
     @h = 30
+    @background = 'brown'
 
     @speed = 100 # px/s
     @position = 
