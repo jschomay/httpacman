@@ -14,6 +14,13 @@ module.exports = class Player
         x: window.document.width/2
         y: 200
 
+    # key bindings
+    atom.input.bind atom.key.LEFT_ARROW, 'left'
+    atom.input.bind atom.key.RIGHT_ARROW, 'right'
+    atom.input.bind atom.key.DOWN_ARROW, 'down'
+    atom.input.bind atom.key.UP_ARROW, 'up'
+
+
   update: (dt) =>
     directionX = 0
     directionY = 0

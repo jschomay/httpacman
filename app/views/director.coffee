@@ -16,6 +16,15 @@ module.exports = class DirectorView extends Backbone.View
     # ISSUES, ** NEED TO FIGURE THESE OUT:
     #  - some might alrady be in the dom, like the game field elements
     #  - what about elements that get added/removed during the game?
+    
+    # disable scrolling (mousewheel)
+    # TODO probably want to do something if user uses the actual scroll bar
+    # right now it slides the page under the canvas, which is a bug
+    window.onmousewheel = document.onmousewheel = (e) -> e.preventDefault()
+    # disable spacebar scrolling
+    window.onkeypress = document.onkeypress = (e) -> e.preventDefault()
+
+
     $body = $ 'body'
     headerBarHeight = 58
     canvasWidth = window.innerWidth
