@@ -69,8 +69,10 @@
 - Given the above idea, the game can have a win condition.  So what would happen then on screen?
 
 - Enemies:
-  - Anti-virus bots - they seek Harry out and destroy him
-  - Search engine spiders - maybe they steal life or points or collectables from Harry, maybe they multiply or "sweep" the page in patterns
+  - Anti-virus bots - they seek Harry out and destroy him.  Not sure what happens when Harry "dies".  Maybe he has to restart the level.  Maybe he goes back to the previous level.  Maybe he enters a "sub game" where he has to escape "quarantine" or something.  Or maybe he gets "quarantined" on the page, but I'm not sure what that means.  Maybe it puts a bubble around him that he has to break somehow.  Anti virus bots also seek out and destroy viruses and spam bots.
+  - Search engine spiders - maybe they steal life or points or collectables from Harry, maybe they multiply or "sweep" the page in patterns.  Or, they don't multiply, but they just bounce around the page like a pong ball, so with many on a page, Harry has moving obstacles to avoid.  If one hits Harry, it "wraps" around him for a few seconds, slowing him down (or making his controls laggy?), and steals a certain amount of his link juice, then darts off the page and is gone.
+  - Spambots - act like anti virus bots, but they are camouflaged, and when they hit you they "spam" you (maybe that slows you down).  Maybe this means they "plaster" a random ad (from where?) right under you, or better yet, if it hit's you, it makes a "pop-up" on the screen that covers everything under it.  Maybe an opportunity for monitization?  
+  - Viruses - each virus divides at set intervals. Maybe they seek Harry out, or maybe they wander randomly (and wiggle like my first gen enemy tests).  If they hit you, maybe they mess up your controls (like randomly switch your key binding directions), or make you buggy (like you "jump" a few pixels in a random direction).  Somehow they damage you too probably.  Maybe they also leave "trails" of blackness everywhere they go?
 
 - Abilities/powerups:
   - Cloak - enemies cant target Harry for a period of time
@@ -102,3 +104,8 @@
 
   Will you help him?  How long can you survive?  Can you find his way back home?  Press "Start" to go find Harry now.
 
+- What if Harry runs into another "human" on one of the levels?  Maybe he says to follow him, and if Harry goes through the same links, he follows him from page to page.  Maybe he leads him to the end goal?
+
+- Twitter like comments to give in-level info.
+
+- Link juice - Harry must gather enough link-juice before the "exit links" activate.  He gains linkjuice by walking over inbound links (each inbound link contains 1/numer of inbound links on page percent, and Harry needs to get over 70% for example.  This way he can beat any level that has at least one inbound link.).  Inbound links will probably have to "refill" after a set amount of time so Harry can get more juice if he loses some and can't escape.
