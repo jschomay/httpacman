@@ -9,6 +9,8 @@
 - sites that can still hyjack our window:
   - view-source:http://www.fedspending.org/apidoc.php
 
+- can't seem to disable scrolling completly, plus pages jump to top on load despite my efforts.  Maybe just leave it as is?  Or do a overflow:hidden on body?
+
 
 
 
@@ -17,8 +19,6 @@
 #### Do soon
 
 - play with easing on movement
-
-- disable scrolling (use player position to scroll programitically)
 
 - think of way to make sure player doesn't start on a page over a link (or other active element?)
 

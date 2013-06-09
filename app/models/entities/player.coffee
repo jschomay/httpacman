@@ -8,7 +8,7 @@ module.exports = class Player
     @h = 40
     @background = 'yellow'
 
-    @speed = 200 # px/s
+    @speed = 400 # px/s
     if !@position
       @position = 
         x: window.document.width/2
@@ -36,6 +36,26 @@ module.exports = class Player
 
     # divide speed by sqrt 2 to get constant speed on diagonals
     _speed = if (directionX and directionY) then (@speed/1.41421) else @speed
+
     # distance (px) = speed (px/s) * time (s)
-    @position.x += _speed * directionX * dt
-    @position.y += _speed * directionY * dt
+    dx = _speed * directionX * dt
+    dy = _speed * directionY * dt
+
+    # move x
+    if (@position.x + dx < 0)
+      @position.x = 0
+    else if (@position.x + dx + @w > window.document.width)
+      @position.x = window.document.width - @w
+    else
+      @position.x += dx
+
+    # move y
+    # depending on how close our player is to the top or bottom of the screen
+    # either move the player, or scroll the screen
+    if (@position.y + dy < 0)
+      console.log "hie", @position.y
+      @position.y = 0
+    else if (@position.y + dy + @h + 58  > window.innerHeight)
+      @position.y = window.innerHeight - @h - 58
+    else
+      @position.y += dy
