@@ -32,6 +32,8 @@
 
 - there's really no reason to use backbone at all at this point... make the directors regular classes
 
+- directional speed goes over the player speedlimit.  Not really a big deal, but if you want to fix it, normalize the vy/vx vectors and compage that to the speedlimit before adding the acceleration instead of just checking vy and vx individually
+
 - refactor entities to eiter inherit or take components for things like moveX and moveY, etc
 
 - Detect error: getaddrinfo ENOTFOUND from request module -- handle it better...
