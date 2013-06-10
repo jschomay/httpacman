@@ -10,8 +10,7 @@ module.exports = class Enemy
     @speed = 100 # px/s
     @position = 
       x: Math.random() * window.document.width
-      # y: Math.random() * window.document.height
-      y: Math.random() * 600
+      y: Math.random() * window.document.height
 
   update: (dt) =>
     # just jitter around randomly for now...

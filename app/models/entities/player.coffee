@@ -50,12 +50,12 @@ module.exports = class Player
       @position.x += dx
 
     # move y
-    # depending on how close our player is to the top or bottom of the screen
-    # either move the player, or scroll the screen
     if (@position.y + dy < 0)
-      console.log "hie", @position.y
       @position.y = 0
-    else if (@position.y + dy + @h + 58  > window.innerHeight)
-      @position.y = window.innerHeight - @h - 58
+    else if (@position.y + dy + @h + 58 > window.document.height)
+      @position.y = window.document.height - @h - 58
     else
       @position.y += dy
+      # scroll window/stage unless player is right near the top or bottom of the page
+      unless @position.y < 200 or @position.y > window.document.height - 200
+        window.scrollTo 0, @position.y - window.innerHeight/2 + @h/2 + 58 

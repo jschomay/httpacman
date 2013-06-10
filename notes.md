@@ -11,6 +11,8 @@
 
 - can't seem to disable scrolling completly, plus pages jump to top on load despite my efforts.  Maybe just leave it as is?  Or do a overflow:hidden on body?
 
+- Some sites have event listeners on elements (like scroll feedback on www.lynda.com), so they give errors since we strip all scripts, causing bad frame rates.  Here's a possible fix, or use regex to strip: http://stackoverflow.com/questions/9251837/how-to-remove-all-listeners-in-an-element
+
 
 
 
@@ -27,6 +29,10 @@
 - Need to stip out base tag ie: <base href="http://www.univ-paris1.fr/">
 
 - Some sites use framesets and dont have a body... so out stuff doesn't get appended, arg
+
+- there's really no reason to use backbone at all at this point... make the directors regular classes
+
+- refactor entities to eiter inherit or take components for things like moveX and moveY, etc
 
 - Detect error: getaddrinfo ENOTFOUND from request module -- handle it better...
 
