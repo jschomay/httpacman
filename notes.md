@@ -32,7 +32,7 @@
 
 - there's really no reason to use backbone at all at this point... make the directors regular classes
 
-- directional speed goes over the player speedlimit.  Not really a big deal, but if you want to fix it, normalize the vy/vx vectors and compage that to the speedlimit before adding the acceleration instead of just checking vy and vx individually
+- directional speed goes over the player speedlimit.  Not really a big deal, but if you want to fix it, check the length of the combined vy/vx vectors against the speedlimit before adding the acceleration instead of just checking vy and vx individually
 
 - refactor entities to eiter inherit or take components for things like moveX and moveY, etc
 
@@ -102,6 +102,10 @@
     - Knows how to render each type of entity (ex. knows the sprites for an enemy type)
     - Game loop calls draw on it. It renders each entity, using the proper render method and entity properties.
     - Has other special effects/animations
+
+- Maybe make external links take you to where they point.  But if you get killed by an enemy, or run out of linkjuice, or hit refresh, only then does it take you to a new random site.
+
+- Add a quest - use some kind of image recgoznition software, or find in text, so Harry can collect certain items.  Once he has them all, he can build a thing to get him back homme.
 
 - Story:
   Hyperlink Harry.  
