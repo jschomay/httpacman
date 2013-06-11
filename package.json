@@ -28,8 +28,6 @@
 
   },
   "devDependencies": {
-  },
-  
-  "main": "server/server.js"
+  }
 
 }

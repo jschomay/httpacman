@@ -52,7 +52,7 @@ server.on('request', function(req, res) {
   } else {
 
     // static content loading
-    fs.readFile(__dirname + "/../build" + req.url, function (err,data) {
+    fs.readFile(__dirname + "/build" + req.url, function (err,data) {
       if (err) {
         res.writeHead(404);
         res.end(JSON.stringify(err));
