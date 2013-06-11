@@ -1,0 +1,37 @@
+@media -sass-debug-info{filename{}line{font-family:\000031}}
+body {
+  margin-top: 65px !important;
+  overflow-x: hidden !important; }
+
+@media -sass-debug-info{filename{}line{font-family:\000037}}
+.hp-header-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 40px;
+  background: #222;
+  z-index: 9999;
+  padding: 9px; }
+@media -sass-debug-info{filename{}line{font-family:\0000316}}
+  .hp-header-bar h2, .hp-header-bar h3, .hp-header-bar p, .hp-header-bar a {
+    text-align: left;
+    display: block; }
+@media -sass-debug-info{filename{}line{font-family:\0000320}}
+  .hp-header-bar .hp-logo {
+    font-size: 18px;
+    line-height: 18px;
+    margin: 0 0 3px 0;
+    color: white; }
+@media -sass-debug-info{filename{}line{font-family:\0000326}}
+  .hp-header-bar .hp-level--title {
+    font-size: 15px;
+    line-height: 15px;
+    color: white;
+    margin: 0; }
+
+@media -sass-debug-info{filename{}line{font-family:\0000334}}
+.hp-entity {
+  position: absolute;
+  z-index: 9999;
+  color: black; }

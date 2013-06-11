@@ -12,8 +12,6 @@
     "node": "~0.6.10 || 0.8 || 0.9"
   },
   "scripts": {
-    "start": "brunch watch --server",
-    "test": "brunch test"
   },
   "dependencies": {
     "javascript-brunch": ">= 1.0 < 1.6",
@@ -24,8 +22,14 @@
     "clean-css-brunch": ">= 1.0 < 1.6",
     "sass-brunch": "1.5.2",
     "jade-brunch": "1.5.1",
-    "coffee-script-brunch": "1.5.1"
+    "coffee-script-brunch": "1.5.1",
+
+    "request": ""
+
   },
   "devDependencies": {
-  }
+  },
+  
+  "main": "server/server.js"
+
 }

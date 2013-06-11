@@ -67,4 +67,4 @@ server.on('request', function(req, res) {
 
 });
 
-server.listen(8000);
+server.listen(process.env.OPENSHIFT_NODEJS_PORT || 8000, process.env.OPENSHIFT_NODEJS_IP || 'localhost');
