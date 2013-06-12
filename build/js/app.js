@@ -124,6 +124,7 @@ window.require.register("main", function(exports, require, module) {
 
   $(function() {
     var HeaderBarView, game, headerBarView;
+
     console.log('Main app starting...');
     $("a").click(function(e) {
       console.log("click on link prevented");
@@ -166,13 +167,14 @@ window.require.register("models/director", function(exports, require, module) {
     function DirectorModel() {
       this.update = __bind(this.update, this);
       this.removeEntity = __bind(this.removeEntity, this);
-      this.addEntity = __bind(this.addEntity, this);
-      _ref = DirectorModel.__super__.constructor.apply(this, arguments);
+      this.addEntity = __bind(this.addEntity, this);    _ref = DirectorModel.__super__.constructor.apply(this, arguments);
       return _ref;
     }
 
     DirectorModel.prototype.initialize = function(levelData) {
-      var numEnemies, that, _i;
+      var numEnemies, _i,
+        _this = this;
+
       if (levelData == null) {
         levelData = {};
       }
@@ -189,18 +191,23 @@ window.require.register("models/director", function(exports, require, module) {
           id: this.lastId
         }));
       }
-      that = this;
-      return $('a').each(function() {
-        var $this, offset;
-        $this = $(this);
-        offset = $this.offset();
-        return that.addEntity(new Entities.Hyperlink({
-          id: that.lastId,
-          w: $this.width(),
-          h: $this.height(),
-          y: offset.top,
-          x: offset.left
-        }));
+      return $(window).load(function() {
+        var that;
+
+        that = _this;
+        return $('a').each(function() {
+          var $this, offset;
+
+          $this = $(this);
+          offset = $this.offset();
+          return that.addEntity(new Entities.Hyperlink({
+            id: that.lastId,
+            w: $this.width(),
+            h: $this.height(),
+            y: offset.top,
+            x: offset.left
+          }));
+        });
       });
     };
 
@@ -219,6 +226,7 @@ window.require.register("models/director", function(exports, require, module) {
 
     DirectorModel.prototype.update = function(dt) {
       var entity, id, _ref1, _results;
+
       _ref1 = this.entities;
       _results = [];
       for (id in _ref1) {
@@ -238,6 +246,7 @@ window.require.register("models/entities/components/index", function(exports, re
     Sprite: require('./spirte'),
     mixin: function(ctx) {
       var key, value, _ref, _results;
+
       _ref = this.Sprite;
       _results = [];
       for (key in _ref) {
@@ -294,8 +303,7 @@ window.require.register("models/entities/enemy", function(exports, require, modu
     Components.mixin(Enemy);
 
     function Enemy(options) {
-      this.update = __bind(this.update, this);
-      this.initializeSprite({
+      this.update = __bind(this.update, this);    this.initializeSprite({
         type: "enemy",
         id: options.id,
         w: options.w,
@@ -309,6 +317,7 @@ window.require.register("models/entities/enemy", function(exports, require, modu
 
     Enemy.prototype.update = function(dt) {
       var directionX, directionY, _speed;
+
       directionX = Math.ceil(Math.random() * 3) - 2;
       directionY = Math.ceil(Math.random() * 3) - 2;
       _speed = directionX && directionY ? this.speed / 1.41421 : this.speed;
@@ -331,8 +340,7 @@ window.require.register("models/entities/hyperlink", function(exports, require, 
     Components.mixin(Hyperlink);
 
     function Hyperlink(options) {
-      this.update = __bind(this.update, this);
-      this.initializeSprite({
+      this.update = __bind(this.update, this);    this.initializeSprite({
         type: "hyperlink",
         id: options.id,
         w: options.w,
@@ -375,6 +383,7 @@ window.require.register("models/entities/player", function(exports, require, mod
     function Player(options) {
       this.update = __bind(this.update, this);
       var _ref, _ref1;
+
       this.initializeSprite({
         type: "player",
         id: options.id,
@@ -397,6 +406,7 @@ window.require.register("models/entities/player", function(exports, require, mod
 
     Player.prototype.update = function(dt) {
       var dx, dy;
+
       if (atom.input.down('left')) {
         if (!(this.vx <= -this.maxSpeed)) {
           this.vx -= this.acceleration;
@@ -471,14 +481,14 @@ window.require.register("views/director", function(exports, require, module) {
     __extends(DirectorView, _super);
 
     function DirectorView() {
-      this.draw = __bind(this.draw, this);
-      _ref = DirectorView.__super__.constructor.apply(this, arguments);
+      this.draw = __bind(this.draw, this);    _ref = DirectorView.__super__.constructor.apply(this, arguments);
       return _ref;
     }
 
     DirectorView.prototype.initialize = function(entities) {
       var $body, canvasHeight, canvasWidth, headerBarHeight,
         _this = this;
+
       this.entities = entities;
       window.onmousewheel = document.onmousewheel = function(e) {
         return e.preventDefault();
@@ -508,6 +518,7 @@ window.require.register("views/director", function(exports, require, module) {
 
     DirectorView.prototype.draw = function() {
       var entity, id, _ref1;
+
       this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
       this.ctx.save();
       this.ctx.translate(0, -window.scrollY);
@@ -549,6 +560,7 @@ window.require.register("views/header_bar", function(exports, require, module) {
 
     HeaderBar.prototype.render = function() {
       var html;
+
       html = this.template({
         level: this.level
       });

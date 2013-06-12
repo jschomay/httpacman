@@ -12518,6 +12518,7 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
     },
     onkeydown: function(e) {
       var action;
+
       action = this._bindings[eventCode(e)];
       if (!action) {
         return;
@@ -12531,6 +12532,7 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
     },
     onkeyup: function(e) {
       var action;
+
       action = this._bindings[eventCode(e)];
       if (!action) {
         return;
@@ -12541,6 +12543,7 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
     },
     clearPressed: function() {
       var action, _i, _len, _ref;
+
       _ref = this._released;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         action = _ref[_i];
@@ -12644,6 +12647,7 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
     Game.prototype.run = function() {
       var s,
         _this = this;
+
       if (this.running) {
         return;
       }
@@ -12666,6 +12670,7 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
 
     Game.prototype.step = function() {
       var dt, now;
+
       now = Date.now();
       dt = (now - this.last_step) / 1000;
       this.last_step = now;
@@ -12690,6 +12695,7 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
 
   atom.loadSound = function(url, callback) {
     var e, request;
+
     if (!atom.audioContext) {
       return typeof callback === "function" ? callback('No audio support') : void 0;
     }
@@ -12715,6 +12721,7 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
 
   atom.preloadSounds = function(sfx, cb) {
     var name, toLoad, url, _results;
+
     if (!atom.audioContext) {
       return typeof cb === "function" ? cb('No audio support') : void 0;
     }
@@ -12742,6 +12749,7 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
 
   atom.playSound = function(name, time) {
     var source;
+
     if (time == null) {
       time = 0;
     }
@@ -12757,6 +12765,7 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
 
   atom.setVolume = function(v) {
     var _ref2;
+
     return (_ref2 = atom._mixer) != null ? _ref2.gain.value = v : void 0;
   };
 
