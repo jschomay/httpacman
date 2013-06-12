@@ -26,15 +26,19 @@
 
 #### Do later
 
-- Need to stip out base tag ie: <base href="http://www.univ-paris1.fr/">
+- in components/index loop through all components passed in to mixin to extend with instead of hardcoding to use just sprite
+
+- think about if entities should be under models/ since they now have draw functions
+
+- find better way to access header bar height instead of hard coding 58 everywhere
+
+- Need to strip out base tag ie: <base href="http://www.univ-paris1.fr/">
 
 - Some sites use framesets and dont have a body... so out stuff doesn't get appended, arg
 
 - there's really no reason to use backbone at all at this point... make the directors regular classes
 
 - directional speed goes over the player speedlimit.  Not really a big deal, but if you want to fix it, check the length of the combined vy/vx vectors against the speedlimit before adding the acceleration instead of just checking vy and vx individually
-
-- refactor entities to eiter inherit or take components for things like moveX and moveY, etc
 
 - Detect error: getaddrinfo ENOTFOUND from request module -- handle it better...
 
