@@ -49,6 +49,5 @@ module.exports = class DirectorView extends Backbone.View
     @ctx.translate 0, -window.scrollY
     # render each entity in scene
     for id, entity of @entities
-      @ctx.fillStyle = entity.background
-      @ctx.fillRect entity.position.x, entity.position.y, entity.w, entity.h
+      entity.draw(@ctx)
     @ctx.restore()

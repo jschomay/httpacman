@@ -1,23 +1,24 @@
+Components = require './components'
+
 module.exports = class Player
+  Components.mixin(@)
+
   # expects and object with 'id', 'position'.  Only 'id' is required.
   constructor: (options) ->
-    {@positiond} = options
-    @type = "player"
-    @id = @type + options.id
-    @w = 40
-    @h = 40
-    @background = 'yellow'
+    @initializeSprite
+      type:  "player"
+      id: options.id
+      w: 40
+      h: 40
+      x: options?.position?.x || window.document.width / 2
+      y: options?.position?.y || 200
+      background: 'yellow'
 
     @acceleration = 50 # px/s/s
     @maxSpeed = 500 # px/s
     @vx = 0
     @vy = 0
     @drag = .8
-
-    if !@position
-      @position = 
-        x: window.document.width/2
-        y: 200
 
     # key bindings
     atom.input.bind atom.key.LEFT_ARROW, 'left'

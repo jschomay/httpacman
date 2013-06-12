@@ -25,6 +25,16 @@ module.exports = class DirectorModel extends Backbone.Model
 
 
     # crate playing field objects from the DirectorModel
+    that = @
+    $('a').each ->
+      $this = $(@)
+      offset = $this.offset()
+      that.addEntity new Entities.Hyperlink
+        id: that.lastId
+        w: $this.width()
+        h: $this.height()
+        y: offset.top
+        x: offset.left
 
     # create enemies
 
