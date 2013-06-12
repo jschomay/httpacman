@@ -345,6 +345,11 @@ window.require.register("models/entities/hyperlink", function(exports, require, 
 
     Hyperlink.prototype.update = function(dt) {};
 
+    Hyperlink.prototype.draw = function(ctx) {
+      ctx.strokeStyle = this.background;
+      return ctx.strokeRect(this.position.x, this.position.y - 58, this.w, this.h);
+    };
+
     return Hyperlink;
 
   })();
