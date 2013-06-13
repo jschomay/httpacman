@@ -1,7 +1,8 @@
 Components = require './components'
 
 module.exports = class Player
-  Components.mixin(@)
+
+  Components.mixin(@, 'Sprite, MakePurple')
 
   # expects and object with 'id', 'position'.  Only 'id' is required.
   constructor: (options) ->
@@ -13,7 +14,7 @@ module.exports = class Player
       x: options?.position?.x || window.document.width / 2
       y: options?.position?.y || 200
       background: 'yellow'
-
+    @mp()
     @acceleration = 50 # px/s/s
     @maxSpeed = 500 # px/s
     @vx = 0

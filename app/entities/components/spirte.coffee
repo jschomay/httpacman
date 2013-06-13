@@ -16,3 +16,4 @@ module.exports =
     @type = options.type
     @id = @type + options.id
     @background = options.background or 'black'
+

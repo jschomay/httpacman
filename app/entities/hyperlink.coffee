@@ -1,7 +1,8 @@
 Components = require './components'
 
 module.exports = class Hyperlink
-  Components.mixin(@)
+  
+  Components.mixin(@, 'Sprite')
 
   # expects and object with 'id', 'position'.
   constructor: (options) ->

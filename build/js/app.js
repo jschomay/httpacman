@@ -192,14 +192,33 @@ window.require.register("director", function(exports, require, module) {
 window.require.register("entities/components/index", function(exports, require, module) {
   module.exports = {
     Sprite: require('./spirte'),
-    mixin: function(ctx) {
-      var key, value, _ref, _results;
+    MakePurple: {
+      mp: function() {
+        return this.background = 'purple';
+      }
+    },
+    mixin: function(ctx, components) {
+      var component, key, requestedComponents, value, _i, _len, _results;
 
-      _ref = this.Sprite;
+      requestedComponents = components.replace(' ', '').split(',');
       _results = [];
-      for (key in _ref) {
-        value = _ref[key];
-        _results.push(ctx.prototype[key] = value);
+      for (_i = 0, _len = requestedComponents.length; _i < _len; _i++) {
+        component = requestedComponents[_i];
+        _results.push((function() {
+          var _ref, _results1;
+
+          _ref = this[component];
+          _results1 = [];
+          for (key in _ref) {
+            value = _ref[key];
+            if (key !== '_init') {
+              _results1.push(ctx.prototype[key] = value);
+            } else {
+              _results1.push(void 0);
+            }
+          }
+          return _results1;
+        }).call(this));
       }
       return _results;
     }
@@ -248,7 +267,7 @@ window.require.register("entities/enemy", function(exports, require, module) {
   Components = require('./components');
 
   module.exports = Enemy = (function() {
-    Components.mixin(Enemy);
+    Components.mixin(Enemy, 'Sprite');
 
     function Enemy(options) {
       this.update = __bind(this.update, this);    this.initializeSprite({
@@ -285,7 +304,7 @@ window.require.register("entities/hyperlink", function(exports, require, module)
   Components = require('./components');
 
   module.exports = Hyperlink = (function() {
-    Components.mixin(Hyperlink);
+    Components.mixin(Hyperlink, 'Sprite');
 
     function Hyperlink(options) {
       this.update = __bind(this.update, this);    this.initializeSprite({
@@ -326,7 +345,7 @@ window.require.register("entities/player", function(exports, require, module) {
   Components = require('./components');
 
   module.exports = Player = (function() {
-    Components.mixin(Player);
+    Components.mixin(Player, 'Sprite, MakePurple');
 
     function Player(options) {
       this.update = __bind(this.update, this);
@@ -341,6 +360,7 @@ window.require.register("entities/player", function(exports, require, module) {
         y: (options != null ? (_ref1 = options.position) != null ? _ref1.y : void 0 : void 0) || 200,
         background: 'yellow'
       });
+      this.mp();
       this.acceleration = 50;
       this.maxSpeed = 500;
       this.vx = 0;

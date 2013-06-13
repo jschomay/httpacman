@@ -1,7 +1,8 @@
 Components = require './components'
 
 module.exports = class Enemy
-  Components.mixin(@)
+  
+  Components.mixin(@, 'Sprite')
   
   # expects and object with 'id', 'position'.  Only 'id' is required.
   constructor: (options) ->
