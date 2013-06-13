@@ -5,6 +5,7 @@ module.exports = class Game extends window.atom.Game
     super
 
     # global variables
+    @gameState = new (require 'models/game_state')()
     @headerBarHeight
     @canvas = $('<canvas id="hh-canvas"></canvas>')[0]
     @ctx = @canvas.getContext '2d'
@@ -12,7 +13,7 @@ module.exports = class Game extends window.atom.Game
     ###
     SET UP PAGE WITH GAME HEADER AND STAGE
     ###
-    headerBarView = new (require 'views/header_bar')()
+    headerBarView = new (require 'views/header_bar')(model: @gameState)
     $('body').append headerBarView.el
 
     @headerBarHeight = $('#hh-header-bar').outerHeight()

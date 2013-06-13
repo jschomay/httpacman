@@ -412,6 +412,7 @@ window.require.register("game", function(exports, require, module) {
         _this = this;
 
       Game.__super__.constructor.apply(this, arguments);
+      this.gameState = new (require('models/game_state'))();
       this.headerBarHeight;
       this.canvas = $('<canvas id="hh-canvas"></canvas>')[0];
       this.ctx = this.canvas.getContext('2d');
@@ -419,7 +420,9 @@ window.require.register("game", function(exports, require, module) {
       SET UP PAGE WITH GAME HEADER AND STAGE
       */
 
-      headerBarView = new (require('views/header_bar'))();
+      headerBarView = new (require('views/header_bar'))({
+        model: this.gameState
+      });
       $('body').append(headerBarView.el);
       this.headerBarHeight = $('#hh-header-bar').outerHeight();
       window.onresize = function(e) {
@@ -498,6 +501,34 @@ window.require.register("main", function(exports, require, module) {
   });
   
 });
+window.require.register("models/game_state", function(exports, require, module) {
+  var GameState, _ref,
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+  module.exports = GameState = (function(_super) {
+    __extends(GameState, _super);
+
+    function GameState() {
+      _ref = GameState.__super__.constructor.apply(this, arguments);
+      return _ref;
+    }
+
+    GameState.prototype.initialize = function() {
+      return this.set({
+        level: 1,
+        url: window.currentUrl,
+        numInternalLinks: 0,
+        numExternalLInks: 0,
+        numCollectedLinks: 0
+      });
+    };
+
+    return GameState;
+
+  })(Backbone.Model);
+  
+});
 window.require.register("views/header_bar", function(exports, require, module) {
   var HeaderBar, _ref,
     __hasProp = {}.hasOwnProperty,
@@ -515,18 +546,15 @@ window.require.register("views/header_bar", function(exports, require, module) {
 
     HeaderBar.prototype.template = require('./templates/header_bar');
 
-    HeaderBar.prototype.initialize = function(level) {
-      this.level = level != null ? level : 1;
-      console.log("initiing level ", this.level);
+    HeaderBar.prototype.initialize = function() {
+      console.log("initiing level ", this.model.get("level"));
       return this.render();
     };
 
     HeaderBar.prototype.render = function() {
       var html;
 
-      html = this.template({
-        level: this.level
-      });
+      html = this.template(this.model.attributes);
       return this.$el.html(html);
     };
 
@@ -541,7 +569,7 @@ window.require.register("views/templates/header_bar", function(exports, require,
   var buf = [];
   with (locals || {}) {
   var interp;
-  buf.push('<h2 class="hh-logo">httpacman://</h2><div id="hh-level"><h3 class="hh-level-title">level #' + escape((interp = level) == null ? '' : interp) + '</h3></div>');
+  buf.push('<div id="logo"><h1>Hyperlink Harry</h1></div><h2>level #' + escape((interp = level) == null ? '' : interp) + '</h2><h3>Site: ' + escape((interp = url) == null ? '' : interp) + '</h3>');
   }
   return buf.join("");
   };

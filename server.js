@@ -24,7 +24,6 @@ server.on('request', function(req, res) {
       } else {
         host = response.request.uri.host;
 
-
         // parse for relative paths
         fixSrcUrls = /src=(["'])(?!http)\/?\/?/gi;
         fixLinkUrls = /href=(["'])(?!http)\/?\/?/gi;
@@ -39,8 +38,7 @@ server.on('request', function(req, res) {
 
         // put our script in the code
         headClose = /<\/head>/gi;
-        body = body.replace(headClose, '<link rel="stylesheet" type="text/css" href="css/app.css"><script src="js/libs.js"></script><script src="js/app.js"></script><script>require(\'main\');console.log("current site","'+host+'");</script></head>');
-        // body = body.replace(headClose, '<script src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.0.0/backbone-min.js"></script><script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script><script src="/js/app.js"></script><script>require(\'main\')</script></head>');
+        body = body.replace(headClose, '<link rel="stylesheet" type="text/css" href="css/app.css"><script src="js/libs.js"></script><script src="js/app.js"></script><script>require(\'main\');window.currentUrl = "'+host+'";</script></head>');
         
 
         // write 
