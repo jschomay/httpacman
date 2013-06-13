@@ -1,11 +1,13 @@
 Components = require './components'
+Entity = require './entity'
 
-module.exports = class Hyperlink
+module.exports = class Hyperlink extends Entity
   
   Components.mixin(@, 'Sprite')
 
   # expects and object with 'id', 'position'.
   constructor: (options) ->
+    super
     @initializeSprite
       type:  "hyperlink"
       id: options.id
@@ -15,9 +17,6 @@ module.exports = class Hyperlink
       y: options.y
       background: 'green'
 
-  update: (dt) =>
-    return
-    
   draw: (ctx) ->
     ctx.strokeStyle = @background
     ctx.strokeRect @position.x, @position.y - 58, @w, @h

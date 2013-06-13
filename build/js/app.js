@@ -189,14 +189,18 @@ window.require.register("director", function(exports, require, module) {
   })();
   
 });
+window.require.register("entities/components/collidable", function(exports, require, module) {
+  module.exports = {
+    collidable: function() {
+      return true;
+    }
+  };
+  
+});
 window.require.register("entities/components/index", function(exports, require, module) {
   module.exports = {
     Sprite: require('./spirte'),
-    MakePurple: {
-      mp: function() {
-        return this.background = 'purple';
-      }
-    },
+    Collidable: require('./collidable'),
     mixin: function(ctx, components) {
       var component, key, requestedComponents, value, _i, _len, _results;
 
@@ -211,11 +215,7 @@ window.require.register("entities/components/index", function(exports, require, 
           _results1 = [];
           for (key in _ref) {
             value = _ref[key];
-            if (key !== '_init') {
-              _results1.push(ctx.prototype[key] = value);
-            } else {
-              _results1.push(void 0);
-            }
+            _results1.push(ctx.prototype[key] = value);
           }
           return _results1;
         }).call(this));
@@ -261,16 +261,23 @@ window.require.register("entities/components/spirte", function(exports, require,
   
 });
 window.require.register("entities/enemy", function(exports, require, module) {
-  var Components, Enemy,
-    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+  var Components, Enemy, Entity,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
   Components = require('./components');
 
-  module.exports = Enemy = (function() {
+  Entity = require('./entity');
+
+  module.exports = Enemy = (function(_super) {
+    __extends(Enemy, _super);
+
     Components.mixin(Enemy, 'Sprite');
 
     function Enemy(options) {
-      this.update = __bind(this.update, this);    this.initializeSprite({
+      this.update = __bind(this.update, this);    Enemy.__super__.constructor.apply(this, arguments);
+      this.initializeSprite({
         type: "enemy",
         id: options.id,
         w: options.w,
@@ -294,20 +301,48 @@ window.require.register("entities/enemy", function(exports, require, module) {
 
     return Enemy;
 
+  })(Entity);
+  
+});
+window.require.register("entities/entity", function(exports, require, module) {
+  var Entity,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
+  module.exports = Entity = (function() {
+    function Entity() {
+      this.update = __bind(this.update, this);    true;
+    }
+
+    Entity.prototype.update = function(dt) {
+      return false;
+    };
+
+    Entity.prototype.draw = function(ctx) {
+      return false;
+    };
+
+    return Entity;
+
   })();
   
 });
 window.require.register("entities/hyperlink", function(exports, require, module) {
-  var Components, Hyperlink,
-    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+  var Components, Entity, Hyperlink,
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
   Components = require('./components');
 
-  module.exports = Hyperlink = (function() {
+  Entity = require('./entity');
+
+  module.exports = Hyperlink = (function(_super) {
+    __extends(Hyperlink, _super);
+
     Components.mixin(Hyperlink, 'Sprite');
 
     function Hyperlink(options) {
-      this.update = __bind(this.update, this);    this.initializeSprite({
+      Hyperlink.__super__.constructor.apply(this, arguments);
+      this.initializeSprite({
         type: "hyperlink",
         id: options.id,
         w: options.w,
@@ -318,8 +353,6 @@ window.require.register("entities/hyperlink", function(exports, require, module)
       });
     }
 
-    Hyperlink.prototype.update = function(dt) {};
-
     Hyperlink.prototype.draw = function(ctx) {
       ctx.strokeStyle = this.background;
       return ctx.strokeRect(this.position.x, this.position.y - 58, this.w, this.h);
@@ -327,7 +360,7 @@ window.require.register("entities/hyperlink", function(exports, require, module)
 
     return Hyperlink;
 
-  })();
+  })(Entity);
   
 });
 window.require.register("entities/index", function(exports, require, module) {
@@ -339,18 +372,25 @@ window.require.register("entities/index", function(exports, require, module) {
   
 });
 window.require.register("entities/player", function(exports, require, module) {
-  var Components, Player,
-    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+  var Components, Entity, Player,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
   Components = require('./components');
 
-  module.exports = Player = (function() {
-    Components.mixin(Player, 'Sprite, MakePurple');
+  Entity = require('./entity');
+
+  module.exports = Player = (function(_super) {
+    __extends(Player, _super);
+
+    Components.mixin(Player, 'Sprite, Collidable');
 
     function Player(options) {
       this.update = __bind(this.update, this);
       var _ref, _ref1;
 
+      Player.__super__.constructor.apply(this, arguments);
       this.initializeSprite({
         type: "player",
         id: options.id,
@@ -360,7 +400,6 @@ window.require.register("entities/player", function(exports, require, module) {
         y: (options != null ? (_ref1 = options.position) != null ? _ref1.y : void 0 : void 0) || 200,
         background: 'yellow'
       });
-      this.mp();
       this.acceleration = 50;
       this.maxSpeed = 500;
       this.vx = 0;
@@ -424,7 +463,7 @@ window.require.register("entities/player", function(exports, require, module) {
 
     return Player;
 
-  })();
+  })(Entity);
   
 });
 window.require.register("game", function(exports, require, module) {

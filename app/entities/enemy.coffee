@@ -1,11 +1,13 @@
 Components = require './components'
+Entity = require './entity'
 
-module.exports = class Enemy
+module.exports = class Enemy extends Entity
   
   Components.mixin(@, 'Sprite')
   
   # expects and object with 'id', 'position'.  Only 'id' is required.
   constructor: (options) ->
+    super
     @initializeSprite
       type:  "enemy"
       id: options.id

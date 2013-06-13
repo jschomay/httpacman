@@ -1,11 +1,13 @@
 Components = require './components'
+Entity = require './entity'
 
-module.exports = class Player
+module.exports = class Player extends Entity
 
-  Components.mixin(@, 'Sprite, MakePurple')
+  Components.mixin(@, 'Sprite, Collidable')
 
   # expects and object with 'id', 'position'.  Only 'id' is required.
   constructor: (options) ->
+    super
     @initializeSprite
       type:  "player"
       id: options.id
@@ -14,7 +16,7 @@ module.exports = class Player
       x: options?.position?.x || window.document.width / 2
       y: options?.position?.y || 200
       background: 'yellow'
-    @mp()
+
     @acceleration = 50 # px/s/s
     @maxSpeed = 500 # px/s
     @vx = 0

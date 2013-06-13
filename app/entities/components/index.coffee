@@ -2,8 +2,7 @@ module.exports =
 
   # list of available components:
   Sprite: require './spirte'
-  MakePurple: 
-    mp: -> @background = 'purple'
+  Collidable:  require './collidable'
 
 
   # call Components.mixin on any entitie to add desired compoents
@@ -13,4 +12,4 @@ module.exports =
     requestedComponents = components.replace(' ', '').split ','
     for component in requestedComponents
       for key, value of @[component]
-        ctx::[key] = value unless key is '_init'
+        ctx::[key] = value
