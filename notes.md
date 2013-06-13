@@ -9,8 +9,6 @@
 - sites that can still hyjack our window:
   - view-source:http://www.fedspending.org/apidoc.php
 
-- can't seem to disable scrolling completly, plus pages jump to top on load despite my efforts.  Maybe just leave it as is?  Or do a overflow:hidden on body?
-
 - Some sites have event listeners on elements (like scroll feedback on www.lynda.com), so they give errors since we strip all scripts, causing bad frame rates.  Here's a possible fix, or use regex to strip: http://stackoverflow.com/questions/9251837/how-to-remove-all-listeners-in-an-element
 
 
@@ -20,7 +18,7 @@
 
 #### Do soon
 
-- play with easing on movement
+- index.htm - figure out
 
 - think of way to make sure player doesn't start on a page over a link (or other active element?)
 
@@ -28,15 +26,9 @@
 
 - in components/index loop through all components passed in to mixin to extend with instead of hardcoding to use just sprite
 
-- think about if entities should be under models/ since they now have draw functions
-
-- find better way to access header bar height instead of hard coding 58 everywhere
-
 - Need to strip out base tag ie: <base href="http://www.univ-paris1.fr/">
 
 - Some sites use framesets and dont have a body... so out stuff doesn't get appended, arg
-
-- there's really no reason to use backbone at all at this point... make the directors regular classes
 
 - directional speed goes over the player speedlimit.  Not really a big deal, but if you want to fix it, check the length of the combined vy/vx vectors against the speedlimit before adding the acceleration instead of just checking vy and vx individually
 
@@ -51,7 +43,7 @@
 
 
 
-### IDEAS
+### IDEA LOG
 
 - Each level has 2x # of enemies as last level (level=# of "hyperjumps")
 
@@ -118,10 +110,25 @@
 
   Now Harry's digital consciousness is lost somewhere out in web land, bouncing from site to site, evading antivirus bots and seach engine spiders, and looking for his way back home.
 
-  Will you help him?  How long can you survive?  Can you find his way back home?  Press "Start" to go find Harry now.
+  Can you help him?  Press "Start" to go find Harry now.
 
 - What if Harry runs into another "human" on one of the levels?  Maybe he says to follow him, and if Harry goes through the same links, he follows him from page to page.  Maybe he leads him to the end goal?
 
 - Twitter like comments to give in-level info.
 
 - Link juice - Harry must gather enough link-juice before the "exit links" activate.  He gains linkjuice by walking over inbound links (each inbound link contains 1/numer of inbound links on page percent, and Harry needs to get over 70% for example.  This way he can beat any level that has at least one inbound link.).  Inbound links will probably have to "refill" after a set amount of time so Harry can get more juice if he loses some and can't escape.
+
+
+data for game (displayed in header bar)
+
+- level #
+- current url
+- # internal links
+- # external links
+- linkjuice meter (# collected internal links)
+- powerups?
+
+levels manifest
+- # of each enemy type to put in based on level #
+
+

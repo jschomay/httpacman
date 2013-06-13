@@ -4,7 +4,7 @@ body {
 }
 
 
-.hp-header-bar {
+#hh-header-bar {
   position: fixed;
   top: 0;
   left: 0;
@@ -17,22 +17,16 @@ body {
     text-align: left;
     display: block;
   }
-  .hp-logo {
+  .hh-logo {
     font-size: 18px;
     line-height: 18px;
     margin: 0 0 3px 0;
     color: white;
   }
-  .hp-level--title {
+  .hh-level-title {
     font-size: 15px;
     line-height: 15px;
     color: white;
     margin: 0;
   }
-}
-
-.hp-entity {
-  position: absolute;
-  z-index: 9999;
-  color: black;
 }

@@ -79,121 +79,49 @@
   globals.require.brunch = true;
 })();
 
-window.require.register("game", function(exports, require, module) {
-  var Game,
-    __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
-
-  module.exports = Game = (function(_super) {
-    __extends(Game, _super);
-
-    function Game(entities) {
-      this.entities = entities;
-      Game.__super__.constructor.apply(this, arguments);
-      this.directorModel = new (require('models/director'))();
-      this.directorView = new (require('views/director'))(this.directorModel.entities);
-      console.log("We have a game!");
-      this.stats = new Stats();
-      this.stats.setMode(0);
-      this.stats.domElement.style.position = 'fixed';
-      this.stats.domElement.style['z-index'] = 9999;
-      this.stats.domElement.style.right = '0px';
-      this.stats.domElement.style.top = '0px';
-      document.body.appendChild(this.stats.domElement);
-      this.stats.begin();
-    }
-
-    Game.prototype.update = function(dt) {
-      this.stats.update();
-      return this.directorModel.update(dt);
-    };
-
-    Game.prototype.draw = function() {
-      return this.directorView.draw();
-    };
-
-    return Game;
-
-  })(window.atom.Game);
-  
-});
-window.require.register("main", function(exports, require, module) {
-  var Game;
-
-  Game = require('game');
-
-  $(function() {
-    var HeaderBarView, game, headerBarView;
-
-    console.log('Main app starting...');
-    $("a").click(function(e) {
-      console.log("click on link prevented");
-      e.preventDefault();
-      return false;
-    });
-    HeaderBarView = require('views/header_bar');
-    headerBarView = new HeaderBarView();
-    $('body').append(headerBarView.el);
-    game = new Game();
-    game.run();
-    window.onblur = function() {
-      return game.stop();
-    };
-    return window.onfocus = function() {
-      return game.run();
-    };
-  });
-  
-});
-window.require.register("models/director", function(exports, require, module) {
-  var DirectorModel, Entities, _ref,
-    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
-    __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+window.require.register("director", function(exports, require, module) {
+  var Director, Entities,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
   Entities = require('./entities');
 
   /*
-  The director model is in charge of initializing (and destroying) all game entities based on level data.
-  It holds all the entities in some form of a scene graph, which may be rather straight forward at this point (backbone collection?).
-  It may also need to create one or more quad trees to handle collision (or at least pass the entities off to a collision module)
-  It also makes sure each entity's `update` function gets called when it's own update method gets called
+  The director manages all game entities.  It initializes them based on level data, then delegates update and draw to each entity.  It stores entities in a data structure that allows for effcient lookups, and has ways to add and remov entities from this structure.
   */
 
 
-  module.exports = DirectorModel = (function(_super) {
-    __extends(DirectorModel, _super);
-
-    function DirectorModel() {
-      this.update = __bind(this.update, this);
-      this.removeEntity = __bind(this.removeEntity, this);
-      this.addEntity = __bind(this.addEntity, this);    _ref = DirectorModel.__super__.constructor.apply(this, arguments);
-      return _ref;
-    }
-
-    DirectorModel.prototype.initialize = function(levelData) {
+  module.exports = Director = (function() {
+    function Director(levelData) {
       var numEnemies, _i,
         _this = this;
 
       if (levelData == null) {
         levelData = {};
       }
+      this.draw = __bind(this.draw, this);
+      this.update = __bind(this.update, this);
+      this.removeEntity = __bind(this.removeEntity, this);
+      this.addEntity = __bind(this.addEntity, this);
+      /*
+      INITIALIZE ENTITIES
+      */
+
       console.log("Setting the main scene...");
-      console.log(Entities);
       console.log("Putting the player on screen");
       this.addEntity(new Entities.Player({
         id: this.lastId
       }));
-      numEnemies = 50;
+      numEnemies = levelData.numEnemies || 10;
       console.log("Putting " + numEnemies + " enemies on screen");
       for (_i = 1; 1 <= numEnemies ? _i <= numEnemies : _i >= numEnemies; 1 <= numEnemies ? _i++ : _i--) {
         this.addEntity(new Entities.Enemy({
           id: this.lastId
         }));
       }
-      return $(window).load(function() {
+      $(window).load(function() {
         var that;
 
+        console.log("Converting hyperlinks to game entities");
         that = _this;
         return $('a').each(function() {
           var $this, offset;
@@ -209,39 +137,51 @@ window.require.register("models/director", function(exports, require, module) {
           }));
         });
       });
-    };
+    }
 
-    DirectorModel.prototype.lastId = 1;
+    Director.prototype.lastId = 1;
 
-    DirectorModel.prototype.entities = {};
+    Director.prototype.entities = {};
 
-    DirectorModel.prototype.addEntity = function(entity) {
+    Director.prototype.addEntity = function(entity) {
       this.entities[entity.id] = entity;
       return this.lastId++;
     };
 
-    DirectorModel.prototype.removeEntity = function(id) {
+    Director.prototype.removeEntity = function(id) {
       return delete this.entities[id];
     };
 
-    DirectorModel.prototype.update = function(dt) {
-      var entity, id, _ref1, _results;
+    Director.prototype.update = function(dt) {
+      var entity, id, _ref, _results;
 
-      _ref1 = this.entities;
+      _ref = this.entities;
       _results = [];
-      for (id in _ref1) {
-        entity = _ref1[id];
+      for (id in _ref) {
+        entity = _ref[id];
         _results.push(entity.update(dt));
       }
       return _results;
     };
 
-    return DirectorModel;
+    Director.prototype.draw = function(ctx) {
+      var entity, id, _ref, _results;
 
-  })(Backbone.Model);
+      _ref = this.entities;
+      _results = [];
+      for (id in _ref) {
+        entity = _ref[id];
+        _results.push(entity.draw(ctx));
+      }
+      return _results;
+    };
+
+    return Director;
+
+  })();
   
 });
-window.require.register("models/entities/components/index", function(exports, require, module) {
+window.require.register("entities/components/index", function(exports, require, module) {
   module.exports = {
     Sprite: require('./spirte'),
     mixin: function(ctx) {
@@ -258,7 +198,7 @@ window.require.register("models/entities/components/index", function(exports, re
   };
   
 });
-window.require.register("models/entities/components/spirte", function(exports, require, module) {
+window.require.register("entities/components/spirte", function(exports, require, module) {
   module.exports = {
     draw: function(ctx) {
       ctx.fillStyle = this.background;
@@ -293,7 +233,7 @@ window.require.register("models/entities/components/spirte", function(exports, r
   };
   
 });
-window.require.register("models/entities/enemy", function(exports, require, module) {
+window.require.register("entities/enemy", function(exports, require, module) {
   var Components, Enemy,
     __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
@@ -330,7 +270,7 @@ window.require.register("models/entities/enemy", function(exports, require, modu
   })();
   
 });
-window.require.register("models/entities/hyperlink", function(exports, require, module) {
+window.require.register("entities/hyperlink", function(exports, require, module) {
   var Components, Hyperlink,
     __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
@@ -363,7 +303,7 @@ window.require.register("models/entities/hyperlink", function(exports, require, 
   })();
   
 });
-window.require.register("models/entities/index", function(exports, require, module) {
+window.require.register("entities/index", function(exports, require, module) {
   module.exports = {
     Player: require('./player'),
     Enemy: require('./enemy'),
@@ -371,7 +311,7 @@ window.require.register("models/entities/index", function(exports, require, modu
   };
   
 });
-window.require.register("models/entities/player", function(exports, require, module) {
+window.require.register("entities/player", function(exports, require, module) {
   var Components, Player,
     __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
@@ -459,80 +399,103 @@ window.require.register("models/entities/player", function(exports, require, mod
   })();
   
 });
-window.require.register("views/director", function(exports, require, module) {
-  /*
-  The director view knows how to render each type of game entity, and has a reference to the scene graph.
-  It renders each entity with the proper render function when its own draw method gets called.
-  It will know how to run sprite animations.
-  It may also hold certain special effects.
-  */
-
-  /*
-  TODO
-  - method to add and remove elements outside of the initialize
-  */
-
-  var DirectorView, _ref,
-    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+window.require.register("game", function(exports, require, module) {
+  var Game,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  module.exports = DirectorView = (function(_super) {
-    __extends(DirectorView, _super);
+  module.exports = Game = (function(_super) {
+    __extends(Game, _super);
 
-    function DirectorView() {
-      this.draw = __bind(this.draw, this);    _ref = DirectorView.__super__.constructor.apply(this, arguments);
-      return _ref;
-    }
-
-    DirectorView.prototype.initialize = function(entities) {
-      var $body, canvasHeight, canvasWidth, headerBarHeight,
+    function Game() {
+      var headerBarView, levelData,
         _this = this;
 
-      this.entities = entities;
+      Game.__super__.constructor.apply(this, arguments);
+      this.headerBarHeight;
+      this.canvas = $('<canvas id="hh-canvas"></canvas>')[0];
+      this.ctx = this.canvas.getContext('2d');
+      /*
+      SET UP PAGE WITH GAME HEADER AND STAGE
+      */
+
+      headerBarView = new (require('views/header_bar'))();
+      $('body').append(headerBarView.el);
+      this.headerBarHeight = $('#hh-header-bar').outerHeight();
+      window.onresize = function(e) {
+        _this.canvas.width = window.innerWidth;
+        return _this.canvas.height = window.innerHeight - _this.headerBarHeight;
+      };
+      window.onresize();
+      $.extend(this.canvas.style, {
+        position: 'fixed',
+        top: this.headerBarHeight + 'px',
+        left: '0px',
+        'z-index': 999999
+      });
+      $('body').append(this.canvas);
+      this.stats = new Stats();
+      this.stats.setMode(0);
+      this.stats.domElement.style.position = 'fixed';
+      this.stats.domElement.style['z-index'] = 999999;
+      this.stats.domElement.style.right = '0px';
+      this.stats.domElement.style.top = '0px';
+      document.body.appendChild(this.stats.domElement);
+      this.stats.begin();
       window.onmousewheel = document.onmousewheel = function(e) {
         return e.preventDefault();
       };
       window.onkeypress = document.onkeypress = function(e) {
         return e.preventDefault();
       };
-      $body = $('body');
-      headerBarHeight = 58;
-      canvasWidth = window.innerWidth;
-      canvasHeight = window.innerHeight - headerBarHeight;
-      this.canvas = $('<canvas id="hp-canvas"></canvas>')[0];
-      window.onresize = function(e) {
-        _this.canvas.width = window.innerWidth;
-        return _this.canvas.height = window.innerHeight - headerBarHeight;
-      };
-      window.onresize();
-      this.ctx = this.canvas.getContext('2d');
-      $.extend(this.canvas.style, {
-        position: 'fixed',
-        top: headerBarHeight + 'px',
-        left: '0px',
-        'z-index': 9999
+      $("a").click(function(e) {
+        console.log("click on link prevented");
+        e.preventDefault();
+        return false;
       });
-      return $body.append(this.canvas);
+      levelData = {
+        numEnemies: 50
+      };
+      this.director = new (require('./director'))(levelData);
+      console.log("We have a game!");
+    }
+
+    Game.prototype.update = function(dt) {
+      this.stats.update();
+      return this.director.update(dt);
     };
 
-    DirectorView.prototype.draw = function() {
-      var entity, id, _ref1;
-
+    Game.prototype.draw = function() {
       this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
       this.ctx.save();
       this.ctx.translate(0, -window.scrollY);
-      _ref1 = this.entities;
-      for (id in _ref1) {
-        entity = _ref1[id];
-        entity.draw(this.ctx);
-      }
+      this.director.draw(this.ctx);
       return this.ctx.restore();
     };
 
-    return DirectorView;
+    return Game;
 
-  })(Backbone.View);
+  })(window.atom.Game);
+  
+});
+window.require.register("main", function(exports, require, module) {
+  var Game;
+
+  Game = require('game');
+
+  $(function() {
+    var game;
+
+    console.log('Main app starting...');
+    game = new Game();
+    game.run();
+    window.onblur = function() {
+      return game.stop();
+    };
+    return window.onfocus = function() {
+      return game.run();
+    };
+  });
   
 });
 window.require.register("views/header_bar", function(exports, require, module) {
@@ -548,9 +511,9 @@ window.require.register("views/header_bar", function(exports, require, module) {
       return _ref;
     }
 
-    HeaderBar.prototype.className = 'hp-header-bar';
+    HeaderBar.prototype.id = 'hh-header-bar';
 
-    HeaderBar.prototype.template = require('views/templates/header_bar');
+    HeaderBar.prototype.template = require('./templates/header_bar');
 
     HeaderBar.prototype.initialize = function(level) {
       this.level = level != null ? level : 1;
@@ -578,7 +541,7 @@ window.require.register("views/templates/header_bar", function(exports, require,
   var buf = [];
   with (locals || {}) {
   var interp;
-  buf.push('<h2 class="hp-logo">httpacman://</h2><div id="hp-level"><h3 class="hp-level--title">level #' + escape((interp = level) == null ? '' : interp) + '</h3></div>');
+  buf.push('<h2 class="hh-logo">httpacman://</h2><div id="hh-level"><h3 class="hh-level-title">level #' + escape((interp = level) == null ? '' : interp) + '</h3></div>');
   }
   return buf.join("");
   };

@@ -1,24 +1,23 @@
-# define entities
-# these are just regular obects, rather than backbone models.
 Entities = require './entities'
 
 
 ###
-The director model is in charge of initializing (and destroying) all game entities based on level data.
-It holds all the entities in some form of a scene graph, which may be rather straight forward at this point (backbone collection?).
-It may also need to create one or more quad trees to handle collision (or at least pass the entities off to a collision module)
-It also makes sure each entity's `update` function gets called when it's own update method gets called
+The director manages all game entities.  It initializes them based on level data, then delegates update and draw to each entity.  It stores entities in a data structure that allows for effcient lookups, and has ways to add and remov entities from this structure.
 ###
-module.exports = class DirectorModel extends Backbone.Model
-  initialize: (levelData = {}) ->
+module.exports = class Director
+  constructor: (levelData = {}) ->
+    ###
+    INITIALIZE ENTITIES
+    ###
+
     console.log "Setting the main scene..."
-    console.log Entities
 
     # create a player entity
     console.log "Putting the player on screen"
     @addEntity(new Entities.Player({id: @lastId}))
 
-    numEnemies = 50
+    # create enemies
+    numEnemies = levelData.numEnemies || 10
     console.log "Putting #{numEnemies} enemies on screen"
     for [1..numEnemies]
       @addEntity(new Entities.Enemy {id:@lastId})
@@ -26,6 +25,8 @@ module.exports = class DirectorModel extends Backbone.Model
 
     # crate playing field objects from the DirectorModel
     $(window).load =>
+      # hyperlinks
+      console.log "Converting hyperlinks to game entities"
       that = @
       $('a').each ->
         $this = $(@)
@@ -37,7 +38,6 @@ module.exports = class DirectorModel extends Backbone.Model
           y: offset.top
           x: offset.left
 
-    # create enemies
 
   lastId: 1
 
@@ -52,8 +52,10 @@ module.exports = class DirectorModel extends Backbone.Model
 
   update: (dt) =>
     # call update on each entity
-    # TODO, consider just firing the `enterframe` event
-    # make sure to bind each new entity's update function to that event in @initialize
-    # so far this doesn't seem to be necessary performance-wise
     for id, entity of @entities
       entity.update dt
+
+  draw: (ctx) =>
+    # render each entity in scene
+    for id, entity of @entities
+      entity.draw(ctx)
