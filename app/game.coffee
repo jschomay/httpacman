@@ -10,9 +10,28 @@ module.exports = class Game extends window.atom.Game
     @canvas = $('<canvas id="hh-canvas"></canvas>')[0]
     @ctx = @canvas.getContext '2d'
 
+
     ###
-    SET UP PAGE WITH GAME HEADER AND STAGE
+    PREP PAGE
     ###
+
+    # disable links (even though the canvas covers them all)
+    $('a').click (e) -> console.log "click on link prevented"; e.preventDefault(); return false;
+    
+    # make fixed elements absolute so they scroll with the rest of the page
+    $('*').filter(-> $(this).css('position') is 'fixed').css 'position', 'absolute'
+
+    # disable scrolling (mousewheel) - not perfect, but works good enough
+    window.onmousewheel = document.onmousewheel = (e) -> e.preventDefault()
+    
+    # disable spacebar scrolling (arrow keys default behaviour prevented on player entity)
+    window.onkeypress = document.onkeypress = (e) -> e.preventDefault()
+
+
+    ###
+    SET UP GAME HEADER BAR AND STAGE
+    ###
+
     headerBarView = new (require 'views/header_bar')(model: @gameState)
     $('body').append headerBarView.el
 
@@ -35,22 +54,21 @@ module.exports = class Game extends window.atom.Game
     @stats.domElement.style['z-index'] = 999999
     @stats.domElement.style.right = '0px'
     @stats.domElement.style.top = '0px'
+    @stats.domElement.id = 'hh-stats-wdiget'
     document.body.appendChild @stats.domElement 
     @stats.begin()
+    
 
-    # disable scrolling (mousewheel) - not perfect, but works good enough
-    window.onmousewheel = document.onmousewheel = (e) -> e.preventDefault()
-    # disable spacebar scrolling (arrow keys default behaviour prevented on player entity)
-    window.onkeypress = document.onkeypress = (e) -> e.preventDefault()
-    # disable links (even though the canvas covers them all)
-    $("a").click (e) -> console.log "click on link prevented"; e.preventDefault(); return false;
-
-    #load level data
+    ###
+    SET UP BOARD
+    ###
+    
+    # load level data
     #TODO
     levelData = {numEnemies: 50}
 
     # director manages all game entities
-    @director = new (require './director')(levelData)
+    @director = new (require './director')(levelData, @gameState)
 
     console.log "We have a game!"
 

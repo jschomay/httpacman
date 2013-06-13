@@ -5,7 +5,7 @@ Entities = require './entities'
 The director manages all game entities.  It initializes them based on level data, then delegates update and draw to each entity.  It stores entities in a data structure that allows for effcient lookups, and has ways to add and remov entities from this structure.
 ###
 module.exports = class Director
-  constructor: (levelData = {}) ->
+  constructor: (levelData = {}, @gameState) ->
     ###
     INITIALIZE ENTITIES
     ###
@@ -28,7 +28,13 @@ module.exports = class Director
       # hyperlinks
       console.log "Converting hyperlinks to game entities"
       that = @
-      $('a').each ->
+      numInternalLinks = 0;
+      numExternalLinks = 0;
+      headerBarEl = $('#hh-header-bar')[0]
+      $('a:visible')
+      .filter(-> !$.contains(headerBarEl,this))
+      .each ->
+        numInternalLinks++;
         $this = $(@)
         offset = $this.offset()
         that.addEntity new Entities.Hyperlink
@@ -37,6 +43,7 @@ module.exports = class Director
           h: $this.height()
           y: offset.top
           x: offset.left
+      @gameState.set "numInternalLinks", numInternalLinks
 
 
   lastId: 1

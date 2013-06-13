@@ -7,6 +7,9 @@ module.exports = class HeaderBar extends Backbone.View
   template: require './templates/header_bar'
 
   initialize: ()->
+    @listenTo(@model, "change", @render);
+
+
     console.log "initiing level ", @model.get "level"
     @render()
 

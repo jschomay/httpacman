@@ -91,13 +91,14 @@ window.require.register("director", function(exports, require, module) {
 
 
   module.exports = Director = (function() {
-    function Director(levelData) {
+    function Director(levelData, gameState) {
       var numEnemies, _i,
         _this = this;
 
       if (levelData == null) {
         levelData = {};
       }
+      this.gameState = gameState;
       this.draw = __bind(this.draw, this);
       this.update = __bind(this.update, this);
       this.removeEntity = __bind(this.removeEntity, this);
@@ -119,13 +120,19 @@ window.require.register("director", function(exports, require, module) {
         }));
       }
       $(window).load(function() {
-        var that;
+        var headerBarEl, numExternalLinks, numInternalLinks, that;
 
         console.log("Converting hyperlinks to game entities");
         that = _this;
-        return $('a').each(function() {
+        numInternalLinks = 0;
+        numExternalLinks = 0;
+        headerBarEl = $('#hh-header-bar')[0];
+        $('a:visible').filter(function() {
+          return !$.contains(headerBarEl, this);
+        }).each(function() {
           var $this, offset;
 
+          numInternalLinks++;
           $this = $(this);
           offset = $this.offset();
           return that.addEntity(new Entities.Hyperlink({
@@ -136,6 +143,7 @@ window.require.register("director", function(exports, require, module) {
             x: offset.left
           }));
         });
+        return _this.gameState.set("numInternalLinks", numInternalLinks);
       });
     }
 
@@ -417,7 +425,25 @@ window.require.register("game", function(exports, require, module) {
       this.canvas = $('<canvas id="hh-canvas"></canvas>')[0];
       this.ctx = this.canvas.getContext('2d');
       /*
-      SET UP PAGE WITH GAME HEADER AND STAGE
+      PREP PAGE
+      */
+
+      $('a').click(function(e) {
+        console.log("click on link prevented");
+        e.preventDefault();
+        return false;
+      });
+      $('*').filter(function() {
+        return $(this).css('position') === 'fixed';
+      }).css('position', 'absolute');
+      window.onmousewheel = document.onmousewheel = function(e) {
+        return e.preventDefault();
+      };
+      window.onkeypress = document.onkeypress = function(e) {
+        return e.preventDefault();
+      };
+      /*
+      SET UP GAME HEADER BAR AND STAGE
       */
 
       headerBarView = new (require('views/header_bar'))({
@@ -443,23 +469,17 @@ window.require.register("game", function(exports, require, module) {
       this.stats.domElement.style['z-index'] = 999999;
       this.stats.domElement.style.right = '0px';
       this.stats.domElement.style.top = '0px';
+      this.stats.domElement.id = 'hh-stats-wdiget';
       document.body.appendChild(this.stats.domElement);
       this.stats.begin();
-      window.onmousewheel = document.onmousewheel = function(e) {
-        return e.preventDefault();
-      };
-      window.onkeypress = document.onkeypress = function(e) {
-        return e.preventDefault();
-      };
-      $("a").click(function(e) {
-        console.log("click on link prevented");
-        e.preventDefault();
-        return false;
-      });
+      /*
+      SET UP BOARD
+      */
+
       levelData = {
         numEnemies: 50
       };
-      this.director = new (require('./director'))(levelData);
+      this.director = new (require('./director'))(levelData, this.gameState);
       console.log("We have a game!");
     }
 
@@ -547,6 +567,7 @@ window.require.register("views/header_bar", function(exports, require, module) {
     HeaderBar.prototype.template = require('./templates/header_bar');
 
     HeaderBar.prototype.initialize = function() {
+      this.listenTo(this.model, "change", this.render);
       console.log("initiing level ", this.model.get("level"));
       return this.render();
     };
@@ -569,7 +590,7 @@ window.require.register("views/templates/header_bar", function(exports, require,
   var buf = [];
   with (locals || {}) {
   var interp;
-  buf.push('<div id="hh-logo" class="hh-section"><h1>Hyperlink Harry</h1></div><div id="level-info" class="hh-section"><h2>level #' + escape((interp = level) == null ? '' : interp) + '</h2><h3> \nSite: <a');
+  buf.push('<div id="hh-logo" class="hh-section"><h1>Hyperlink Harry</h1></div><div id="level-info" class="hh-section"><h2>level ' + escape((interp = level) == null ? '' : interp) + '</h2><h3> \nSite: <a');
   buf.push(attrs({ 'href':('http://' + (url) + ''), 'target':('_blank') }, {"href":true,"target":true}));
   buf.push('>' + escape((interp = url) == null ? '' : interp) + '</a></h3></div><div class="hh-section"><p>Internal links: ' + escape((interp = numInternalLinks) == null ? '' : interp) + '</p><p>External links: ' + escape((interp = numExternalLinks) == null ? '' : interp) + '</p></div>');
   }
