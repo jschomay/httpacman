@@ -24,6 +24,8 @@
 
 #### Do later
 
+- make tab title and favicon be hyperlink harry instead of random site's
+
 - in components/index loop through all components passed in to mixin to extend with instead of hardcoding to use just sprite
 
 - Need to strip out base tag ie: <base href="http://www.univ-paris1.fr/">

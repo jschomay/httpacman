@@ -4,5 +4,5 @@ module.exports = class GameState extends Backbone.Model
       level: 1 # TODO - figure out where to store and manage level
       url: window.currentUrl
       numInternalLinks: 0
-      numExternalLInks: 0
+      numExternalLinks: 0
       numCollectedLinks: 0

@@ -8,36 +8,61 @@ body {
   position: fixed;
   top: 0;
   left: 0;
+  box-sizing: border-box;
   width: 100%;
-  height: auto;
+  height: 60px;
   background: #222;
   z-index: 9999;
-  padding: 9px; }
-@media -sass-debug-info{filename{}line{font-family:\0000316}}
-  #hh-header-bar h2, #hh-header-bar h3, #hh-header-bar p, #hh-header-bar a {
+  padding: 10px;
+  overflow: hidden; }
+@media -sass-debug-info{filename{}line{font-family:\0000318}}
+  #hh-header-bar .hh-section {
+    display: block;
+    float: left;
+    box-sizing: border-box;
+    border: 0;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: auto;
+    margin-right: 20px; }
+@media -sass-debug-info{filename{}line{font-family:\0000329}}
+  #hh-header-bar h1, #hh-header-bar h2, #hh-header-bar h3, #hh-header-bar p, #hh-header-bar a {
     text-align: left;
-    display: block; }
-@media -sass-debug-info{filename{}line{font-family:\0000320}}
-  #hh-header-bar h1 {
-    font-size: 18px;
-    line-height: 18px;
-    font-weight: bold;
-    font-style: normal;
-    margin: 0 0 3px 0;
-    color: white; }
-@media -sass-debug-info{filename{}line{font-family:\0000328}}
-  #hh-header-bar h2 {
-    font-size: 15px;
-    line-height: 15px;
-    font-weight: bold;
-    font-style: normal;
-    margin: 0 0 3px 0;
-    color: white; }
-@media -sass-debug-info{filename{}line{font-family:\0000336}}
-  #hh-header-bar h3 {
-    font-size: 12px;
-    line-height: 12px;
+    display: block;
+    font-family: 'Arial';
+    font-size: 14px;
     font-weight: normal;
     font-style: normal;
+    text-transform: none;
     margin: 0 0 3px 0;
-    color: white; }
+    padding: 0;
+    color: white;
+    border: 0; }
+@media -sass-debug-info{filename{}line{font-family:\0000342}}
+  #hh-header-bar a {
+    display: inline;
+    font-weight: normal; }
+@media -sass-debug-info{filename{}line{font-family:\0000346}}
+  #hh-header-bar a:hover {
+    color: #cccccc; }
+@media -sass-debug-info{filename{}line{font-family:\0000349}}
+  #hh-header-bar h1 {
+    font-weight: bold;
+    font-size: 18px;
+    line-height: 18px; }
+@media -sass-debug-info{filename{}line{font-family:\0000354}}
+  #hh-header-bar h2 {
+    font-weight: bold;
+    font-size: 15px;
+    line-height: 15px; }
+@media -sass-debug-info{filename{}line{font-family:\0000359}}
+  #hh-header-bar h3 {
+    font-size: 12px;
+    line-height: 12px; }
+@media -sass-debug-info{filename{}line{font-family:\0000363}}
+  #hh-header-bar #hh-logo {
+    width: 100px; }
+@media -sass-debug-info{filename{}line{font-family:\0000366}}
+  #hh-header-bar #level-info {
+    margin-right: 100px; }

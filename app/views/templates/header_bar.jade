@@ -1,4 +1,10 @@
-#logo
+.hh-section#hh-logo
   h1 Hyperlink Harry
-h2 level ##{level}
-h3 Site: #{url}
+.hh-section#level-info
+  h2 level ##{level}
+  h3 
+    | Site: 
+    a(href='http://#{url}', target='_blank') #{url}
+.hh-section
+  p Internal links: #{numInternalLinks}
+  p External links: #{numExternalLinks}

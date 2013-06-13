@@ -8,40 +8,62 @@ body {
   position: fixed;
   top: 0;
   left: 0;
+  box-sizing: border-box;
   width: 100%;
-  height: auto;
+  height: 60px;
   background: #222;
   z-index: 9999;
-  padding: 9px;
-  h2, h3, p, a {
+  padding: 10px;
+  overflow: hidden;
+  .hh-section {
+    display: block;
+    float:left;
+    box-sizing: border-box;
+    border: 0;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: auto;
+    margin-right: 20px;
+  }
+  h1, h2, h3, p, a {
     text-align: left;
     display: block;
-  }
-  h1 {
-    font-face: 'Arial'
-    font-size: 18px;
-    line-height: 18px;
-    font-weight: bold;
-    font-style: normal;
-    margin: 0 0 3px 0;
-    color: white;
-  }
-  h2 {
-    font-face: 'Arial'
-    font-size: 15px;
-    line-height: 15px;
-    font-weight: bold;
-    font-style: normal;
-    margin: 0 0 3px 0;
-    color: white;
-  }
-  h3 {
-    font-face: 'Arial'
-    font-size: 12px;
-    line-height: 12px;
+    font-family: 'Arial';
+    font-size: 14px;
     font-weight: normal;
     font-style: normal;
+    text-transform: none;
     margin: 0 0 3px 0;
+    padding: 0;
     color: white;
+    border: 0;
+  }
+  a {
+    display: inline;
+    font-weight: normal;
+  }
+  a:hover {
+    color: #cccccc;
+  }
+  h1 {
+    font-weight: bold;
+    font-size: 18px;
+    line-height: 18px;
+  }
+  h2 {
+    font-weight: bold;
+    font-size: 15px;
+    line-height: 15px;
+  }
+  h3 {
+    font-size: 12px;
+    line-height: 12px;
+  }
+  #hh-logo {
+    width: 100px;
+  }
+  #level-info {
+    margin-right: 100px;
   }
 }

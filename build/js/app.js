@@ -519,7 +519,7 @@ window.require.register("models/game_state", function(exports, require, module) 
         level: 1,
         url: window.currentUrl,
         numInternalLinks: 0,
-        numExternalLInks: 0,
+        numExternalLinks: 0,
         numCollectedLinks: 0
       });
     };
@@ -569,7 +569,9 @@ window.require.register("views/templates/header_bar", function(exports, require,
   var buf = [];
   with (locals || {}) {
   var interp;
-  buf.push('<div id="logo"><h1>Hyperlink Harry</h1></div><h2>level #' + escape((interp = level) == null ? '' : interp) + '</h2><h3>Site: ' + escape((interp = url) == null ? '' : interp) + '</h3>');
+  buf.push('<div id="hh-logo" class="hh-section"><h1>Hyperlink Harry</h1></div><div id="level-info" class="hh-section"><h2>level #' + escape((interp = level) == null ? '' : interp) + '</h2><h3> \nSite: <a');
+  buf.push(attrs({ 'href':('http://' + (url) + ''), 'target':('_blank') }, {"href":true,"target":true}));
+  buf.push('>' + escape((interp = url) == null ? '' : interp) + '</a></h3></div><div class="hh-section"><p>Internal links: ' + escape((interp = numInternalLinks) == null ? '' : interp) + '</p><p>External links: ' + escape((interp = numExternalLinks) == null ? '' : interp) + '</p></div>');
   }
   return buf.join("");
   };
