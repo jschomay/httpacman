@@ -31,7 +31,6 @@ module.exports = class Player extends Entity
 
 
   update: (dt) =>
-    super
     if atom.input.down 'left'
       @vx -= @acceleration unless @vx <= -@maxSpeed
     if atom.input.down 'right'
@@ -48,6 +47,8 @@ module.exports = class Player extends Entity
     #drag
     @vx *= @drag
     @vy *= @drag
+
+    @_wasAt = x:@position.x, y:@position.y
 
     # move x
     if (@position.x + dx < 0)
@@ -71,3 +72,5 @@ module.exports = class Player extends Entity
       # scroll window/stage unless player is right near the top or bottom of the page
       unless @position.y < 200 or @position.y > window.document.height - 200
         window.scrollTo 0, @position.y - window.innerHeight/2 + @h/2 + 58 
+
+    super # super performs collision detection

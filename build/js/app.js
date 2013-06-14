@@ -108,6 +108,7 @@ window.require.register("director", function(exports, require, module) {
       */
 
       console.log("Setting the main scene...");
+      Entities.Entity.prototype.director = this;
       console.log("Putting the player on screen");
       this.addEntity(new Entities.Player({
         id: this.lastId
@@ -143,7 +144,8 @@ window.require.register("director", function(exports, require, module) {
             x: offset.left
           }));
         });
-        return _this.gameState.set("numInternalLinks", numInternalLinks);
+        _this.gameState.set("numInternalLinks", numInternalLinks);
+        return _this.gameState.set('running', true);
       });
     }
 
@@ -193,8 +195,16 @@ window.require.register("entities/components/collidable", function(exports, requ
   module.exports = {
     _init: function() {
       console.log(this.id, 'checks for collision');
-      return this.on('enterFrame', function() {
-        return console.log("enterFrame");
+      return this.once('enterFrame', function() {
+        var entity, id, potentialObstacles, _results;
+
+        potentialObstacles = this.director.entities;
+        _results = [];
+        for (id in potentialObstacles) {
+          entity = potentialObstacles[id];
+          _results.push(console.log(entity.id === this.id));
+        }
+        return _results;
       });
     }
   };
@@ -379,6 +389,7 @@ window.require.register("entities/hyperlink", function(exports, require, module)
 });
 window.require.register("entities/index", function(exports, require, module) {
   module.exports = {
+    Entity: require('./entity'),
     Player: require('./player'),
     Enemy: require('./enemy'),
     Hyperlink: require('./hyperlink')
@@ -428,7 +439,6 @@ window.require.register("entities/player", function(exports, require, module) {
     Player.prototype.update = function(dt) {
       var dx, dy;
 
-      Player.__super__.update.apply(this, arguments);
       if (atom.input.down('left')) {
         if (!(this.vx <= -this.maxSpeed)) {
           this.vx -= this.acceleration;
@@ -453,6 +463,10 @@ window.require.register("entities/player", function(exports, require, module) {
       dy = this.vy * dt;
       this.vx *= this.drag;
       this.vy *= this.drag;
+      this._wasAt = {
+        x: this.position.x,
+        y: this.position.y
+      };
       if (this.position.x + dx < 0) {
         this.position.x = 0;
         this.vx = 0;
@@ -464,16 +478,17 @@ window.require.register("entities/player", function(exports, require, module) {
       }
       if (this.position.y + dy < 0) {
         this.position.y = 0;
-        return this.vy = 0;
+        this.vy = 0;
       } else if (this.position.y + dy + this.h + 58 > window.document.height) {
         this.position.y = window.document.height - this.h - 58;
-        return this.vy = 0;
+        this.vy = 0;
       } else {
         this.position.y += dy;
         if (!(this.position.y < 200 || this.position.y > window.document.height - 200)) {
-          return window.scrollTo(0, this.position.y - window.innerHeight / 2 + this.h / 2 + 58);
+          window.scrollTo(0, this.position.y - window.innerHeight / 2 + this.h / 2 + 58);
         }
       }
+      return Player.__super__.update.apply(this, arguments);
     };
 
     return Player;
@@ -558,11 +573,17 @@ window.require.register("game", function(exports, require, module) {
     }
 
     Game.prototype.update = function(dt) {
+      if (!this.gameState.get('running')) {
+        return;
+      }
       this.stats.update();
       return this.director.update(dt);
     };
 
     Game.prototype.draw = function() {
+      if (!this.gameState.get('running')) {
+        return;
+      }
       this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
       this.ctx.save();
       this.ctx.translate(0, -window.scrollY);
@@ -610,6 +631,7 @@ window.require.register("models/game_state", function(exports, require, module) 
 
     GameState.prototype.initialize = function() {
       return this.set({
+        running: false,
         level: 1,
         url: window.currentUrl,
         numInternalLinks: 0,

@@ -75,12 +75,14 @@ module.exports = class Game extends window.atom.Game
 
 
   update: (dt) ->
+    return if not @gameState.get 'running'
     # update fps widget
     @stats.update()
     # tell director to update everything
     @director.update dt
 
   draw: () ->
+    return if not @gameState.get 'running'
     @ctx.clearRect 0, 0, @canvas.width, @canvas.height
     @ctx.save()
     # translate canvas to move stage to match dom with scroll

@@ -12,6 +12,9 @@ module.exports = class Director
 
     console.log "Setting the main scene..."
 
+    # give each entity a reference to the director
+    Entities.Entity::director  = @
+
     # create a player entity
     console.log "Putting the player on screen"
     @addEntity(new Entities.Player({id: @lastId}))
@@ -44,6 +47,7 @@ module.exports = class Director
           y: offset.top
           x: offset.left
       @gameState.set "numInternalLinks", numInternalLinks
+      @gameState.set 'running', true
 
 
   lastId: 1
