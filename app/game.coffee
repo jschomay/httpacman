@@ -4,9 +4,7 @@ module.exports = class Game extends window.atom.Game
   constructor: () ->
     super
 
-    # global variables
     @gameState = new (require 'models/game_state')()
-    @headerBarHeight
     @canvas = $('<canvas id="hh-canvas"></canvas>')[0]
     @ctx = @canvas.getContext '2d'
 
@@ -35,14 +33,14 @@ module.exports = class Game extends window.atom.Game
     headerBarView = new (require 'views/header_bar')(model: @gameState)
     $('body').append headerBarView.el
 
-    @headerBarHeight = $('#hh-header-bar').outerHeight()
+    headerBarHeight = $('#hh-header-bar').outerHeight()
     window.onresize = (e) =>
       @canvas.width = window.innerWidth
-      @canvas.height = window.innerHeight - @headerBarHeight
+      @canvas.height = window.innerHeight - headerBarHeight
     window.onresize()
     $.extend @canvas.style,
       position: 'fixed'
-      top: @headerBarHeight + 'px'
+      top: headerBarHeight + 'px'
       left: '0px'
       'z-index': 999999
     $('body').append @canvas

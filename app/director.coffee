@@ -40,11 +40,12 @@ module.exports = class Director
         numInternalLinks++;
         $this = $(@)
         offset = $this.offset()
+        headerBarHeight = $('#hh-header-bar').outerHeight()
         that.addEntity new Entities.Hyperlink
           id: that.lastId
           w: $this.width()
           h: $this.height()
-          y: offset.top
+          y: offset.top - headerBarHeight
           x: offset.left
       @gameState.set "numInternalLinks", numInternalLinks
       @gameState.set 'running', true

@@ -19,5 +19,5 @@ module.exports = class Hyperlink extends Entity
 
   draw: (ctx) ->
     ctx.strokeStyle = @background
-    ctx.strokeRect @position.x, @position.y - 58, @w, @h
+    ctx.strokeRect @position.x, @position.y, @w, @h
   

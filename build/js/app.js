@@ -131,16 +131,17 @@ window.require.register("director", function(exports, require, module) {
         $('a:visible').filter(function() {
           return !$.contains(headerBarEl, this);
         }).each(function() {
-          var $this, offset;
+          var $this, headerBarHeight, offset;
 
           numInternalLinks++;
           $this = $(this);
           offset = $this.offset();
+          headerBarHeight = $('#hh-header-bar').outerHeight();
           return that.addEntity(new Entities.Hyperlink({
             id: that.lastId,
             w: $this.width(),
             h: $this.height(),
-            y: offset.top,
+            y: offset.top - headerBarHeight,
             x: offset.left
           }));
         });
@@ -195,16 +196,25 @@ window.require.register("entities/components/collidable", function(exports, requ
   module.exports = {
     _init: function() {
       console.log(this.id, 'checks for collision');
-      return this.once('enterFrame', function() {
-        var entity, id, potentialObstacles, _results;
+      return this.on('enterFrame', function() {
+        var id, obstacle, potentialObstacles, _ref, _ref1;
 
+        this._hit = false;
         potentialObstacles = this.director.entities;
-        _results = [];
         for (id in potentialObstacles) {
-          entity = potentialObstacles[id];
-          _results.push(console.log(entity.id === this.id));
+          obstacle = potentialObstacles[id];
+          if (this.id !== id) {
+            if ((obstacle.position.x < (_ref = this.position.x) && _ref < obstacle.position.x + obstacle.w) && (obstacle.position.y < (_ref1 = this.position.y) && _ref1 < obstacle.position.y + obstacle.h)) {
+              this._hit = true;
+              obstacle.background = 'black';
+            }
+          }
         }
-        return _results;
+        if (this._hit) {
+          return this.background = 'red';
+        } else {
+          return this.background = 'yellow';
+        }
       });
     }
   };
@@ -379,7 +389,7 @@ window.require.register("entities/hyperlink", function(exports, require, module)
 
     Hyperlink.prototype.draw = function(ctx) {
       ctx.strokeStyle = this.background;
-      return ctx.strokeRect(this.position.x, this.position.y - 58, this.w, this.h);
+      return ctx.strokeRect(this.position.x, this.position.y, this.w, this.h);
     };
 
     return Hyperlink;
@@ -505,12 +515,11 @@ window.require.register("game", function(exports, require, module) {
     __extends(Game, _super);
 
     function Game() {
-      var headerBarView, levelData,
+      var headerBarHeight, headerBarView, levelData,
         _this = this;
 
       Game.__super__.constructor.apply(this, arguments);
       this.gameState = new (require('models/game_state'))();
-      this.headerBarHeight;
       this.canvas = $('<canvas id="hh-canvas"></canvas>')[0];
       this.ctx = this.canvas.getContext('2d');
       /*
@@ -539,15 +548,15 @@ window.require.register("game", function(exports, require, module) {
         model: this.gameState
       });
       $('body').append(headerBarView.el);
-      this.headerBarHeight = $('#hh-header-bar').outerHeight();
+      headerBarHeight = $('#hh-header-bar').outerHeight();
       window.onresize = function(e) {
         _this.canvas.width = window.innerWidth;
-        return _this.canvas.height = window.innerHeight - _this.headerBarHeight;
+        return _this.canvas.height = window.innerHeight - headerBarHeight;
       };
       window.onresize();
       $.extend(this.canvas.style, {
         position: 'fixed',
-        top: this.headerBarHeight + 'px',
+        top: headerBarHeight + 'px',
         left: '0px',
         'z-index': 999999
       });
