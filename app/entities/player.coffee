@@ -74,3 +74,18 @@ module.exports = class Player extends Entity
         window.scrollTo 0, @position.y - window.innerHeight/2 + @h/2 + 58 
 
     super # super performs collision detection
+
+  onHit: (obstacle) ->
+    # @background = 'red'
+    # run right behaviour based on obstacle type
+    @_onHitFunctions[obstacle.type]?.call(@, obstacle)
+
+  onHitHyperlink: (obstacle) ->
+    obstacle.background = 'yellow'
+
+  onHitEnemy: (obstacle) ->
+    @.background = 'black'
+
+  _onHitFunctions: 
+    'hyperlink': @::onHitHyperlink
+    'enemy': @::onHitEnemy

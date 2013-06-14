@@ -30,3 +30,18 @@ module.exports = class Enemy extends Entity
     @position.x += _speed * directionX * dt
     @position.y += _speed * directionY * dt
     super
+
+  onHit: (obstacle) ->
+    # @background = 'red'
+    # run right behaviour based on obstacle type
+    @_onHitFunctions[obstacle.type]?.call(@, obstacle)
+
+  onHitHyperlink: (obstacle) ->
+    obstacle.background = 'brown'
+
+  onHitEnemy: (obstacle) ->
+    false
+
+  _onHitFunctions: 
+    'hyperlink': @::onHitHyperlink
+    'enemy': @::onHitEnemy

@@ -195,12 +195,11 @@ window.require.register("director", function(exports, require, module) {
 window.require.register("entities/components/collidable", function(exports, require, module) {
   module.exports = {
     _init: function() {
-      console.log(this.id, 'checks for collision');
       return this.on('enterFrame', function() {
-        var id, obstacle, obstacleBottom, obstacleLeft, obstacleRight, obstacleTop, potentialObstacles, thisBottom, thisLeft, thisRight, thisTop;
+        var id, obstacle, obstacleBottom, obstacleLeft, obstacleRight, obstacleTop, potentialObstacles, thisBottom, thisLeft, thisRight, thisTop, _results;
 
-        this._hit = false;
         potentialObstacles = this.director.entities;
+        _results = [];
         for (id in potentialObstacles) {
           obstacle = potentialObstacles[id];
           if (this.id !== id) {
@@ -213,16 +212,15 @@ window.require.register("entities/components/collidable", function(exports, requ
             thisTop = this.position.y;
             thisBottom = this.position.y + this.h;
             if (Math.max(obstacleRight, thisRight) - Math.min(obstacleLeft, thisLeft) <= obstacle.w + this.w && Math.max(obstacleBottom, thisBottom) - Math.min(obstacleTop, thisTop) <= obstacle.h + this.h) {
-              this._hit = true;
-              obstacle.background = 'black';
+              _results.push(typeof this.onHit === "function" ? this.onHit(obstacle) : void 0);
+            } else {
+              _results.push(void 0);
             }
+          } else {
+            _results.push(void 0);
           }
         }
-        if (this._hit) {
-          return this.background = 'red';
-        } else {
-          return this.background = 'yellow';
-        }
+        return _results;
       });
     }
   };
@@ -331,6 +329,25 @@ window.require.register("entities/enemy", function(exports, require, module) {
       this.position.x += _speed * directionX * dt;
       this.position.y += _speed * directionY * dt;
       return Enemy.__super__.update.apply(this, arguments);
+    };
+
+    Enemy.prototype.onHit = function(obstacle) {
+      var _ref;
+
+      return (_ref = this._onHitFunctions[obstacle.type]) != null ? _ref.call(this, obstacle) : void 0;
+    };
+
+    Enemy.prototype.onHitHyperlink = function(obstacle) {
+      return obstacle.background = 'brown';
+    };
+
+    Enemy.prototype.onHitEnemy = function(obstacle) {
+      return false;
+    };
+
+    Enemy.prototype._onHitFunctions = {
+      'hyperlink': Enemy.prototype.onHitHyperlink,
+      'enemy': Enemy.prototype.onHitEnemy
     };
 
     return Enemy;
@@ -508,6 +525,25 @@ window.require.register("entities/player", function(exports, require, module) {
         }
       }
       return Player.__super__.update.apply(this, arguments);
+    };
+
+    Player.prototype.onHit = function(obstacle) {
+      var _ref;
+
+      return (_ref = this._onHitFunctions[obstacle.type]) != null ? _ref.call(this, obstacle) : void 0;
+    };
+
+    Player.prototype.onHitHyperlink = function(obstacle) {
+      return obstacle.background = 'yellow';
+    };
+
+    Player.prototype.onHitEnemy = function(obstacle) {
+      return this.background = 'black';
+    };
+
+    Player.prototype._onHitFunctions = {
+      'hyperlink': Player.prototype.onHitHyperlink,
+      'enemy': Player.prototype.onHitEnemy
     };
 
     return Player;
