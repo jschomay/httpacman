@@ -11,8 +11,18 @@ module.exports =
       # for each, compare positions
       for id, obstacle of potentialObstacles
         unless @.id is id
-          if obstacle.position.x < @.position.x < obstacle.position.x + obstacle.w and
-          obstacle.position.y < @position.y < obstacle.position.y + obstacle.h
+          # if obstacle.position.x < @.position.x < obstacle.position.x + obstacle.w and
+          # obstacle.position.y < @position.y < obstacle.position.y + obstacle.h
+          obstacleLeft = obstacle.position.x
+          obstacleRight = obstacle.position.x + obstacle.w
+          thisLeft = @.position.x
+          thisRight = @.position.x + @.w
+          obstacleTop = obstacle.position.y
+          obstacleBottom = obstacle.position.y + obstacle.h
+          thisTop = @.position.y
+          thisBottom = @.position.y + @.h
+          if Math.max(obstacleRight, thisRight) - Math.min(obstacleLeft, thisLeft) <= obstacle.w + @w and
+          Math.max(obstacleBottom, thisBottom) - Math.min(obstacleTop, thisTop) <= obstacle.h + @h
             @_hit = true
             obstacle.background = 'black'
       if @_hit    

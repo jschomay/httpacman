@@ -197,14 +197,22 @@ window.require.register("entities/components/collidable", function(exports, requ
     _init: function() {
       console.log(this.id, 'checks for collision');
       return this.on('enterFrame', function() {
-        var id, obstacle, potentialObstacles, _ref, _ref1;
+        var id, obstacle, obstacleBottom, obstacleLeft, obstacleRight, obstacleTop, potentialObstacles, thisBottom, thisLeft, thisRight, thisTop;
 
         this._hit = false;
         potentialObstacles = this.director.entities;
         for (id in potentialObstacles) {
           obstacle = potentialObstacles[id];
           if (this.id !== id) {
-            if ((obstacle.position.x < (_ref = this.position.x) && _ref < obstacle.position.x + obstacle.w) && (obstacle.position.y < (_ref1 = this.position.y) && _ref1 < obstacle.position.y + obstacle.h)) {
+            obstacleLeft = obstacle.position.x;
+            obstacleRight = obstacle.position.x + obstacle.w;
+            thisLeft = this.position.x;
+            thisRight = this.position.x + this.w;
+            obstacleTop = obstacle.position.y;
+            obstacleBottom = obstacle.position.y + obstacle.h;
+            thisTop = this.position.y;
+            thisBottom = this.position.y + this.h;
+            if (Math.max(obstacleRight, thisRight) - Math.min(obstacleLeft, thisLeft) <= obstacle.w + this.w && Math.max(obstacleBottom, thisBottom) - Math.min(obstacleTop, thisTop) <= obstacle.h + this.h) {
               this._hit = true;
               obstacle.background = 'black';
             }
