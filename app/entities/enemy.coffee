@@ -7,7 +7,6 @@ module.exports = class Enemy extends Entity
   
   # expects and object with 'id', 'position'.  Only 'id' is required.
   constructor: (options) ->
-    super
     @initializeSprite
       type:  "enemy"
       id: options.id
@@ -18,6 +17,7 @@ module.exports = class Enemy extends Entity
       background: 'brown'
 
     @speed = 100 # px/s
+    super
 
   update: (dt) =>
     # just jitter around randomly for now...

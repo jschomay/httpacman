@@ -191,8 +191,8 @@ window.require.register("director", function(exports, require, module) {
 });
 window.require.register("entities/components/collidable", function(exports, require, module) {
   module.exports = {
-    collidable: function() {
-      return true;
+    _init: function() {
+      return console.log(this.id, 'checks for collision');
     }
   };
   
@@ -202,23 +202,25 @@ window.require.register("entities/components/index", function(exports, require, 
     Sprite: require('./spirte'),
     Collidable: require('./collidable'),
     mixin: function(ctx, components) {
-      var component, key, requestedComponents, value, _i, _len, _results;
+      var component, key, requestedComponents, value, _i, _len, _ref, _results;
 
       requestedComponents = components.replace(' ', '').split(',');
+      ctx.prototype._componentInitFunctions = [];
       _results = [];
       for (_i = 0, _len = requestedComponents.length; _i < _len; _i++) {
         component = requestedComponents[_i];
-        _results.push((function() {
-          var _ref, _results1;
-
-          _ref = this[component];
-          _results1 = [];
-          for (key in _ref) {
-            value = _ref[key];
-            _results1.push(ctx.prototype[key] = value);
+        _ref = this[component];
+        for (key in _ref) {
+          value = _ref[key];
+          if (key !== '_init') {
+            ctx.prototype[key] = value;
           }
-          return _results1;
-        }).call(this));
+        }
+        if (this[component]._init != null) {
+          _results.push(ctx.prototype._componentInitFunctions.push(this[component]._init));
+        } else {
+          _results.push(void 0);
+        }
       }
       return _results;
     }
@@ -276,8 +278,7 @@ window.require.register("entities/enemy", function(exports, require, module) {
     Components.mixin(Enemy, 'Sprite');
 
     function Enemy(options) {
-      this.update = __bind(this.update, this);    Enemy.__super__.constructor.apply(this, arguments);
-      this.initializeSprite({
+      this.update = __bind(this.update, this);    this.initializeSprite({
         type: "enemy",
         id: options.id,
         w: options.w,
@@ -287,6 +288,7 @@ window.require.register("entities/enemy", function(exports, require, module) {
         background: 'brown'
       });
       this.speed = 100;
+      Enemy.__super__.constructor.apply(this, arguments);
     }
 
     Enemy.prototype.update = function(dt) {
@@ -310,7 +312,14 @@ window.require.register("entities/entity", function(exports, require, module) {
 
   module.exports = Entity = (function() {
     function Entity() {
-      this.update = __bind(this.update, this);    true;
+      this.update = __bind(this.update, this);
+      var init, _i, _len, _ref;
+
+      _ref = this._componentInitFunctions;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        init = _ref[_i];
+        init.call(this);
+      }
     }
 
     Entity.prototype.update = function(dt) {
@@ -341,7 +350,6 @@ window.require.register("entities/hyperlink", function(exports, require, module)
     Components.mixin(Hyperlink, 'Sprite');
 
     function Hyperlink(options) {
-      Hyperlink.__super__.constructor.apply(this, arguments);
       this.initializeSprite({
         type: "hyperlink",
         id: options.id,
@@ -351,6 +359,7 @@ window.require.register("entities/hyperlink", function(exports, require, module)
         y: options.y,
         background: 'green'
       });
+      Hyperlink.__super__.constructor.apply(this, arguments);
     }
 
     Hyperlink.prototype.draw = function(ctx) {
@@ -390,7 +399,6 @@ window.require.register("entities/player", function(exports, require, module) {
       this.update = __bind(this.update, this);
       var _ref, _ref1;
 
-      Player.__super__.constructor.apply(this, arguments);
       this.initializeSprite({
         type: "player",
         id: options.id,
@@ -409,6 +417,7 @@ window.require.register("entities/player", function(exports, require, module) {
       atom.input.bind(atom.key.RIGHT_ARROW, 'right');
       atom.input.bind(atom.key.DOWN_ARROW, 'down');
       atom.input.bind(atom.key.UP_ARROW, 'up');
+      Player.__super__.constructor.apply(this, arguments);
     }
 
     Player.prototype.update = function(dt) {

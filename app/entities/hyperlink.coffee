@@ -7,7 +7,6 @@ module.exports = class Hyperlink extends Entity
 
   # expects and object with 'id', 'position'.
   constructor: (options) ->
-    super
     @initializeSprite
       type:  "hyperlink"
       id: options.id
@@ -16,6 +15,7 @@ module.exports = class Hyperlink extends Entity
       x: options.x
       y: options.y
       background: 'green'
+    super
 
   draw: (ctx) ->
     ctx.strokeStyle = @background

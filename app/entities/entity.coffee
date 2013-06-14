@@ -1,7 +1,8 @@
 module.exports = class Entity
   
   constructor: ->
-    true
+    for init in @_componentInitFunctions
+      init.call @
 
   update: (dt) =>
     # overwrite on subclass

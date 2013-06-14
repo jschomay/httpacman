@@ -1,4 +1,3 @@
 module.exports =
 
-  collidable: ->
-    true
+  _init: -> console.log @.id, 'checks for collision'

@@ -7,7 +7,6 @@ module.exports = class Player extends Entity
 
   # expects and object with 'id', 'position'.  Only 'id' is required.
   constructor: (options) ->
-    super
     @initializeSprite
       type:  "player"
       id: options.id
@@ -28,6 +27,7 @@ module.exports = class Player extends Entity
     atom.input.bind atom.key.RIGHT_ARROW, 'right'
     atom.input.bind atom.key.DOWN_ARROW, 'down'
     atom.input.bind atom.key.UP_ARROW, 'up'
+    super
 
 
   update: (dt) =>

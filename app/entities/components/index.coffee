@@ -10,6 +10,9 @@ module.exports =
   mixin: (ctx, components) ->
     #  mixin methods for each specified component
     requestedComponents = components.replace(' ', '').split ','
+    ctx::_componentInitFunctions = []
     for component in requestedComponents
       for key, value of @[component]
-        ctx::[key] = value
+        ctx::[key] = value unless key is '_init'
+      # register _init method
+      ctx::_componentInitFunctions.push @[component]._init if @[component]._init?
