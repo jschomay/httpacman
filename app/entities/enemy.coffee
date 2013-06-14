@@ -3,7 +3,7 @@ Entity = require './entity'
 
 module.exports = class Enemy extends Entity
   
-  Components.mixin(@, 'Sprite')
+  Components.mixin(@, 'Sprite, Collidable')
   
   # expects and object with 'id', 'position'.  Only 'id' is required.
   constructor: (options) ->
@@ -29,3 +29,4 @@ module.exports = class Enemy extends Entity
     # distance (px) = speed (px / s) * time (s)
     @position.x += _speed * directionX * dt
     @position.y += _speed * directionY * dt
+    super

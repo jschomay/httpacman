@@ -11,8 +11,6 @@ module.exports =
       # for each, compare positions
       for id, obstacle of potentialObstacles
         unless @.id is id
-          # if obstacle.position.x < @.position.x < obstacle.position.x + obstacle.w and
-          # obstacle.position.y < @position.y < obstacle.position.y + obstacle.h
           obstacleLeft = obstacle.position.x
           obstacleRight = obstacle.position.x + obstacle.w
           thisLeft = @.position.x

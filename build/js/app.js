@@ -306,7 +306,7 @@ window.require.register("entities/enemy", function(exports, require, module) {
   module.exports = Enemy = (function(_super) {
     __extends(Enemy, _super);
 
-    Components.mixin(Enemy, 'Sprite');
+    Components.mixin(Enemy, 'Sprite, Collidable');
 
     function Enemy(options) {
       this.update = __bind(this.update, this);    this.initializeSprite({
@@ -329,7 +329,8 @@ window.require.register("entities/enemy", function(exports, require, module) {
       directionY = Math.ceil(Math.random() * 3) - 2;
       _speed = directionX && directionY ? this.speed / 1.41421 : this.speed;
       this.position.x += _speed * directionX * dt;
-      return this.position.y += _speed * directionY * dt;
+      this.position.y += _speed * directionY * dt;
+      return Enemy.__super__.update.apply(this, arguments);
     };
 
     return Enemy;
