@@ -31,6 +31,7 @@ module.exports = class Player extends Entity
 
 
   update: (dt) =>
+    super
     if atom.input.down 'left'
       @vx -= @acceleration unless @vx <= -@maxSpeed
     if atom.input.down 'right'

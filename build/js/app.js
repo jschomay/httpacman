@@ -192,7 +192,10 @@ window.require.register("director", function(exports, require, module) {
 window.require.register("entities/components/collidable", function(exports, require, module) {
   module.exports = {
     _init: function() {
-      return console.log(this.id, 'checks for collision');
+      console.log(this.id, 'checks for collision');
+      return this.on('enterFrame', function() {
+        return console.log("enterFrame");
+      });
     }
   };
   
@@ -311,6 +314,8 @@ window.require.register("entities/entity", function(exports, require, module) {
     __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
   module.exports = Entity = (function() {
+    $.extend(Entity.prototype, Backbone.Events);
+
     function Entity() {
       this.update = __bind(this.update, this);
       var init, _i, _len, _ref;
@@ -323,7 +328,7 @@ window.require.register("entities/entity", function(exports, require, module) {
     }
 
     Entity.prototype.update = function(dt) {
-      return false;
+      return this.trigger('enterFrame');
     };
 
     Entity.prototype.draw = function(ctx) {
@@ -423,6 +428,7 @@ window.require.register("entities/player", function(exports, require, module) {
     Player.prototype.update = function(dt) {
       var dx, dy;
 
+      Player.__super__.update.apply(this, arguments);
       if (atom.input.down('left')) {
         if (!(this.vx <= -this.maxSpeed)) {
           this.vx -= this.acceleration;

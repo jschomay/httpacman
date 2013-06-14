@@ -1,13 +1,18 @@
 module.exports = class Entity
+
+  # add event binding to Entity.prototype
+  $.extend @::, Backbone.Events
   
+  # must call `super` when overriding
   constructor: ->
     for init in @_componentInitFunctions
       init.call @
 
+  # must call `super` when overriding
   update: (dt) =>
-    # overwrite on subclass
-    false
+    # fire 'enterFrame' event on entity on each update
+    @trigger 'enterFrame'
     
   draw: (ctx) ->
-    # overwrite on subclass
+    # overwrite on subclass or entity won't render
     false  

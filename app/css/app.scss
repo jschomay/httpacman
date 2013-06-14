@@ -27,38 +27,38 @@ body {
     margin-right: 20px;
   }
   h1, h2, h3, p, a {
-    text-align: left;
-    display: block;
-    font-family: 'Arial';
-    font-size: 14px;
-    font-weight: normal;
-    font-style: normal;
-    text-transform: none;
-    margin: 0 0 3px 0;
-    padding: 0;
-    color: white;
-    border: 0;
+    text-align: left !important;
+    display: block !important;
+    font-family: 'Arial' !important;
+    font-size: 14px !important;
+    font-weight: normal !important;
+    font-style: normal !important;
+    text-transform: none !important;
+    margin: 0 0 3px 0 !important;
+    padding: 0 !important;
+    color: white !important;
+    border: 0 !important;
   }
   a {
-    display: inline;
-    font-weight: normal;
+    display: inline !important;
+    font-weight: normal !important;
   }
   a:hover {
-    color: #cccccc;
+    color: #cccccc !important;
   }
   h1 {
-    font-weight: bold;
-    font-size: 18px;
-    line-height: 18px;
+    font-weight: bold !important;
+    font-size: 18px !important;
+    line-height: 18px !important;
   }
   h2 {
-    font-weight: bold;
-    font-size: 15px;
-    line-height: 15px;
+    font-weight: bold !important;
+    font-size: 15px !important;
+    line-height: 15px !important;
   }
   h3 {
-    font-size: 12px;
-    line-height: 12px;
+    font-size: 12px !important;
+    line-height: 12px !important;
   }
   #hh-logo {
     width: 100px;
