@@ -81,7 +81,8 @@ module.exports = class Player extends Entity
     @_onHitFunctions[obstacle.type]?.call(@, obstacle)
 
   onHitHyperlink: (obstacle) ->
-    obstacle.background = 'yellow'
+    @director.gameState.set 'numInternalLinks', @director.gameState.get('numInternalLinks') - 1
+    obstacle.destroy()
 
   onHitEnemy: (obstacle) ->
     @.background = 'black'

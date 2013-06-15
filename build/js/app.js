@@ -142,7 +142,8 @@ window.require.register("director", function(exports, require, module) {
             w: $this.width(),
             h: $this.height(),
             y: offset.top - headerBarHeight,
-            x: offset.left
+            x: offset.left,
+            $el: $this
           }));
         });
         _this.gameState.set("numInternalLinks", numInternalLinks);
@@ -410,12 +411,17 @@ window.require.register("entities/hyperlink", function(exports, require, module)
         y: options.y,
         background: 'green'
       });
+      this.$el = options.$el;
       Hyperlink.__super__.constructor.apply(this, arguments);
     }
 
-    Hyperlink.prototype.draw = function(ctx) {
-      ctx.strokeStyle = this.background;
-      return ctx.strokeRect(this.position.x, this.position.y, this.w, this.h);
+    Hyperlink.prototype.draw = function(ctx) {};
+
+    Hyperlink.prototype.destroy = function() {
+      this.$el.animate({
+        opacity: 0.1
+      });
+      return this.director.removeEntity(this.id);
     };
 
     return Hyperlink;
@@ -534,7 +540,8 @@ window.require.register("entities/player", function(exports, require, module) {
     };
 
     Player.prototype.onHitHyperlink = function(obstacle) {
-      return obstacle.background = 'yellow';
+      this.director.gameState.set('numInternalLinks', this.director.gameState.get('numInternalLinks') - 1);
+      return obstacle.destroy();
     };
 
     Player.prototype.onHitEnemy = function(obstacle) {

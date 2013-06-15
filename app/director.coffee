@@ -35,7 +35,7 @@ module.exports = class Director
       numExternalLinks = 0;
       headerBarEl = $('#hh-header-bar')[0]
       $('a:visible')
-      .filter(-> !$.contains(headerBarEl,this))
+      .filter(-> !$.contains(headerBarEl, @))
       .each ->
         numInternalLinks++;
         $this = $(@)
@@ -47,6 +47,7 @@ module.exports = class Director
           h: $this.height()
           y: offset.top - headerBarHeight
           x: offset.left
+          $el: $this
       @gameState.set "numInternalLinks", numInternalLinks
       @gameState.set 'running', true
 
