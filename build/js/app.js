@@ -147,6 +147,7 @@ window.require.register("director", function(exports, require, module) {
           }));
         });
         _this.gameState.set("numInternalLinks", numInternalLinks);
+        _this.gameState.set("numLinksNeeded", Math.floor(numInternalLinks / 2) + 1);
         return _this.gameState.set('running', true);
       });
     }
@@ -541,6 +542,7 @@ window.require.register("entities/player", function(exports, require, module) {
 
     Player.prototype.onHitHyperlink = function(obstacle) {
       this.director.gameState.set('numInternalLinks', this.director.gameState.get('numInternalLinks') - 1);
+      this.director.gameState.set('numCollectedLinks', this.director.gameState.get('numCollectedLinks') + 1);
       return obstacle.destroy();
     };
 
@@ -697,6 +699,7 @@ window.require.register("models/game_state", function(exports, require, module) 
         url: window.currentUrl,
         numInternalLinks: 0,
         numExternalLinks: 0,
+        numLinksNeeded: 0,
         numCollectedLinks: 0
       });
     };
@@ -749,7 +752,16 @@ window.require.register("views/templates/header_bar", function(exports, require,
   var interp;
   buf.push('<div id="hh-logo" class="hh-section"><h1>Hyperlink Harry</h1></div><div id="level-info" class="hh-section"><h2>level ' + escape((interp = level) == null ? '' : interp) + '</h2><h3> \nSite: <a');
   buf.push(attrs({ 'href':('http://' + (url) + ''), 'target':('_blank') }, {"href":true,"target":true}));
-  buf.push('>' + escape((interp = url) == null ? '' : interp) + '</a></h3></div><div class="hh-section"><p>Internal links: ' + escape((interp = numInternalLinks) == null ? '' : interp) + '</p><p>External links: ' + escape((interp = numExternalLinks) == null ? '' : interp) + '</p></div>');
+  buf.push('>' + escape((interp = url) == null ? '' : interp) + '</a></h3></div><div class="hh-section"><p>Internal links: ');
+  var __val__ = numInternalLinks? numInternalLinks : 'Calculating...'
+  buf.push(escape(null == __val__ ? "" : __val__));
+  buf.push('</p><p>External links: ');
+  var __val__ = numExternalLinks? numExternalLinks : 'Calculating...'
+  buf.push(escape(null == __val__ ? "" : __val__));
+  buf.push('</p></div><div class="hh-section"><p>Links needed to escape: ');
+  var __val__ = numLinksNeeded? numLinksNeeded : 'Calculating...'
+  buf.push(escape(null == __val__ ? "" : __val__));
+  buf.push('</p><p>Links collected: ' + escape((interp = numCollectedLinks) == null ? '' : interp) + '</p></div>');
   }
   return buf.join("");
   };

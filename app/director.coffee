@@ -49,6 +49,7 @@ module.exports = class Director
           x: offset.left
           $el: $this
       @gameState.set "numInternalLinks", numInternalLinks
+      @gameState.set "numLinksNeeded", Math.floor(numInternalLinks/2) + 1
       @gameState.set 'running', true
 
 

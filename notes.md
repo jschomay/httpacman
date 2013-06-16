@@ -2,27 +2,23 @@
 
 
 
-### BUGS
-
-- Some regexes don't work, seems case-insensitive isn't working, don't know why, it's clearly there...
-
-- sites that can still hyjack our window:
-  - view-source:http://www.fedspending.org/apidoc.php
-
-- Some sites have event listeners on elements (like scroll feedback on www.lynda.com), so they give errors since we strip all scripts, causing bad frame rates.  Here's a possible fix, or use regex to strip: http://stackoverflow.com/questions/9251837/how-to-remove-all-listeners-in-an-element
-
-
 
 
 ### TODO
 
 #### Do soon
 
+- fix 58's in player's move
+
+- make 'movable' a component (player overrides for scrolling movement style)
+
 - index.htm - figure out
 
 - think of way to make sure player doesn't start on a page over a link (or other active element?)
 
 #### Do later
+
+- deal with situation when there's no links on a page
 
 - make tab title and favicon be hyperlink harry instead of random site's
 
@@ -41,6 +37,17 @@
 - we're using a lot of libraries that all polute the global space... use something like requirejs?
 
 - Some servers (ex: www.retailmenot.com and www.whitepages.com) have given a 403 status (forbidden).  Maybe this is because it checks server agents?  Maybe we need to define ourself as a browser on our request.  Or maybe it's just because we're running on local host right now?
+
+
+
+### BUGS
+
+- Some regexes don't work, seems case-insensitive isn't working, don't know why, it's clearly there...
+
+- sites that can still hyjack our window:
+  - view-source:http://www.fedspending.org/apidoc.php
+
+- Some sites have event listeners on elements (like scroll feedback on www.lynda.com), so they give errors since we strip all scripts, causing bad frame rates.  Here's a possible fix, or use regex to strip: http://stackoverflow.com/questions/9251837/how-to-remove-all-listeners-in-an-element
 
 
 

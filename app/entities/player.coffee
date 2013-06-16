@@ -82,6 +82,7 @@ module.exports = class Player extends Entity
 
   onHitHyperlink: (obstacle) ->
     @director.gameState.set 'numInternalLinks', @director.gameState.get('numInternalLinks') - 1
+    @director.gameState.set 'numCollectedLinks', @director.gameState.get('numCollectedLinks') + 1
     obstacle.destroy()
 
   onHitEnemy: (obstacle) ->

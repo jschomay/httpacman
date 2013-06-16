@@ -6,4 +6,5 @@ module.exports = class GameState extends Backbone.Model
       url: window.currentUrl
       numInternalLinks: 0
       numExternalLinks: 0
+      numLinksNeeded: 0
       numCollectedLinks: 0

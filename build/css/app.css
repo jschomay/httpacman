@@ -25,8 +25,9 @@ body {
     padding: 0;
     height: 100%;
     width: auto;
+    min-width: 150px;
     margin-right: 20px; }
-@media -sass-debug-info{filename{}line{font-family:\0000329}}
+@media -sass-debug-info{filename{}line{font-family:\0000330}}
   #hh-header-bar h1, #hh-header-bar h2, #hh-header-bar h3, #hh-header-bar p, #hh-header-bar a {
     text-align: left !important;
     display: block !important;
@@ -38,31 +39,33 @@ body {
     margin: 0 0 3px 0 !important;
     padding: 0 !important;
     color: white !important;
-    border: 0 !important; }
-@media -sass-debug-info{filename{}line{font-family:\0000342}}
+    border: 0 !important;
+    background: none !important; }
+@media -sass-debug-info{filename{}line{font-family:\0000344}}
   #hh-header-bar a {
     display: inline !important;
     font-weight: normal !important; }
-@media -sass-debug-info{filename{}line{font-family:\0000346}}
+@media -sass-debug-info{filename{}line{font-family:\0000348}}
   #hh-header-bar a:hover {
-    color: #cccccc !important; }
-@media -sass-debug-info{filename{}line{font-family:\0000349}}
+    color: #cccccc !important;
+    background: none !important; }
+@media -sass-debug-info{filename{}line{font-family:\0000352}}
   #hh-header-bar h1 {
     font-weight: bold !important;
     font-size: 18px !important;
     line-height: 18px !important; }
-@media -sass-debug-info{filename{}line{font-family:\0000354}}
+@media -sass-debug-info{filename{}line{font-family:\0000357}}
   #hh-header-bar h2 {
     font-weight: bold !important;
     font-size: 15px !important;
     line-height: 15px !important; }
-@media -sass-debug-info{filename{}line{font-family:\0000359}}
+@media -sass-debug-info{filename{}line{font-family:\0000362}}
   #hh-header-bar h3 {
     font-size: 12px !important;
     line-height: 12px !important; }
-@media -sass-debug-info{filename{}line{font-family:\0000363}}
+@media -sass-debug-info{filename{}line{font-family:\0000366}}
   #hh-header-bar #hh-logo {
     width: 100px; }
-@media -sass-debug-info{filename{}line{font-family:\0000366}}
+@media -sass-debug-info{filename{}line{font-family:\0000369}}
   #hh-header-bar #level-info {
     margin-right: 100px; }
