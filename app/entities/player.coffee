@@ -27,6 +27,12 @@ module.exports = class Player extends Entity
     atom.input.bind atom.key.RIGHT_ARROW, 'right'
     atom.input.bind atom.key.DOWN_ARROW, 'down'
     atom.input.bind atom.key.UP_ARROW, 'up'
+
+    # define collision reactions for player hitting obstacle by type
+    @onHit =
+      'hyperlink': @onHitHyperlink
+      'enemy': @onHitEnemy
+
     super
 
 
@@ -75,11 +81,6 @@ module.exports = class Player extends Entity
 
     super # super performs collision detection
 
-  onHit: (obstacle) ->
-    # @background = 'red'
-    # run right behaviour based on obstacle type
-    @_onHitFunctions[obstacle.type]?.call(@, obstacle)
-
   onHitHyperlink: (obstacle) ->
     @director.gameState.set 'numInternalLinks', @director.gameState.get('numInternalLinks') - 1
     @director.gameState.set 'numCollectedLinks', @director.gameState.get('numCollectedLinks') + 1
@@ -87,7 +88,3 @@ module.exports = class Player extends Entity
 
   onHitEnemy: (obstacle) ->
     @.background = 'black'
-
-  _onHitFunctions: 
-    'hyperlink': @::onHitHyperlink
-    'enemy': @::onHitEnemy

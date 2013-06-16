@@ -197,6 +197,11 @@ window.require.register("director", function(exports, require, module) {
 window.require.register("entities/components/collidable", function(exports, require, module) {
   module.exports = {
     _init: function() {
+      this._onHit = function(obstacle) {
+        var _ref;
+
+        return (_ref = this.onHit[obstacle.type]) != null ? _ref.call(this, obstacle) : void 0;
+      };
       return this.on('enterFrame', function() {
         var id, obstacle, obstacleBottom, obstacleLeft, obstacleRight, obstacleTop, potentialObstacles, thisBottom, thisLeft, thisRight, thisTop, _results;
 
@@ -214,7 +219,7 @@ window.require.register("entities/components/collidable", function(exports, requ
             thisTop = this.position.y;
             thisBottom = this.position.y + this.h;
             if (Math.max(obstacleRight, thisRight) - Math.min(obstacleLeft, thisLeft) <= obstacle.w + this.w && Math.max(obstacleBottom, thisBottom) - Math.min(obstacleTop, thisTop) <= obstacle.h + this.h) {
-              _results.push(typeof this.onHit === "function" ? this.onHit(obstacle) : void 0);
+              _results.push(this._onHit(obstacle));
             } else {
               _results.push(void 0);
             }
@@ -476,6 +481,10 @@ window.require.register("entities/player", function(exports, require, module) {
       atom.input.bind(atom.key.RIGHT_ARROW, 'right');
       atom.input.bind(atom.key.DOWN_ARROW, 'down');
       atom.input.bind(atom.key.UP_ARROW, 'up');
+      this.onHit = {
+        'hyperlink': this.onHitHyperlink,
+        'enemy': this.onHitEnemy
+      };
       Player.__super__.constructor.apply(this, arguments);
     }
 
@@ -534,12 +543,6 @@ window.require.register("entities/player", function(exports, require, module) {
       return Player.__super__.update.apply(this, arguments);
     };
 
-    Player.prototype.onHit = function(obstacle) {
-      var _ref;
-
-      return (_ref = this._onHitFunctions[obstacle.type]) != null ? _ref.call(this, obstacle) : void 0;
-    };
-
     Player.prototype.onHitHyperlink = function(obstacle) {
       this.director.gameState.set('numInternalLinks', this.director.gameState.get('numInternalLinks') - 1);
       this.director.gameState.set('numCollectedLinks', this.director.gameState.get('numCollectedLinks') + 1);
@@ -548,11 +551,6 @@ window.require.register("entities/player", function(exports, require, module) {
 
     Player.prototype.onHitEnemy = function(obstacle) {
       return this.background = 'black';
-    };
-
-    Player.prototype._onHitFunctions = {
-      'hyperlink': Player.prototype.onHitHyperlink,
-      'enemy': Player.prototype.onHitEnemy
     };
 
     return Player;

@@ -1,12 +1,13 @@
-#### NOTES
 
+TODO
+=========================================================
 
+Do soon
+---------------------------------------------------------
 
+- create 'movable' component to handle dy/dx stuff
 
-
-### TODO
-
-#### Do soon
+- on 'onHit' for solid items, move back to @_wasAt (must issolate x and y first in collision algorythim, maybe have _hitX and _hitY bools get set on all hits)
 
 - fix 58's in player's move
 
@@ -16,7 +17,10 @@
 
 - think of way to make sure player doesn't start on a page over a link (or other active element?)
 
-#### Do later
+Do later
+---------------------------------------------------------
+
+- use 'gameState:[event]' events to trigger info messages based on levels/state
 
 - deal with situation when there's no links on a page
 
@@ -40,7 +44,8 @@
 
 
 
-### BUGS
+BUGS
+=========================================================
 
 - Some regexes don't work, seems case-insensitive isn't working, don't know why, it's clearly there...
 
@@ -52,7 +57,8 @@
 
 
 
-### IDEA LOG
+IDEA LOG
+=========================================================
 
 - Each level has 2x # of enemies as last level (level=# of "hyperjumps")
 

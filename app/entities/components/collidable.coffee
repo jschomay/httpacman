@@ -2,6 +2,12 @@ module.exports =
 
   _init: -> 
 
+    # run right behaviour based on obstacle type
+    # must define @onHit object in @constructor with obstacle.type keys for appropriate function values
+    @_onHit = (obstacle) ->
+      @onHit[obstacle.type]?.call(@, obstacle)
+
+
     @on 'enterFrame', ->
       # check for collisions
       # get all other collidable entities (may need to filter them by some kind of scene graph/quad tree, for now just get all entities)
@@ -20,6 +26,5 @@ module.exports =
           if Math.max(obstacleRight, thisRight) - Math.min(obstacleLeft, thisLeft) <= obstacle.w + @w and
           Math.max(obstacleBottom, thisBottom) - Math.min(obstacleTop, thisTop) <= obstacle.h + @h
             # for each collision run the @onHit method for the collided type
-            @onHit?(obstacle)
+            @_onHit(obstacle)
           
-      # (in onHit) move back to @_wasAt (may want to issolate x and y??)
