@@ -1,7 +1,7 @@
 # top header bar that floats over all pages to give branding and 
 # level number and hotkey options, etc
 
-module.exports = class HeaderBar extends Backbone.View
+module.exports = class HeaderBar extends myBackbone.View
 
   id: 'hh-header-bar'
   template: require './templates/header_bar'

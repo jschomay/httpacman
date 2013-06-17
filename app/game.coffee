@@ -43,14 +43,14 @@ module.exports = class Game extends window.atom.Game
       position: 'fixed'
       top: headerBarHeight + 'px'
       left: '0px'
-      'z-index': 999999
+      'z-index': 9999999999
     $('body').append @canvas
 
     # fps widget
     @stats = new Stats();
     @stats.setMode 0 # 0: fps, 1: ms
     @stats.domElement.style.position = 'fixed'
-    @stats.domElement.style['z-index'] = 999999
+    @stats.domElement.style['z-index'] = 9999999999
     @stats.domElement.style.right = '0px'
     @stats.domElement.style.top = '0px'
     @stats.domElement.id = 'hh-stats-wdiget'

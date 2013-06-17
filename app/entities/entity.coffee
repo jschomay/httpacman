@@ -1,8 +1,7 @@
 module.exports = class Entity
-  $ = window.myJQuery
 
   # add event binding to Entity.prototype
-  $.extend @::, Backbone.Events
+  myJQuery.extend @::, myBackbone.Events
   
   # must call `super` when overriding
   constructor: ->

@@ -368,11 +368,7 @@ window.require.register("entities/entity", function(exports, require, module) {
     __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
   module.exports = Entity = (function() {
-    var $;
-
-    $ = window.myJQuery;
-
-    $.extend(Entity.prototype, Backbone.Events);
+    myJQuery.extend(Entity.prototype, myBackbone.Events);
 
     function Entity() {
       this.update = __bind(this.update, this);
@@ -616,13 +612,13 @@ window.require.register("game", function(exports, require, module) {
         position: 'fixed',
         top: headerBarHeight + 'px',
         left: '0px',
-        'z-index': 999999
+        'z-index': 9999999999
       });
       $('body').append(this.canvas);
       this.stats = new Stats();
       this.stats.setMode(0);
       this.stats.domElement.style.position = 'fixed';
-      this.stats.domElement.style['z-index'] = 999999;
+      this.stats.domElement.style['z-index'] = 9999999999;
       this.stats.domElement.style.right = '0px';
       this.stats.domElement.style.top = '0px';
       this.stats.domElement.id = 'hh-stats-wdiget';
@@ -668,12 +664,15 @@ window.require.register("main", function(exports, require, module) {
 
   Game = require('game');
 
+  window.myJQuery = $;
+
   $.noConflict();
 
-  jQuery(function($) {
+  window.myBackbone = Backbone.noConflict();
+
+  jQuery(function() {
     var game;
 
-    window.myJQuery = $;
     game = new Game();
     game.run();
     window.onblur = function() {
@@ -712,7 +711,7 @@ window.require.register("models/game_state", function(exports, require, module) 
 
     return GameState;
 
-  })(Backbone.Model);
+  })(myBackbone.Model);
   
 });
 window.require.register("views/header_bar", function(exports, require, module) {
@@ -747,7 +746,7 @@ window.require.register("views/header_bar", function(exports, require, module) {
 
     return HeaderBar;
 
-  })(Backbone.View);
+  })(myBackbone.View);
   
 });
 window.require.register("views/templates/header_bar", function(exports, require, module) {

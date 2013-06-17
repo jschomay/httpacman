@@ -32,8 +32,6 @@ Do later
 
 - in components/index loop through all components passed in to mixin to extend with instead of hardcoding to use just sprite
 
-- Need to strip out base tag ie: <base href="http://www.univ-paris1.fr/"> and <base href="http://www.emilypost.com/" />
-
 - Some sites use framesets and dont have a body... so out stuff doesn't get appended, arg
 
 - directional speed goes over the player speedlimit.  Not really a big deal, but if you want to fix it, check the length of the combined vy/vx vectors against the speedlimit before adding the acceleration instead of just checking vy and vx individually
@@ -57,11 +55,17 @@ BUGS
 =========================================================
 
 - Some regexes don't work, seems case-insensitive isn't working, don't know why, it's clearly there...
+  - need page to test against, I haven't run into that lately, maybe not a but
 
 - sites that can still hyjack our window:
   - view-source:http://www.fedspending.org/apidoc.php
 
 - Some sites have event listeners on elements (like scroll feedback on www.lynda.com), so they give errors since we strip all scripts, causing bad frame rates.  Here's a possible fix, or use regex to strip: http://stackoverflow.com/questions/9251837/how-to-remove-all-listeners-in-an-element
+  - enabling javascript probably fixes this, need to test
+
+- pandora.com simply wont load.  They communicate with the server to launch the app, and because our Origin is not pandora.com, Acess-Control-Allow-Origin won't give us anything.  I don't think there's anyway to fix this, none that I know of anyway, without somehow spoofing the Origin, which isn't what we want to do.
+  - Maybe put pandora on a list of rejected sites on the server so we don't get this problem
+  - http://www.capzles.com/ also doesn't work (and some others) because they try to load http://localhost:8000/crossdomain.xml.  I can't find where they request that, maybe in flash.  What ever does, it's getting the wrong origin.  Setting <base> doesn't help.  Maybe in this case our server can see if we have the file, and if not, it can request it from a replaced version of that url and then return it
 
 
 

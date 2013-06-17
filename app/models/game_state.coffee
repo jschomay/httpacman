@@ -1,4 +1,4 @@
-module.exports = class GameState extends Backbone.Model
+module.exports = class GameState extends myBackbone.Model
   initialize: () ->
     @set 
       running: false
