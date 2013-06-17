@@ -5,6 +5,8 @@ TODO
 Do soon
 ---------------------------------------------------------
 
+- filter out links that are blank (probably just an anchor instead of an actual link)
+
 - create 'movable' component to handle dy/dx stuff
 
 - on 'onHit' for solid items, move back to @_wasAt (must issolate x and y first in collision algorythim, maybe have _hitX and _hitY bools get set on all hits)
@@ -40,7 +42,9 @@ Do later
 
 - we're using a lot of libraries that all polute the global space... use something like requirejs?
 
-- Some servers (ex: www.retailmenot.com and www.whitepages.com) have given a 403 status (forbidden).  Maybe this is because it checks server agents?  Maybe we need to define ourself as a browser on our request.  Or maybe it's just because we're running on local host right now?
+- I'd like to add javascripts back in and just somehow stop code that will mess wtih us (like redefine window.location.href).  But this seems to mess up our game often, for example, on facebook.com
+
+- Facebook.com doesn't work.  This is a big problem, since most external links go to it.  I fixed the user-agent, so now facebook loads, but it is missing the page content.  I think that needs javascript to load, but allowing javascript removes the game from the page.
 
 
 
@@ -148,3 +152,9 @@ levels manifest
 
 
 - thinking about link gathering more, here's some thoughts: you need to gather at least 50% of the total internal links on the page to escape the page.  Gathering a link litterally removes it from the page.  Spiders can gobble up links too. This means there is a possible fail condition, if the spider(s) get atleast half the links.  In that case, how do you get to exit the page?  One idea is you dont, you have to replay the level (or site), or you get deducted a level.  But maybe more fun, would be that you can steal all of the links the spider collected (rather than the spider stealing them from you).  But you have to catch him first, and he's faster than you.  But maybe he only bounces unintelligently (or sweeps), so if you use obstacles (like slow images and solid headers?) to your advantage, you can catch him and get his links to exit.  On that note, maybe spambots turn links into minus linkjuice if you collect them.  In order to "purify" the link you need to do something - what?
+
+- trying to figure out what to do about internal and external links.  My original idea of gathering x number of internal links to "activate" external links to "hyperjump" throuh (either taking to that link, or a new random page) may not work.  This code finds the number of internal and external links per page: `_.groupBy($('a').map(function (){return this.href}), function(link){var re = new RegExp(window.currentUrl);return link.match(re)})`.  In most sites I've explored, some sites (like news sites) have tons of external links, but most sites have only around 10%, and many sites (like branded sites) only have external links to facebook, twitter, etc.  So this means that if you follow the links, you'll end up on those social media brand pages very often.  Maybe that's not such a bad thing, because from there you can get out easily to other sites, and you'll have interesting material, so maybe that's actually good, plus you'll get the feel of the real life ebb and flow of search spiders and how the web is linked.  The other option of making it random seems a bit strange if you're hunting for links.  The alternative I was going to suggest was after collecting the required numbre of links you either direction hyperjump, or a "portal" of some kind opens up for you to get to.  But the more I think of it, the more I'm liking using the external links.  Even if you end up on twitter often, you'll get a different page and can read different content each time, plus you'll have an idea of what to look for when it's time to get off a page (look for the social media icons).
+
+  So in that case, the only question is what to do when there aren't any external links (or internal links).  Maybe introduce some kind of black hole that sucks you into a new random page, and that's where the random hyperjumping comes in, since it's no longer like stuble upon if you're chosing where to go.  This same "black hole" thing could happen if you fail to gather enough links.
+
+- Another cool enemy (or friend?) could be a spider or something that starts on each page with you and escapes through a link, and if you follow that link, you'll catch up with him.  (If you don't follow that link, maybe you "randomly" come across him on another site.)  So what happens when you hit him?  Maybe he leads you to something (like the google bot always goes for google plus), or if you catch him, he gives you some powerup or story, or way to progress to new levels.

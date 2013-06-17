@@ -18,7 +18,7 @@ server.on('request', function(req, res) {
   if(req.url === '/play' && req.method === "GET") {
 
     res.writeHead(200, { 'content-type': 'text/html'});
-    request('http://www.randomwebsitemachine.com/random_website/', function(err, response, body) {
+    request({url:'http://www.randomwebsitemachine.com/random_website/', headers:{'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.110 Safari/537.36'}}, function(err, response, body) {
       if(err) {
         console.log("error:", err.message);
       } else {
