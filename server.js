@@ -27,8 +27,8 @@ server.on('request', function(req, res) {
         host = response.request.uri.host;
 
         // parse for relative paths
-        fixSrcUrls = /src=(["'])(?!(\/\/|http))/gi;
-        fixLinkUrls = /href=(["'])(?!(\/\/|http))/gi;
+        fixSrcUrls = /src=(["'])(?!(\/\/|http))\/?/gi;
+        fixLinkUrls = /href=(["'])(?!(\/\/|http))\/?/gi;
         // nixScriptTags = /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi;
         // nixSelfClosingScriptTags = /<script\b.*\/>/gi;
         body = body.replace(fixSrcUrls, 'src=$1http://'+host+'/');
@@ -40,7 +40,7 @@ server.on('request', function(req, res) {
 
         // put our script in the code
         headOpen = /<head([^>]*)>/gi;
-        body = body.replace(headOpen, '<head$1><link rel="stylesheet" type="text/css" href="css/app.css"><script src="js/libs.js"></script><script src="js/app.js"></script><script>require(\'main\');window.currentUrl = "'+host+'";</script>');
+        body = body.replace(headOpen, '<head$1><link rel="stylesheet" type="text/css" href="css/app.css"><script src="js/libs.js"></script><script src="js/app.js"></script><script>require(\'main\');window.currentUrl = "'+host+'";</script><base href="http://'+host+'/">');
         
 
         // write 
