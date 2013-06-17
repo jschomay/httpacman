@@ -1,7 +1,12 @@
 Game = require 'game'
 
-$ ->
-  console.log 'Main app starting...'
+$.noConflict()
+jQuery ($) ->
+  # Hack to make sure we are using our version of jquery if the page tries to load it's own
+  # Unfortunately, as is, you need to put `$ = window.myJQuery` anywhere you want to use it, so it's ugly now
+  # Test for jquery version with `console.log "$ version", $().jquery`
+
+  window.myJQuery = $
 
   game = new Game()
   # start off game loop

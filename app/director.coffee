@@ -6,6 +6,9 @@ The director manages all game entities.  It initializes them based on level data
 ###
 module.exports = class Director
   constructor: (levelData = {}, @gameState) ->
+    $ = window.myJQuery
+
+
     ###
     INITIALIZE ENTITIES
     ###

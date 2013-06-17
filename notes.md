@@ -19,6 +19,8 @@ Do soon
 
 - think of way to make sure player doesn't start on a page over a link (or other active element?)
 
+
+
 Do later
 ---------------------------------------------------------
 
@@ -30,7 +32,7 @@ Do later
 
 - in components/index loop through all components passed in to mixin to extend with instead of hardcoding to use just sprite
 
-- Need to strip out base tag ie: <base href="http://www.univ-paris1.fr/">
+- Need to strip out base tag ie: <base href="http://www.univ-paris1.fr/"> and <base href="http://www.emilypost.com/" />
 
 - Some sites use framesets and dont have a body... so out stuff doesn't get appended, arg
 
@@ -43,6 +45,9 @@ Do later
 - we're using a lot of libraries that all polute the global space... use something like requirejs?
 
 - I'd like to add javascripts back in and just somehow stop code that will mess wtih us (like redefine window.location.href).  But this seems to mess up our game often, for example, on facebook.com
+  - huffingtonpost.com works, but canvas height isn't set right for some reason, thinkprogress.org too
+  - livemocha has trouble with $, maybe I need to use no conflicts mode
+  - http://www.othermusic.com/ loads cdn files from //:... which our fixSrcUrls regex incorrectly appends the host to
 
 - Facebook.com doesn't work.  This is a big problem, since most external links go to it.  I fixed the user-agent, so now facebook loads, but it is missing the page content.  I think that needs javascript to load, but allowing javascript removes the game from the page.
 

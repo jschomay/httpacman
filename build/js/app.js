@@ -92,7 +92,7 @@ window.require.register("director", function(exports, require, module) {
 
   module.exports = Director = (function() {
     function Director(levelData, gameState) {
-      var numEnemies, _i,
+      var $, numEnemies, _i,
         _this = this;
 
       if (levelData == null) {
@@ -103,6 +103,7 @@ window.require.register("director", function(exports, require, module) {
       this.update = __bind(this.update, this);
       this.removeEntity = __bind(this.removeEntity, this);
       this.addEntity = __bind(this.addEntity, this);
+      $ = window.myJQuery;
       /*
       INITIALIZE ENTITIES
       */
@@ -567,10 +568,11 @@ window.require.register("game", function(exports, require, module) {
     __extends(Game, _super);
 
     function Game() {
-      var headerBarHeight, headerBarView, levelData,
+      var $, headerBarHeight, headerBarView, levelData,
         _this = this;
 
       Game.__super__.constructor.apply(this, arguments);
+      $ = window.myJQuery;
       this.gameState = new (require('models/game_state'))();
       this.canvas = $('<canvas id="hh-canvas"></canvas>')[0];
       this.ctx = this.canvas.getContext('2d');
@@ -662,10 +664,12 @@ window.require.register("main", function(exports, require, module) {
 
   Game = require('game');
 
-  $(function() {
+  $.noConflict();
+
+  jQuery(function($) {
     var game;
 
-    console.log('Main app starting...');
+    window.myJQuery = $;
     game = new Game();
     game.run();
     window.onblur = function() {

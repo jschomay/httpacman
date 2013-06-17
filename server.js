@@ -18,6 +18,7 @@ server.on('request', function(req, res) {
   if(req.url === '/play' && req.method === "GET") {
 
     res.writeHead(200, { 'content-type': 'text/html'});
+    // http://www.randomwebsitemachine.com/random_website/
     request({url:'http://www.randomwebsitemachine.com/random_website/', headers:{'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.110 Safari/537.36'}}, function(err, response, body) {
       if(err) {
         console.log("error:", err.message);
@@ -31,14 +32,14 @@ server.on('request', function(req, res) {
         nixSelfClosingScriptTags = /<script\b.*\/>/gi;
         body = body.replace(fixSrcUrls, 'src=$1http://'+host+'/');
         body = body.replace(fixLinkUrls, 'href=$1http://'+host+'/');
-        body = body.replace(nixScriptTags, '<!-- script removed -->');
-        body = body.replace(nixSelfClosingScriptTags, '<!-- script removed -->');
+        // body = body.replace(nixScriptTags, '<!-- script removed -->');
+        // body = body.replace(nixSelfClosingScriptTags, '<!-- script removed -->');
         // take out http-equiv="refresh"
         // <meta http-equiv="refresh" content="30; ,URL=http://www.metatags.info/login">
 
         // put our script in the code
-        headClose = /<\/head>/gi;
-        body = body.replace(headClose, '<link rel="stylesheet" type="text/css" href="css/app.css"><script src="js/libs.js"></script><script src="js/app.js"></script><script>require(\'main\');window.currentUrl = "'+host+'";</script></head>');
+        headOpen = /<head([^>]*)>/gi;
+        body = body.replace(headOpen, '<head$1><link rel="stylesheet" type="text/css" href="css/app.css"><script src="js/libs.js"></script><script src="js/app.js"></script><script>require(\'main\');window.currentUrl = "'+host+'";</script>');
         
 
         // write 
