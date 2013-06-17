@@ -368,6 +368,10 @@ window.require.register("entities/entity", function(exports, require, module) {
     __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
   module.exports = Entity = (function() {
+    var $;
+
+    $ = window.myJQuery;
+
     $.extend(Entity.prototype, Backbone.Events);
 
     function Entity() {

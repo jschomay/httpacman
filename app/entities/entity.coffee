@@ -1,4 +1,5 @@
 module.exports = class Entity
+  $ = window.myJQuery
 
   # add event binding to Entity.prototype
   $.extend @::, Backbone.Events
