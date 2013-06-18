@@ -574,7 +574,6 @@ window.require.register("game", function(exports, require, module) {
 
       Game.__super__.constructor.apply(this, arguments);
       $ = window.myJQuery;
-      console.log(">>>>>", require);
       this.gameState = new (require('models/game_state'))();
       this.canvas = $('<canvas id="hh-canvas"></canvas>')[0];
       this.ctx = this.canvas.getContext('2d');

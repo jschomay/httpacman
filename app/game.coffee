@@ -4,7 +4,6 @@ module.exports = class Game extends window.atom.Game
   constructor: () ->
     super
     $ = window.myJQuery
-    console.log ">>>>>",require
 
     @gameState = new (require 'models/game_state')()
     @canvas = $('<canvas id="hh-canvas"></canvas>')[0]
