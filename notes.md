@@ -19,6 +19,8 @@ Do soon
 
 - think of way to make sure player doesn't start on a page over a link (or other active element?)
 
+- instead of getting a:visible, get all a's that aren't under a nested dropdown
+
 
 
 Do later
@@ -46,6 +48,7 @@ Do later
   - huffingtonpost.com works, but canvas height isn't set right for some reason, thinkprogress.org too
   - livemocha has trouble with $, maybe I need to use no conflicts mode
   - http://www.othermusic.com/ loads cdn files from //:... which our fixSrcUrls regex incorrectly appends the host to
+  - http://www.lonelyplanet.com/ uses requirejs, so our require function gets overwritten
 
 - Facebook.com doesn't work.  This is a big problem, since most external links go to it.  I fixed the user-agent, so now facebook loads, but it is missing the page content.  I think that needs javascript to load, but allowing javascript removes the game from the page.
 

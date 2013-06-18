@@ -1,9 +1,8 @@
 (function(/*! Brunch !*/) {
   'use strict';
-
   var globals = typeof window !== 'undefined' ? window : global;
   if (typeof globals.require === 'function') return;
-
+  console.log("hererererererererere")
   var modules = {};
   var cache = {};
 
