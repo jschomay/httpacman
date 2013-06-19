@@ -38,8 +38,6 @@ Do later
 
 - directional speed goes over the player speedlimit.  Not really a big deal, but if you want to fix it, check the length of the combined vy/vx vectors against the speedlimit before adding the acceleration instead of just checking vy and vx individually
 
-- Detect error: getaddrinfo ENOTFOUND from request module -- handle it better...
-
 - Impliment timeout in server to give up on slow urls and try again 
 
 - we're using a lot of libraries that all polute the global space... use something like requirejs?
@@ -64,7 +62,7 @@ BUGS
 
 
 - Some regexes don't work, seems case-insensitive isn't working, don't know why, it's clearly there...
-  - need page to test against, I haven't run into that lately, maybe not a but
+  - need page to test against, I haven't run into lately, maybe not a bug
 
 - sites that can still hyjack our window:
   - view-source:http://www.fedspending.org/apidoc.php
@@ -77,9 +75,9 @@ BUGS
   
   - http://www.capzles.com/ also doesn't work (and some others) because they try to load http://localhost:8000/crossdomain.xml.  I can't find where they request that, maybe in flash.  What ever does, it's getting the wrong origin.  Setting <base> doesn't help.  Maybe in this case our server can see if we have the file, and if not, it can request it from a replaced version of that url and then return it
 
-  - http://www.drudgereport.com/ dosn't have a full html document, it starts with <title>, meaning there's no <head> for us to latch on to.  This seems like either an error, or an anomly, let's blacklist it.
-
   - http://studio.inmobi.com/
+
+- I test for a <head> in server to make sure we can latch on, but some sites fail even though I see a head in there, not sure why
 
 
 

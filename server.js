@@ -15,31 +15,44 @@ server.on('request', function(req, res) {
   if(!req.url.match(/^\/(index.htm|js|css)/) && req.method === "GET") {
 
     res.writeHead(200, { 'content-type': 'text/html'});
-    random = 'http://www.randomwebsitemachine.com/random_website/';
-    test = '';
-    request({url: (test || random), headers:{'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.110 Safari/537.36'}}, function(err, response, body) {
-      if(err) {
-        console.log("error:", err.message);
-      } else {
-        host = response.request.uri.host;
+    
+    // set this to test a specific page
+    defineUrl = '';
 
-        // parse for relative paths
-        fixSrcUrls = /src=(["'])(?!(\/\/|http))\/?/gi;
-        fixLinkUrls = /href=(["'])(?!(\/\/|http))\/?/gi;
-        body = body.replace(fixSrcUrls, 'src=$1http://'+host+'/');
-        body = body.replace(fixLinkUrls, 'href=$1http://'+host+'/');
-        // take out http-equiv="refresh"
-        // <meta http-equiv="refresh" content="30; ,URL=http://www.metatags.info/login">
+    getRandomSite = function(defineUrl) {
+      var url = !!defineUrl ? defineUrl : 'http://www.randomwebsitemachine.com/random_website/';
+      request({url: (url), headers:{'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.110 Safari/537.36'}}, function(err, response, body) {
+        if(err) {
+          console.log("Error:", err.message);
+          getRandomSite();
+        } else if (!body.match(/<head([^>]*)>/gi)) {
+          // some sites don't have a <head> for what ever reason, so our code doesn't load, so... try again
+          host = response.request.uri.host;
+          console.log("Error:", host, " has no <head>");
+          getRandomSite();
+        } else {
+          host = response.request.uri.host;
+          console.log(req.url, host);
 
-        // put our script in the code
-        headOpen = /<head([^>]*)>/gi;
-        body = body.replace(headOpen, '<head$1><script src="js/myrequire.js"></script><link rel="stylesheet" type="text/css" href="css/app.css"><script src="js/libs.js"></script><script src="js/app.js"></script><script>require(\'main\');window.currentUrl = "'+host+'";</script><base href="http://'+host+'/">');
+          // parse for relative paths
+          fixSrcUrls = /src=(["'])(?!(\/\/|http))\/?/gi;
+          fixLinkUrls = /href=(["'])(?!(\/\/|http))\/?/gi;
+          body = body.replace(fixSrcUrls, 'src=$1http://'+host+'/');
+          body = body.replace(fixLinkUrls, 'href=$1http://'+host+'/');
+          // take out http-equiv="refresh"
+          // <meta http-equiv="refresh" content="30; ,URL=http://www.metatags.info/login">
 
-        // write 
-        res.write(body);
-        res.end();
-      }
-    });
+          // put our script in the code
+          headOpen = /<head([^>]*)>/gi;
+          body = body.replace(headOpen, '<head$1><script src="js/myrequire.js"></script><link rel="stylesheet" type="text/css" href="css/app.css"><script src="js/libs.js"></script><script src="js/app.js"></script><script>require(\'main\');window.currentUrl = "'+host+'";</script><base href="http://'+host+'/">');
+
+          // write 
+          res.write(body);
+          res.end();
+        }
+      });
+    };
+    getRandomSite(defineUrl);
   } else {
 
     // static content loading
