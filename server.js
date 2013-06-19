@@ -16,8 +16,8 @@ server.on('request', function(req, res) {
 
     res.writeHead(200, { 'content-type': 'text/html'});
     
-    // set this to test a specific page
-    defineUrl = 'http://www.angelfire.com/super/badwebs/';
+    // set this to test a specific page (use http:// prefix)
+    defineUrl = '';
 
     getRandomSite = function(defineUrl) {
       var url = !!defineUrl ? defineUrl : 'http://www.randomwebsitemachine.com/random_website/';
@@ -27,17 +27,18 @@ server.on('request', function(req, res) {
           getRandomSite();
         } else if (!body.match(/<head([^>]*)>/gi)) {
           // some sites don't have a <head> for what ever reason, so our code doesn't load, so... try again
-          host = response.request.uri.host;
-          console.log("Error:", host, " has no <head>");
+          url = response.request.uri.host + response.request.uri.pathname;
+          console.log("Error:", url, " has no <head>");
           getRandomSite();
         } else if (body.match(/<frameset([^>]*)>/gi)) {
           // some sites use framesets so our header bar and canvas doesn't load, so... try again
-          host = response.request.uri.host;
-          console.log("Error:", host, " uses <framesets>");
+          url = response.request.uri.host + response.request.uri.pathname;
+          console.log("Error:", url, " uses <framesets>");
           getRandomSite();
         } else {
           host = response.request.uri.host;
-          console.log(req.url, host);
+          url = response.request.uri.host + response.request.uri.pathname;
+          console.log(req.url, url);
 
           // parse for relative paths
           fixSrcUrls = /src=(["'])(?!(\/\/|http))\/?/gi;
@@ -49,7 +50,7 @@ server.on('request', function(req, res) {
 
           // put our script in the code
           headOpen = /<head([^>]*)>/gi;
-          body = body.replace(headOpen, '<head$1><script src="js/myrequire.js"></script><link rel="stylesheet" type="text/css" href="css/app.css"><script src="js/libs.js"></script><script src="js/app.js"></script><script>require(\'main\');window.currentUrl = "'+host+'";</script><base href="http://'+host+'/">');
+          body = body.replace(headOpen, '<head$1><script src="js/myrequire.js"></script><link rel="stylesheet" type="text/css" href="css/app.css"><script src="js/libs.js"></script><script src="js/app.js"></script><script>require(\'main\');window.currentUrl = "'+url+'";</script><base href="http://'+host+'/">');
 
           // write 
           res.write(body);

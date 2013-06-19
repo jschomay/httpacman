@@ -5,10 +5,6 @@ TODO
 Do soon
 ---------------------------------------------------------
 
-- filter out links that are blank (probably just an anchor instead of an actual link)
-
-- create 'movable' component to handle dy/dx stuff
-
 - on 'onHit' for solid items, move back to @_wasAt (must issolate x and y first in collision algorythim, maybe have _hitX and _hitY bools get set on all hits)
 
 - fix 58's in player's move
@@ -18,8 +14,6 @@ Do soon
 - index.htm - figure out
 
 - think of way to make sure player doesn't start on a page over a link (or other active element?)
-
-- instead of getting a:visible, get all a's that aren't under a nested dropdown
 
 
 
@@ -32,22 +26,11 @@ Do later
 
 - make tab title and favicon be hyperlink harry instead of random site's
 
-- in components/index loop through all components passed in to mixin to extend with instead of hardcoding to use just sprite
-
-- Some sites use framesets and dont have a body... so out stuff doesn't get appended, arg
-
 - directional speed goes over the player speedlimit.  Not really a big deal, but if you want to fix it, check the length of the combined vy/vx vectors against the speedlimit before adding the acceleration instead of just checking vy and vx individually
 
 - Impliment timeout in server to give up on slow urls and try again 
 
 - we're using a lot of libraries that all polute the global space... use something like requirejs?
-
-- I'd like to add javascripts back in and just somehow stop code that will mess wtih us (like redefine window.location.href).  But this seems to mess up our game often, for example, on facebook.com
-  - www.teensreadtoo.com uses location.href to redirect (I think.. it adds ?ai=1 to url, which breaks)
-  - huffingtonpost.com works, but canvas height isn't set right for some reason, thinkprogress.org too
-  - livemocha has trouble with $, maybe I need to use no conflicts mode
-  - http://www.othermusic.com/ loads cdn files from //:... which our fixSrcUrls regex incorrectly appends the host to
-  - http://www.lonelyplanet.com/ uses requirejs, so our require function gets overwritten
 
 - Facebook.com doesn't work.  This is a big problem, since most external links go to it.  I fixed the user-agent, so now facebook loads, but it is missing the page content.  I think that needs javascript to load, but allowing javascript removes the game from the page.
 
