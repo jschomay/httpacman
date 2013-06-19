@@ -32,7 +32,7 @@ Do later
 
 - we're using a lot of libraries that all polute the global space... use something like requirejs?
 
-- Since we gather hyperlinks on window.onload, links that get added after that by ajax don't get included.  Sometimes this isn't a huge issue, but it's extremely troublesome on facebook for example.  So maybe find some way to delay the check, or fire it again on each ajax return?
+- Since we gather hyperlinks on window.onload, links that get added after that by ajax don't get included, and worse, the entities might be in the wrong spot.  I'm using a setTimeout to try to accomadate for this, but it's not an ideal solution because it is speculative and varries based on browser, computer, and connection speed.  It seems to work well for me for now for the record.  I'm not sure if there's a better way.
 
 
 

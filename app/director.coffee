@@ -32,40 +32,45 @@ module.exports = class Director
 
     # crate playing field objects from the DirectorModel
     $(window).load =>
-      # hyperlinks
-      console.log "Converting hyperlinks to game entities"
-      that = @
-      numInternalLinks = 0;
-      numExternalLinks = 0;
-      headerBarEl = $('#hh-header-bar')[0]
-      # start with all links on page...
-      $('a')
-      # filter out links in the header bar...
-      .filter(-> !$.contains(headerBarEl, @))
-      # and filter out links under a nav system, but only 2nd tier ones (to avoid hidden drop nav menues)...
-      .filter(-> 
-        link = $ this
-        !link.parents("[class*='nav']")
-          .filter(-> $(link).parents('ul').length>1)
-          .length)
-      .each ->
-        numInternalLinks++;
-        # if the anchor element wraps another element, return that, otherwise return the anchor
-        # this way the hyperlink entity will hopefully always have a width and height > 0
-        child = $(this).children()
-        $this = if child.length > 0 then child else $ @
-        offset = $this.offset()
-        headerBarHeight = $('#hh-header-bar').outerHeight()
-        that.addEntity new Entities.Hyperlink
-          id: that.lastId
-          w: $this.width()
-          h: $this.height()
-          y: offset.top - headerBarHeight
-          x: offset.left
-          $el: $this
-      @gameState.set "numInternalLinks", numInternalLinks
-      @gameState.set "numLinksNeeded", Math.floor(numInternalLinks/2) + 1
-      @gameState.set 'running', true
+      # wait just a bit after page loads, to catch content appended with ajax
+      setTimeout (=>
+        # wait just a bit more, trying to optimize delay time by speculating on load time based on page height
+        delay = if document.height > 7000 then 1700 else 300
+        setTimeout (=>
+          # hyperlinks
+          console.log "Converting hyperlinks to game entities"
+          that = @
+          numInternalLinks = 0;
+          numExternalLinks = 0;
+          headerBarEl = $('#hh-header-bar')[0]
+          # start with all links on page...
+          $('a')
+          # filter out links in the header bar...
+          .filter(-> !$.contains(headerBarEl, @))
+          # and filter out links under a nav system, but only 2nd tier ones (to avoid hidden drop nav menues)...
+          .filter(-> 
+            link = $ this
+            !link.parents("[class*='nav']")
+              .filter(-> $(link).parents('ul').length>1)
+              .length)
+          .each ->
+            numInternalLinks++;
+            # if the anchor element wraps another element, return that, otherwise return the anchor
+            # this way the hyperlink entity will hopefully always have a width and height > 0
+            child = $(this).children()
+            $this = if child.length > 0 then child else $ @
+            offset = $this.offset()
+            headerBarHeight = $('#hh-header-bar').outerHeight()
+            that.addEntity new Entities.Hyperlink
+              id: that.lastId
+              w: $this.width()
+              h: $this.height()
+              y: offset.top - headerBarHeight
+              x: offset.left
+              $el: $this
+          @gameState.set "numInternalLinks", numInternalLinks
+          @gameState.set "numLinksNeeded", Math.floor(numInternalLinks/2) + 1
+          @gameState.set 'running', true),  delay), 400
 
 
   lastId: 1

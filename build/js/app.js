@@ -123,42 +123,49 @@ window.require.register("director", function(exports, require, module) {
         }));
       }
       $(window).load(function() {
-        var headerBarEl, numExternalLinks, numInternalLinks, that;
+        return setTimeout((function() {
+          var delay;
 
-        console.log("Converting hyperlinks to game entities");
-        that = _this;
-        numInternalLinks = 0;
-        numExternalLinks = 0;
-        headerBarEl = $('#hh-header-bar')[0];
-        $('a').filter(function() {
-          return !$.contains(headerBarEl, this);
-        }).filter(function() {
-          var link;
+          delay = document.height > 7000 ? 1700 : 300;
+          return setTimeout((function() {
+            var headerBarEl, numExternalLinks, numInternalLinks, that;
 
-          link = $(this);
-          return !link.parents("[class*='nav']").filter(function() {
-            return $(link).parents('ul').length > 1;
-          }).length;
-        }).each(function() {
-          var $this, child, headerBarHeight, offset;
+            console.log("Converting hyperlinks to game entities");
+            that = _this;
+            numInternalLinks = 0;
+            numExternalLinks = 0;
+            headerBarEl = $('#hh-header-bar')[0];
+            $('a').filter(function() {
+              return !$.contains(headerBarEl, this);
+            }).filter(function() {
+              var link;
 
-          numInternalLinks++;
-          child = $(this).children();
-          $this = child.length > 0 ? child : $(this);
-          offset = $this.offset();
-          headerBarHeight = $('#hh-header-bar').outerHeight();
-          return that.addEntity(new Entities.Hyperlink({
-            id: that.lastId,
-            w: $this.width(),
-            h: $this.height(),
-            y: offset.top - headerBarHeight,
-            x: offset.left,
-            $el: $this
-          }));
-        });
-        _this.gameState.set("numInternalLinks", numInternalLinks);
-        _this.gameState.set("numLinksNeeded", Math.floor(numInternalLinks / 2) + 1);
-        return _this.gameState.set('running', true);
+              link = $(this);
+              return !link.parents("[class*='nav']").filter(function() {
+                return $(link).parents('ul').length > 1;
+              }).length;
+            }).each(function() {
+              var $this, child, headerBarHeight, offset;
+
+              numInternalLinks++;
+              child = $(this).children();
+              $this = child.length > 0 ? child : $(this);
+              offset = $this.offset();
+              headerBarHeight = $('#hh-header-bar').outerHeight();
+              return that.addEntity(new Entities.Hyperlink({
+                id: that.lastId,
+                w: $this.width(),
+                h: $this.height(),
+                y: offset.top - headerBarHeight,
+                x: offset.left,
+                $el: $this
+              }));
+            });
+            _this.gameState.set("numInternalLinks", numInternalLinks);
+            _this.gameState.set("numLinksNeeded", Math.floor(numInternalLinks / 2) + 1);
+            return _this.gameState.set('running', true);
+          }), delay);
+        }), 400);
       });
     }
 

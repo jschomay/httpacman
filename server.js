@@ -17,7 +17,7 @@ server.on('request', function(req, res) {
     res.writeHead(200, { 'content-type': 'text/html'});
     
     // set this to test a specific page (use http:// prefix)
-    defineUrl = 'http://facebook.com/checkinc';
+    defineUrl = '';
 
     getRandomSite = function(defineUrl) {
       var url = !!defineUrl ? defineUrl : 'http://www.randomwebsitemachine.com/random_website/';
