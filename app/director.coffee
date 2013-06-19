@@ -38,11 +38,14 @@ module.exports = class Director
       numInternalLinks = 0;
       numExternalLinks = 0;
       headerBarEl = $('#hh-header-bar')[0]
-      $('a:visible')
+      $('a')
       .filter(-> !$.contains(headerBarEl, @))
       .each ->
         numInternalLinks++;
-        $this = $(@)
+        # if the anchor element wraps another element, return that, otherwise return the anchor
+        # this way the hyperlink entity will hopefully always have a width and height > 0
+        child = $(this).children()
+        $this = if child.length > 0 then child else $ @
         offset = $this.offset()
         headerBarHeight = $('#hh-header-bar').outerHeight()
         that.addEntity new Entities.Hyperlink

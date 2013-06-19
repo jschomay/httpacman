@@ -66,9 +66,12 @@ BUGS
 - Some sites have event listeners on elements (like scroll feedback on www.lynda.com), so they give errors since we strip all scripts, causing bad frame rates.  Here's a possible fix, or use regex to strip: http://stackoverflow.com/questions/9251837/how-to-remove-all-listeners-in-an-element
   - enabling javascript probably fixes this, need to test
 
-- pandora.com simply wont load.  They communicate with the server to launch the app, and because our Origin is not pandora.com, Acess-Control-Allow-Origin won't give us anything.  I don't think there's anyway to fix this, none that I know of anyway, without somehow spoofing the Origin, which isn't what we want to do.
-  - Maybe put pandora on a list of rejected sites on the server so we don't get this problem
+- Sites that won't work (Maybe put them on a list of rejected sites on the server so we don't get this problem):
+  - pandora.com wont load completely.  They communicate with the server to launch the app, and because our Origin is not pandora.com, Acess-Control-Allow-Origin won't give us anything.  I don't think there's anyway to fix this, none that I know of anyway, without somehow spoofing the Origin, which isn't what we want to do. As it is, a loading page comes up, but it counts links which aren't in view some how...
+  
   - http://www.capzles.com/ also doesn't work (and some others) because they try to load http://localhost:8000/crossdomain.xml.  I can't find where they request that, maybe in flash.  What ever does, it's getting the wrong origin.  Setting <base> doesn't help.  Maybe in this case our server can see if we have the file, and if not, it can request it from a replaced version of that url and then return it
+
+  - http://www.drudgereport.com/ dosn't have a full html document, it starts with <title>, meaning there's no <head> for us to latch on to.  This seems like either an error, or an anomly, let's blacklist it.
 
 
 

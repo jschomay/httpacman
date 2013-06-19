@@ -130,13 +130,14 @@ window.require.register("director", function(exports, require, module) {
         numInternalLinks = 0;
         numExternalLinks = 0;
         headerBarEl = $('#hh-header-bar')[0];
-        $('a:visible').filter(function() {
+        $('a').filter(function() {
           return !$.contains(headerBarEl, this);
         }).each(function() {
-          var $this, headerBarHeight, offset;
+          var $this, child, headerBarHeight, offset;
 
           numInternalLinks++;
-          $this = $(this);
+          child = $(this).children();
+          $this = child.length > 0 ? child : $(this);
           offset = $this.offset();
           headerBarHeight = $('#hh-header-bar').outerHeight();
           return that.addEntity(new Entities.Hyperlink({
