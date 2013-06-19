@@ -17,7 +17,7 @@ server.on('request', function(req, res) {
     res.writeHead(200, { 'content-type': 'text/html'});
     
     // set this to test a specific page
-    defineUrl = '';
+    defineUrl = 'http://www.angelfire.com/super/badwebs/';
 
     getRandomSite = function(defineUrl) {
       var url = !!defineUrl ? defineUrl : 'http://www.randomwebsitemachine.com/random_website/';
@@ -29,6 +29,11 @@ server.on('request', function(req, res) {
           // some sites don't have a <head> for what ever reason, so our code doesn't load, so... try again
           host = response.request.uri.host;
           console.log("Error:", host, " has no <head>");
+          getRandomSite();
+        } else if (body.match(/<frameset([^>]*)>/gi)) {
+          // some sites use framesets so our header bar and canvas doesn't load, so... try again
+          host = response.request.uri.host;
+          console.log("Error:", host, " uses <framesets>");
           getRandomSite();
         } else {
           host = response.request.uri.host;
