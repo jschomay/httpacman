@@ -39,28 +39,14 @@ Do later
 BUGS
 =========================================================
 
-- If a script calls `window.location = xxxxx` or another reload trigger, we lose our url and the game ends.  Afaik, there's no way to prevent this programatically.  One idea is to prompt the user with:
-`window.onbeforeunload = -> 'Whoops, Harry is in trouble.  This sneaky page he landed on is trying to go to a different address.\n\nYou\'ll have to click "Don\'t Reload" (or press Escape), or you\'ll be taken away from the game.'`.  However, we need some way to skip the prompt if we requested the reload, which is easy enough to do in the game, but I don't think we can prevent it if the user presses refresh, and we don't want the warning then.
-  - my only solution is to spit back any request to the server with our `/play` boody.  This works, but only as long as the host wasn't changed in the reload call
+- Sites that won't work or have problems (Maybe put them on a list of rejected sites on the server so we don't get this problem):
+  - pandora.com wont load completely.  They communicate with the server to launch the app, and because our Origin is not pandora.com, Acess-Control-Allow-Origin won't give us anything (many sites have this error).  I don't think there's anyway to fix this, none that I know of anyway, without somehow spoofing the Origin, which isn't what we want to do. As it is, a loading page comes up, but it counts links which are covered, but you can still get them blidly.
 
-
-- Some regexes don't work, seems case-insensitive isn't working, don't know why, it's clearly there...
-  - need page to test against, I haven't run into lately, maybe not a bug
-
-- sites that can still hyjack our window:
-  - view-source:http://www.fedspending.org/apidoc.php
-
-- Some sites have event listeners on elements (like scroll feedback on www.lynda.com), so they give errors since we strip all scripts, causing bad frame rates.  Here's a possible fix, or use regex to strip: http://stackoverflow.com/questions/9251837/how-to-remove-all-listeners-in-an-element
-  - enabling javascript probably fixes this, need to test
-
-- Sites that won't work (Maybe put them on a list of rejected sites on the server so we don't get this problem):
-  - pandora.com wont load completely.  They communicate with the server to launch the app, and because our Origin is not pandora.com, Acess-Control-Allow-Origin won't give us anything.  I don't think there's anyway to fix this, none that I know of anyway, without somehow spoofing the Origin, which isn't what we want to do. As it is, a loading page comes up, but it counts links which aren't in view some how...
-  
   - http://www.capzles.com/ also doesn't work (and some others) because they try to load http://localhost:8000/crossdomain.xml.  I can't find where they request that, maybe in flash.  What ever does, it's getting the wrong origin.  Setting <base> doesn't help.  Maybe in this case our server can see if we have the file, and if not, it can request it from a replaced version of that url and then return it
 
-  - http://studio.inmobi.com/
+  - studio.inmobi.com/ui/index.html - same 'different origins error', I don't think we can get around that, the page is all blank
 
-- I test for a <head> in server to make sure we can latch on, but some sites fail even though I see a head in there, not sure why
+- I test for a <head> in server to make sure we can latch on, but some sites fail even though I see a head in there, not sure why (like answers.yahoo.com)
 
 
 

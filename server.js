@@ -38,19 +38,20 @@ server.on('request', function(req, res) {
         } else {
           host = response.request.uri.host;
           url = response.request.uri.host + response.request.uri.pathname;
+          relativePath = url.substring(0, url.lastIndexOf('/')+1); // includes trailng slash
           console.log(req.url, url);
 
           // parse for relative paths
           fixSrcUrls = /src=(["'])(?!(\/\/|http))\/?/gi;
           fixLinkUrls = /href=(["'])(?!(\/\/|http))\/?/gi;
-          body = body.replace(fixSrcUrls, 'src=$1http://'+host+'/');
-          body = body.replace(fixLinkUrls, 'href=$1http://'+host+'/');
+          body = body.replace(fixSrcUrls, 'src=$1http://'+relativePath);
+          body = body.replace(fixLinkUrls, 'href=$1http://'+relativePath);
           // take out http-equiv="refresh"
           // <meta http-equiv="refresh" content="30; ,URL=http://www.metatags.info/login">
 
           // put our script in the code
           headOpen = /<head([^>]*)>/gi;
-          body = body.replace(headOpen, '<head$1><script src="js/myrequire.js"></script><link rel="stylesheet" type="text/css" href="css/app.css"><script src="js/libs.js"></script><script src="js/app.js"></script><script>require(\'main\');window.currentUrl = "'+url+'";</script><base href="http://'+host+'/">');
+          body = body.replace(headOpen, '<head$1><script src="js/myrequire.js"></script><link rel="stylesheet" type="text/css" href="css/app.css"><script src="js/libs.js"></script><script src="js/app.js"></script><script>require(\'main\');require = undefined;window.currentUrl = "'+url+'";</script><base href="http://'+relativePath+'">');
 
           // write 
           res.write(body);
