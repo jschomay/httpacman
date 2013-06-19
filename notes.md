@@ -32,7 +32,7 @@ Do later
 
 - we're using a lot of libraries that all polute the global space... use something like requirejs?
 
-- Facebook.com doesn't work.  This is a big problem, since most external links go to it.  I fixed the user-agent, so now facebook loads, but it is missing the page content.  I think that needs javascript to load, but allowing javascript removes the game from the page.
+- Since we gather hyperlinks on window.onload, links that get added after that by ajax don't get included.  Sometimes this isn't a huge issue, but it's extremely troublesome on facebook for example.  So maybe find some way to delay the check, or fire it again on each ajax return?
 
 
 
