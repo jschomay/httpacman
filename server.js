@@ -11,11 +11,8 @@ server.on('request', function(req, res) {
     req.url = "/index.htm";
   } 
 
-
-  
-
-  // /play pulls a random url, all other requests for static content are served in else clase
-  if(req.url === '/play' && req.method === "GET") {
+  // any request besides one of our assets pulls a random url
+  if(!req.url.match(/^\/(index.htm|js|css)/) && req.method === "GET") {
 
     res.writeHead(200, { 'content-type': 'text/html'});
     random = 'http://www.randomwebsitemachine.com/random_website/';

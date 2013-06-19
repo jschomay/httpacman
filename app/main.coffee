@@ -1,3 +1,6 @@
+# set url and title (if browser allows) in case it isn't '/play'
+window.history.pushState('', 'Hyperlink Harry', window.location.origin+'/play')
+
 Game = require 'game'
 
 # some sites already use backbone, jquery, etc, and often older versions, so we need to be sure to use our own
@@ -7,7 +10,6 @@ Game = require 'game'
 window.myJQuery = $
 $.noConflict()
 window.myBackbone = Backbone.noConflict();
-
 
 jQuery () ->
   game = new Game()

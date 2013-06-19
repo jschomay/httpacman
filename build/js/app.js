@@ -671,6 +671,8 @@ window.require.register("game", function(exports, require, module) {
 window.require.register("main", function(exports, require, module) {
   var Game;
 
+  window.history.pushState('', 'Hyperlink Harry', window.location.origin + '/play');
+
   Game = require('game');
 
   window.myJQuery = $;

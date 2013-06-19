@@ -58,6 +58,11 @@ Do later
 BUGS
 =========================================================
 
+- If a script calls `window.location = xxxxx` or another reload trigger, we lose our url and the game ends.  Afaik, there's no way to prevent this programatically.  One idea is to prompt the user with:
+`window.onbeforeunload = -> 'Whoops, Harry is in trouble.  This sneaky page he landed on is trying to go to a different address.\n\nYou\'ll have to click "Don\'t Reload" (or press Escape), or you\'ll be taken away from the game.'`.  However, we need some way to skip the prompt if we requested the reload, which is easy enough to do in the game, but I don't think we can prevent it if the user presses refresh, and we don't want the warning then.
+  - my only solution is to spit back any request to the server with our `/play` boody.  This works, but only as long as the host wasn't changed in the reload call
+
+
 - Some regexes don't work, seems case-insensitive isn't working, don't know why, it's clearly there...
   - need page to test against, I haven't run into that lately, maybe not a but
 
@@ -73,6 +78,8 @@ BUGS
   - http://www.capzles.com/ also doesn't work (and some others) because they try to load http://localhost:8000/crossdomain.xml.  I can't find where they request that, maybe in flash.  What ever does, it's getting the wrong origin.  Setting <base> doesn't help.  Maybe in this case our server can see if we have the file, and if not, it can request it from a replaced version of that url and then return it
 
   - http://www.drudgereport.com/ dosn't have a full html document, it starts with <title>, meaning there's no <head> for us to latch on to.  This seems like either an error, or an anomly, let's blacklist it.
+
+  - http://studio.inmobi.com/
 
 
 
