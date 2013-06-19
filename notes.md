@@ -45,6 +45,7 @@ Do later
 - we're using a lot of libraries that all polute the global space... use something like requirejs?
 
 - I'd like to add javascripts back in and just somehow stop code that will mess wtih us (like redefine window.location.href).  But this seems to mess up our game often, for example, on facebook.com
+  - www.teensreadtoo.com uses location.href to redirect (I think.. it adds ?ai=1 to url, which breaks)
   - huffingtonpost.com works, but canvas height isn't set right for some reason, thinkprogress.org too
   - livemocha has trouble with $, maybe I need to use no conflicts mode
   - http://www.othermusic.com/ loads cdn files from //:... which our fixSrcUrls regex incorrectly appends the host to

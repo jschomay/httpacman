@@ -132,6 +132,13 @@ window.require.register("director", function(exports, require, module) {
         headerBarEl = $('#hh-header-bar')[0];
         $('a').filter(function() {
           return !$.contains(headerBarEl, this);
+        }).filter(function() {
+          var link;
+
+          link = $(this);
+          return !link.parents("[class*='nav']").filter(function() {
+            return $(link).parents('ul').length > 1;
+          }).length;
         }).each(function() {
           var $this, child, headerBarHeight, offset;
 

@@ -19,7 +19,7 @@ server.on('request', function(req, res) {
 
     res.writeHead(200, { 'content-type': 'text/html'});
     random = 'http://www.randomwebsitemachine.com/random_website/';
-    test = 'http://www.opensecrets.org/';
+    test = '';
     request({url: (test || random), headers:{'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.110 Safari/537.36'}}, function(err, response, body) {
       if(err) {
         console.log("error:", err.message);

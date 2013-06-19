@@ -38,8 +38,16 @@ module.exports = class Director
       numInternalLinks = 0;
       numExternalLinks = 0;
       headerBarEl = $('#hh-header-bar')[0]
+      # start with all links on page...
       $('a')
+      # filter out links in the header bar...
       .filter(-> !$.contains(headerBarEl, @))
+      # and filter out links under a nav system, but only 2nd tier ones (to avoid hidden drop nav menues)...
+      .filter(-> 
+        link = $ this
+        !link.parents("[class*='nav']")
+          .filter(-> $(link).parents('ul').length>1)
+          .length)
       .each ->
         numInternalLinks++;
         # if the anchor element wraps another element, return that, otherwise return the anchor
