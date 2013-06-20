@@ -7,11 +7,11 @@ Do soon
 
 - on 'onHit' for solid items, move back to @_wasAt (must issolate x and y first in collision algorythim, maybe have _hitX and _hitY bools get set on all hits)
 
+- we're at the point where pages with 1k+ of links are lagging at 30fps, due to all the collision detections (50 entities (enemies) x 1k+ checks per frame!).  So it's time to impliment a quad tree.
+
 - fix 58's in player's move
 
 - make 'movable' a component (player overrides for scrolling movement style)
-
-- index.htm - figure out
 
 - think of way to make sure player doesn't start on a page over a link (or other active element?)
 
@@ -86,6 +86,7 @@ IDEA LOG
   - Search engine spiders - maybe they steal life or points or collectables from Harry, maybe they multiply or "sweep" the page in patterns.  Or, they don't multiply, but they just bounce around the page like a pong ball, so with many on a page, Harry has moving obstacles to avoid.  If one hits Harry, it "wraps" around him for a few seconds, slowing him down (or making his controls laggy?), and steals a certain amount of his link juice, then darts off the page and is gone.
   - Spambots - act like anti virus bots, but they are camouflaged, and when they hit you they "spam" you (maybe that slows you down).  Maybe this means they "plaster" a random ad (from where?) right under you, or better yet, if it hit's you, it makes a "pop-up" on the screen that covers everything under it.  Maybe an opportunity for monitization?  
   - Viruses - each virus divides at set intervals. Maybe they seek Harry out, or maybe they wander randomly (and wiggle like my first gen enemy tests).  If they hit you, maybe they mess up your controls (like randomly switch your key binding directions), or make you buggy (like you "jump" a few pixels in a random direction).  Somehow they damage you too probably.  Maybe they also leave "trails" of blackness everywhere they go?
+  - A mouse pointer.  "Harry landed on a page being viewed by a user right now, run!".  The pointer follows Harry around and can go over any obstacles.  If it touches you it "pins" you and you can't move for a certain amount of time.  Maybe it drags you somewhere.  Then it darts offscreen and may come back randomly.
 
 - Abilities/powerups:
   - Cloak - enemies cant target Harry for a period of time

@@ -22,6 +22,7 @@
     "clean-css-brunch": ">= 1.0 < 1.6",
     "sass-brunch": "1.5.2",
     "jade-brunch": "1.5.1",
+    "static-jade-brunch": "1.4",
     "coffee-script-brunch": "1.5.1",
 
     "request": ""

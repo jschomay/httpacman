@@ -8,11 +8,11 @@ var server = http.createServer();
 server.on('request', function(req, res) {
 
   if(req.url === '/' && req.method === 'GET') {
-    req.url = "/index.htm";
+    req.url = "/index.html";
   } 
 
   // any request besides one of our assets pulls a random url
-  if(!req.url.match(/^\/(index.htm|js|css)/) && req.method === "GET") {
+  if(!req.url.match(/^\/(index.html|js|css)/) && req.method === "GET") {
 
     res.writeHead(200, { 'content-type': 'text/html'});
     
