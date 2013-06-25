@@ -69,7 +69,7 @@ server.on('request', function(req, res) {
         res.end(JSON.stringify(err));
         return;
       }
-      res.writeHead(200);
+      res.writeHead(200, { 'content-type': 'text/html'});
       res.end(data);
     });
 
