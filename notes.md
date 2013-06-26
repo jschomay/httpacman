@@ -46,6 +46,8 @@ BUGS
 
   - studio.inmobi.com/ui/index.html - same 'different origins error', I don't think we can get around that, the page is all blank
 
+  - http://www.ninjavideo.net/ - reloads to video using <meta http-equiv="refresh" content="10;url=http://www.youtube.com/v/Yc7tStP_ThU?autoplay=1" />
+
 - I test for a <head> in server to make sure we can latch on, but some sites fail even though I see a head in there, not sure why (like answers.yahoo.com)
 
 
@@ -151,3 +153,5 @@ levels manifest
 - Another cool enemy (or friend?) could be a spider or something that starts on each page with you and escapes through a link, and if you follow that link, you'll catch up with him.  (If you don't follow that link, maybe you "randomly" come across him on another site.)  So what happens when you hit him?  Maybe he leads you to something (like the google bot always goes for google plus), or if you catch him, he gives you some powerup or story, or way to progress to new levels.
 
 - Idea from talking with Alan - when running over a <p> tag, harry highlights the word he is on, and the user can "gather" that word (not sure of the ui).  Then if harry catches a seach engine spider, he can use his gathered words to make a search phrase and be taken to the results page for it.  This way the user can control where he goes more, if we give him tasks and goals.
+
+- Social Harry - I could make a twitter page that tweets the location of harry on each new hyperlink.  Maybe this is the page you have to get to in the end?

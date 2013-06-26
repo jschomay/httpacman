@@ -138,6 +138,12 @@ window.require.register("director", function(exports, require, module) {
             $('a').filter(function() {
               return !$.contains(headerBarEl, this);
             }).filter(function() {
+              return this.href;
+            }).filter(function() {
+              return !/#/.test(this.href);
+            }).filter(function() {
+              return !/mailto:|tel:/.test(this.href);
+            }).filter(function() {
               var link;
 
               link = $(this);
@@ -145,9 +151,16 @@ window.require.register("director", function(exports, require, module) {
                 return $(link).parents('ul').length > 1;
               }).length;
             }).each(function() {
-              var $this, child, headerBarHeight, offset;
+              var $this, child, domain, headerBarHeight, internalOrExternal, offset, testInternalOrExternal;
 
-              numInternalLinks++;
+              domain = that.gameState.get('url').replace("www.", "").split('/')[0];
+              testInternalOrExternal = new RegExp(domain, 'i');
+              internalOrExternal = testInternalOrExternal.test(this.href) ? 'internal' : 'external';
+              if (internalOrExternal === 'internal') {
+                numInternalLinks++;
+              } else {
+                numExternalLinks++;
+              }
               child = $(this).children();
               $this = child.length > 0 ? child : $(this);
               offset = $this.offset();
@@ -158,10 +171,12 @@ window.require.register("director", function(exports, require, module) {
                 h: $this.height(),
                 y: offset.top - headerBarHeight,
                 x: offset.left,
-                $el: $this
+                $el: $this,
+                internalOrExternal: internalOrExternal
               }));
             });
             _this.gameState.set("numInternalLinks", numInternalLinks);
+            _this.gameState.set('numExternalLinks', numExternalLinks);
             _this.gameState.set("numLinksNeeded", Math.floor(numInternalLinks / 2) + 1);
             return _this.gameState.set('running', true);
           }), delay);
@@ -435,10 +450,14 @@ window.require.register("entities/hyperlink", function(exports, require, module)
         background: 'green'
       });
       this.$el = options.$el;
+      this.internalOrExternal = options.internalOrExternal;
       Hyperlink.__super__.constructor.apply(this, arguments);
     }
 
-    Hyperlink.prototype.draw = function(ctx) {};
+    Hyperlink.prototype.draw = function(ctx) {
+      ctx.strokeStyle = this.internalOrExternal === 'internal' ? 'green' : 'orange';
+      return ctx.strokeRect(this.position.x, this.position.y, this.w, this.h);
+    };
 
     Hyperlink.prototype.destroy = function() {
       this.$el.animate({

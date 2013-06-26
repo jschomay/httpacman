@@ -16,16 +16,13 @@ module.exports = class Hyperlink extends Entity
       y: options.y
       background: 'green'
     @$el = options.$el
+    @internalOrExternal = options.internalOrExternal
     # @$el.css 'box-shadow', '0px 0px 13px 1px green'
     super
 
   draw: (ctx) ->
-    # ctx.strokeStyle = @background
-    # ctx.strokeRect @position.x, @position.y, @w, @h
-    # ctx.rect @position.x, @position.y, @w, @h
-    # ctx.shadowColor = @background;
-    # ctx.shadowBlur = 5;
-    # ctx.fill()
+    ctx.strokeStyle = if @internalOrExternal is 'internal' then 'green' else 'orange'
+    ctx.strokeRect @position.x, @position.y, @w, @h
 
   destroy: ->
     @$el.animate opacity: 0.1

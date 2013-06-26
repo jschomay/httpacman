@@ -45,16 +45,31 @@ module.exports = class Director
           headerBarEl = $('#hh-header-bar')[0]
           # start with all links on page...
           $('a')
-          # filter out links in the header bar...
+          # filter out links in the header bar
           .filter(-> !$.contains(headerBarEl, @))
-          # and filter out links under a nav system, but only 2nd tier ones (to avoid hidden drop nav menues)...
+          # and links that have no href (like pagers in sliders)
+          .filter(-> this.href)
+          # and links that are just anchors
+          .filter( -> !/#/.test(this.href))
+          # and mailto: and tel:
+          .filter(-> !/mailto:|tel:/.test this.href)
+          # and links under a nav system, but only 2nd tier ones (to avoid hidden drop nav menues)
           .filter(-> 
             link = $ this
             !link.parents("[class*='nav']")
               .filter(-> $(link).parents('ul').length>1)
               .length)
           .each ->
-            numInternalLinks++;
+            # is this an internal or external link?
+            domain = that.gameState.get('url').replace("www.", "").split('/')[0]
+              # .replace(/.(com|org|gov|info|biz|mobi|name|uk|co|de|at|ch|cs|nz|au|ca|fr|us)\//g,'')
+            # testInternalOrExternal = new RegExp("^https?://(www\\.)?([^/]+\\.)?"+domain, 'i')
+            testInternalOrExternal = new RegExp(domain, 'i')
+            internalOrExternal = if testInternalOrExternal.test(this.href) then 'internal' else 'external'
+            if internalOrExternal is 'internal'
+              numInternalLinks++
+            else
+              numExternalLinks++
             # if the anchor element wraps another element, return that, otherwise return the anchor
             # this way the hyperlink entity will hopefully always have a width and height > 0
             child = $(this).children()
@@ -68,7 +83,9 @@ module.exports = class Director
               y: offset.top - headerBarHeight
               x: offset.left
               $el: $this
+              internalOrExternal: internalOrExternal
           @gameState.set "numInternalLinks", numInternalLinks
+          @gameState.set 'numExternalLinks', numExternalLinks
           @gameState.set "numLinksNeeded", Math.floor(numInternalLinks/2) + 1
           @gameState.set 'running', true),  delay), 400
 
