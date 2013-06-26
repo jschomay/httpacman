@@ -69,7 +69,10 @@ server.on('request', function(req, res) {
         res.end(JSON.stringify(err));
         return;
       }
-      res.writeHead(200, { 'content-type': 'text/html'});
+      var headerProps = {};
+      if (req.url === '/index.html')
+        headerProps = { 'content-type': 'text/html'};
+      res.writeHead(200, headerProps);
       res.end(data);
     });
 
