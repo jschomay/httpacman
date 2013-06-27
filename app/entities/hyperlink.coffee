@@ -17,6 +17,7 @@ module.exports = class Hyperlink extends Entity
       background: 'green'
     @$el = options.$el
     @internalOrExternal = options.internalOrExternal
+    @href = options.href
     # @$el.css 'box-shadow', '0px 0px 13px 1px green'
     super
 

@@ -99,6 +99,7 @@ window.require.register("director", function(exports, require, module) {
         levelData = {};
       }
       this.gameState = gameState;
+      this.nextLevel = __bind(this.nextLevel, this);
       this.draw = __bind(this.draw, this);
       this.update = __bind(this.update, this);
       this.removeEntity = __bind(this.removeEntity, this);
@@ -172,12 +173,13 @@ window.require.register("director", function(exports, require, module) {
                 y: offset.top - headerBarHeight,
                 x: offset.left,
                 $el: $this,
-                internalOrExternal: internalOrExternal
+                internalOrExternal: internalOrExternal,
+                href: this.href
               }));
             });
             _this.gameState.set("numInternalLinks", numInternalLinks);
             _this.gameState.set('numExternalLinks', numExternalLinks);
-            _this.gameState.set("numLinksNeeded", Math.floor(numInternalLinks / 2) + 1);
+            _this.gameState.set("numLinksNeeded", 2);
             return _this.gameState.set('running', true);
           }), delay);
         }), 400);
@@ -219,6 +221,11 @@ window.require.register("director", function(exports, require, module) {
         _results.push(entity.draw(ctx));
       }
       return _results;
+    };
+
+    Director.prototype.nextLevel = function(url) {
+      this.gameState.set('running', false);
+      return console.log("NEXT LEVEL", url);
     };
 
     return Director;
@@ -451,6 +458,7 @@ window.require.register("entities/hyperlink", function(exports, require, module)
       });
       this.$el = options.$el;
       this.internalOrExternal = options.internalOrExternal;
+      this.href = options.href;
       Hyperlink.__super__.constructor.apply(this, arguments);
     }
 
@@ -580,9 +588,16 @@ window.require.register("entities/player", function(exports, require, module) {
     };
 
     Player.prototype.onHitHyperlink = function(obstacle) {
-      this.director.gameState.set('numInternalLinks', this.director.gameState.get('numInternalLinks') - 1);
-      this.director.gameState.set('numCollectedLinks', this.director.gameState.get('numCollectedLinks') + 1);
-      return obstacle.destroy();
+      if (obstacle.internalOrExternal === "internal") {
+        this.director.gameState.set('numInternalLinks', this.director.gameState.get('numInternalLinks') - 1);
+        this.director.gameState.set('numCollectedLinks', this.director.gameState.get('numCollectedLinks') + 1);
+        return obstacle.destroy();
+      } else {
+        if ((this.director.gameState.get("numCollectedLinks")) < (this.director.gameState.get("numLinksNeeded"))) {
+          return;
+        }
+        return this.director.nextLevel(obstacle.href);
+      }
     };
 
     Player.prototype.onHitEnemy = function(obstacle) {

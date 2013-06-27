@@ -84,9 +84,10 @@ module.exports = class Director
               x: offset.left
               $el: $this
               internalOrExternal: internalOrExternal
+              href: this.href
           @gameState.set "numInternalLinks", numInternalLinks
           @gameState.set 'numExternalLinks', numExternalLinks
-          @gameState.set "numLinksNeeded", Math.floor(numInternalLinks/2) + 1
+          @gameState.set "numLinksNeeded", 2# Math.floor(numInternalLinks/2) + 1
           @gameState.set 'running', true),  delay), 400
 
 
@@ -110,3 +111,8 @@ module.exports = class Director
     # render each entity in scene
     for id, entity of @entities
       entity.draw(ctx)
+
+  nextLevel: (url) =>
+    @gameState.set 'running', false
+    # tell server to send us to a new level
+    console.log "NEXT LEVEL", url

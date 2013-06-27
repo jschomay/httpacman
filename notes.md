@@ -48,6 +48,8 @@ BUGS
 
   - http://www.ninjavideo.net/ - reloads to video using <meta http-equiv="refresh" content="10;url=http://www.youtube.com/v/Yc7tStP_ThU?autoplay=1" />
 
+  - http://www.snagfilms.com/ doesn't load
+
 - I test for a <head> in server to make sure we can latch on, but some sites fail even though I see a head in there, not sure why (like answers.yahoo.com)
 
 
