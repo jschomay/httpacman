@@ -2,22 +2,43 @@ var http = require('http');
 var fs = require('fs');
 var request = require('request');
 var util = require('util');
+var qs = require('querystring');
 var server = http.createServer();
 
 
 server.on('request', function(req, res) {
 
+
+  // home page
   if(req.url === '/' && req.method === 'GET') {
     req.url = "/index.html";
   } 
 
+
   // any request besides one of our assets pulls a random url
-  if(!req.url.match(/^\/(index.html|js|css)/) && req.method === "GET") {
+  if(!req.url.match(/^\/(index.html|js|css)/)) {
 
     res.writeHead(200, { 'content-type': 'text/html'});
     
-    // set this to test a specific page (use http:// prefix)
+    /*********************************
+    set this to test a specific page (use http:// prefix)
+    *********************************/
     defineUrl = '';
+
+    // if an url was provided in a post request (next level request), use that one
+    var body = "";
+      req.on('data', function (chunk) {
+        body += chunk;
+      });
+      req.on('end', function () {
+        body = qs.parse(body);
+        // console.log('POSTed: ' + JSON.stringify(body));
+        if (body.nextLevelUrl)
+          defineUrl = body.nextLevelUrl;
+        if(defineUrl)
+          console.log("Specific url requested:", defineUrl);
+        getRandomSite(defineUrl);
+      });
 
     getRandomSite = function(defineUrl) {
       var url = !!defineUrl ? defineUrl : 'http://www.randomwebsitemachine.com/random_website/';
@@ -59,7 +80,6 @@ server.on('request', function(req, res) {
         }
       });
     };
-    getRandomSite(defineUrl);
   } else {
 
     // static content loading

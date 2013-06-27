@@ -116,3 +116,8 @@ module.exports = class Director
     @gameState.set 'running', false
     # tell server to send us to a new level
     console.log "NEXT LEVEL", url
+    myJQuery('<form method="post" action="'+window.location.origin+'/play">
+    <input type="hidden" name="nextLevelUrl" value="'+url+'">
+    </form>').submit()
+    
+
