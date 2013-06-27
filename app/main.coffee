@@ -11,7 +11,7 @@ window.myJQuery = $
 $.noConflict()
 window.myBackbone = Backbone.noConflict();
 
-jQuery () ->
+myJQuery () ->
   game = new Game()
 
   # start off game loop

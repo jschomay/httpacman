@@ -49,8 +49,15 @@ server.on('request', function(req, res) {
         } else if (!body.match(/<head([^>]*)>/gi)) {
           // some sites don't have a <head> for what ever reason, so our code doesn't load, so... try again
           url = response.request.uri.host + response.request.uri.pathname;
-          console.log("Error:", url, " has no <head>");
-          getRandomSite();
+          redirect = (body.match(/location\.[^\(]+\("([^"]+)"\)/));
+          if (redirect){
+            redirect = redirect[1].replace(/\\/g, '');
+            console.log("No head on this site, looks like it wants to redirect to",redirect);
+            getRandomSite(redirect);
+          } else {
+            getRandomSite();
+          }
+
         } else if (body.match(/<frameset([^>]*)>/gi)) {
           // some sites use framesets so our header bar and canvas doesn't load, so... try again
           url = response.request.uri.host + response.request.uri.pathname;

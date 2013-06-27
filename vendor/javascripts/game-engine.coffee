@@ -66,9 +66,11 @@ atom.input = {
       e.preventDefault()
 }
 
-document.onkeydown = atom.input.onkeydown.bind(atom.input)
-document.onkeyup = atom.input.onkeyup.bind(atom.input)
-document.onmouseup = atom.input.onmouseup.bind(atom.input)
+# changed to use window instead of document because some sites like twitter
+# somehow make my bindings get lost when it loads more posts.  Window seems to work.
+window.onkeydown = atom.input.onkeydown.bind(atom.input)
+window.onkeyup = atom.input.onkeyup.bind(atom.input)
+window.onmouseup = atom.input.onmouseup.bind(atom.input)
 
 atom.button =
   LEFT: -1

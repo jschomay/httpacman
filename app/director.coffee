@@ -47,8 +47,8 @@ module.exports = class Director
           $('a:visible')
           # filter out links in the header bar
           .filter(-> !$.contains(headerBarEl, @))
-          # and links that have no href (like pagers in sliders)
-          .filter(-> this.href)
+          # and links that have no href or javascript (like pagers in sliders)
+          .filter(-> this.href and this.href isnt "javascript:void(0);")
           # and links that are just anchors
           .filter( -> !/#/.test(this.href))
           # and mailto: and tel:
@@ -66,7 +66,7 @@ module.exports = class Director
             $(this).trigger('mouseover')[0].href
             link = this.href.replace(/https?:\/\/(www\.)?/, '').split('/')[0]
             domain = that.gameState.get('url').replace("www.", "").split('/')[0]
-            console.log(">>", domain, link, this) if domain != link
+            # console.log(">>", domain, link, this) if domain != link
             internalOrExternal = if domain is link then 'internal' else 'external'
               # .replace(/.(com|org|gov|info|biz|mobi|name|uk|co|de|at|ch|cs|nz|au|ca|fr|us)\//g,'')
             # testInternalOrExternal = new RegExp(domain, 'i')

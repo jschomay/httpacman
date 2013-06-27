@@ -139,7 +139,7 @@ window.require.register("director", function(exports, require, module) {
             $('a:visible').filter(function() {
               return !$.contains(headerBarEl, this);
             }).filter(function() {
-              return this.href;
+              return this.href && this.href !== "javascript:void(0);";
             }).filter(function() {
               return !/#/.test(this.href);
             }).filter(function() {
@@ -157,9 +157,6 @@ window.require.register("director", function(exports, require, module) {
               $(this).trigger('mouseover')[0].href;
               link = this.href.replace(/https?:\/\/(www\.)?/, '').split('/')[0];
               domain = that.gameState.get('url').replace("www.", "").split('/')[0];
-              if (domain !== link) {
-                console.log(">>", domain, link, this);
-              }
               internalOrExternal = domain === link ? 'internal' : 'external';
               if (internalOrExternal === 'internal') {
                 numInternalLinks++;
@@ -740,7 +737,7 @@ window.require.register("main", function(exports, require, module) {
 
   window.myBackbone = Backbone.noConflict();
 
-  jQuery(function() {
+  myJQuery(function() {
     var game;
 
     game = new Game();

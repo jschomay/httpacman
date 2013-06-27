@@ -17,6 +17,10 @@ Do soon
 
 - use session instead of form to communicate nextLevelUrl to server.  This also  has the benefit of storing the current url to serve files correctly (instead of getting /play for /favicon for example)
 
+- deal with 0 external links situation
+
+- consider using levenshtein distance on domain vs link to determin external to avoid similar domains (like internation)
+
 
 
 Do later
@@ -169,3 +173,5 @@ levels manifest
 - After testing the game play with external hyperlinks working, I'm finding that it's not as awesome as I expected.  In fact, we may need to rethink this.  The problems I ran into include - getting 'stuck' in a 'site family loop', like sites where the only external links are international versions, or privacy pages or things like that with no way to get back out into the "open waters".  Also some pages don't even have external links.  This is especially a problem with important sites like some aggregators and even Facebook - instead of a rich link field, almost all are internal.  Also many pages simply don't work or are 404.  
 
   So the question is, what to do about this?  One direction is to improve my internal/external detection to pick up some likes that are missed (like bit.ly) and pass on subdomains, but I'm not sure how much that will help.  Another is to change my strategy on what is internal and external, but I don't know what that means exactely.  Another direction is to drop the link following idea and just collect enough links to do a random jump, but this kind of loses a nice part of controlling where you are.  The only way to make that work is to make part of the story invovle random hyperjumps, or introduce some new element like the random jump button that activates after filled with link juice.  Collecting words on the page could be employed maybe to make the random jump not so random.  
+
+- I'VE GOT THE ENDING!!  When you finally find your way "back home" it takes you to the hyperlink harry hompage!  And you realize "oh sh!t, it's all just a game!".  Like Limbo, only cooler, because you can run around on the page that you had already entered been on to start the game.  And, since we control that page, we can inject stuff into it, like "you win" message/animation, maybe leader board, etc, plus the twitter feed of where harry has been.  Sweet B-)

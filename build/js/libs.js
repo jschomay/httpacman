@@ -12583,11 +12583,11 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
     }
   };
 
-  document.onkeydown = atom.input.onkeydown.bind(atom.input);
+  window.onkeydown = atom.input.onkeydown.bind(atom.input);
 
-  document.onkeyup = atom.input.onkeyup.bind(atom.input);
+  window.onkeyup = atom.input.onkeyup.bind(atom.input);
 
-  document.onmouseup = atom.input.onmouseup.bind(atom.input);
+  window.onmouseup = atom.input.onmouseup.bind(atom.input);
 
   atom.button = {
     LEFT: -1,
