@@ -136,7 +136,7 @@ window.require.register("director", function(exports, require, module) {
             numInternalLinks = 0;
             numExternalLinks = 0;
             headerBarEl = $('#hh-header-bar')[0];
-            $('a').filter(function() {
+            $('a:visible').filter(function() {
               return !$.contains(headerBarEl, this);
             }).filter(function() {
               return this.href;
@@ -152,11 +152,15 @@ window.require.register("director", function(exports, require, module) {
                 return $(link).parents('ul').length > 1;
               }).length;
             }).each(function() {
-              var $this, child, domain, headerBarHeight, internalOrExternal, offset, testInternalOrExternal;
+              var $this, child, domain, headerBarHeight, internalOrExternal, link, offset;
 
+              $(this).trigger('mouseover')[0].href;
+              link = this.href.replace(/https?:\/\/(www\.)?/, '').split('/')[0];
               domain = that.gameState.get('url').replace("www.", "").split('/')[0];
-              testInternalOrExternal = new RegExp(domain, 'i');
-              internalOrExternal = testInternalOrExternal.test(this.href) ? 'internal' : 'external';
+              if (domain !== link) {
+                console.log(">>", domain, link, this);
+              }
+              internalOrExternal = domain === link ? 'internal' : 'external';
               if (internalOrExternal === 'internal') {
                 numInternalLinks++;
               } else {
@@ -179,7 +183,7 @@ window.require.register("director", function(exports, require, module) {
             });
             _this.gameState.set("numInternalLinks", numInternalLinks);
             _this.gameState.set('numExternalLinks', numExternalLinks);
-            _this.gameState.set("numLinksNeeded", 2);
+            _this.gameState.set("numLinksNeeded", Math.ceil(numInternalLinks * (Math.min(_this.gameState.get('level', 10))) / 20));
             return _this.gameState.set('running', true);
           }), delay);
         }), 400);
@@ -225,7 +229,10 @@ window.require.register("director", function(exports, require, module) {
 
     Director.prototype.nextLevel = function(url) {
       this.gameState.set('running', false);
-      return console.log("NEXT LEVEL", url);
+      console.log("NEXT LEVEL", url);
+      return myJQuery('<form method="post" action="' + window.location.origin + '/play">\
+    <input type="hidden" name="nextLevelUrl" value="' + url + '">\
+    </form>').submit();
     };
 
     return Director;
@@ -516,8 +523,8 @@ window.require.register("entities/player", function(exports, require, module) {
         y: (options != null ? (_ref1 = options.position) != null ? _ref1.y : void 0 : void 0) || 200,
         background: 'yellow'
       });
-      this.acceleration = 50;
-      this.maxSpeed = 500;
+      this.acceleration = 100;
+      this.maxSpeed = 500000;
       this.vx = 0;
       this.vy = 0;
       this.drag = .8;
@@ -765,9 +772,9 @@ window.require.register("models/game_state", function(exports, require, module) 
         running: false,
         level: 1,
         url: window.currentUrl,
-        numInternalLinks: 0,
-        numExternalLinks: 0,
-        numLinksNeeded: 0,
+        numInternalLinks: "Calculating...",
+        numExternalLinks: "Calculating...",
+        numLinksNeeded: "Calculating...",
         numCollectedLinks: 0
       });
     };
@@ -818,16 +825,16 @@ window.require.register("views/templates/header_bar", function(exports, require,
   var buf = [];
   with (locals || {}) {
   var interp;
-  buf.push('<div id="hh-logo" class="hh-section"><h1>Hyperlink Harry</h1></div><div id="level-info" class="hh-section"><h2>level ' + escape((interp = level) == null ? '' : interp) + '</h2><h3> \nSite: <a');
+  buf.push('<div id="hh-logo" class="hh-section"><h1>Hyperlink Harry</h1></div><div id="level-info" class="hh-section"><h2>level ' + escape((interp = level) == null ? '' : interp) + '</h2><h3> \nSite:&nbsp<a');
   buf.push(attrs({ 'href':('http://' + (url) + ''), 'target':('_blank') }, {"href":true,"target":true}));
   buf.push('>' + escape((interp = url) == null ? '' : interp) + '</a></h3></div><div class="hh-section"><p>Internal links: ');
-  var __val__ = numInternalLinks? numInternalLinks : 'Calculating...'
+  var __val__ = numInternalLinks
   buf.push(escape(null == __val__ ? "" : __val__));
   buf.push('</p><p>External links: ');
-  var __val__ = numExternalLinks? numExternalLinks : 'Calculating...'
+  var __val__ = numExternalLinks
   buf.push(escape(null == __val__ ? "" : __val__));
   buf.push('</p></div><div class="hh-section"><p>Links needed to escape: ');
-  var __val__ = numLinksNeeded? numLinksNeeded : 'Calculating...'
+  var __val__ = numLinksNeeded
   buf.push(escape(null == __val__ ? "" : __val__));
   buf.push('</p><p>Links collected: ' + escape((interp = numCollectedLinks) == null ? '' : interp) + '</p></div>');
   }

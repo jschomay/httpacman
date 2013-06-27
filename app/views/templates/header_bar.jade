@@ -3,14 +3,14 @@
 .hh-section#level-info
   h2 level #{level}
   h3 
-    | Site: 
+    | Site:&nbsp
     a(href='http://#{url}', target='_blank') #{url}
 .hh-section
   p Internal links: 
-    = numInternalLinks? numInternalLinks : 'Calculating...'
+    = numInternalLinks
   p External links: 
-    = numExternalLinks? numExternalLinks : 'Calculating...'
+    = numExternalLinks
 .hh-section
   p Links needed to escape: 
-    = numLinksNeeded? numLinksNeeded : 'Calculating...'
+    = numLinksNeeded
   p Links collected: #{numCollectedLinks}

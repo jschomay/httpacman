@@ -16,8 +16,8 @@ module.exports = class Player extends Entity
       y: options?.position?.y || 200
       background: 'yellow'
 
-    @acceleration = 50 # px/s/s
-    @maxSpeed = 500 # px/s
+    @acceleration = 100#50 # px/s/s
+    @maxSpeed = 500000#500 # px/s
     @vx = 0
     @vy = 0
     @drag = .8

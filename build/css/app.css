@@ -68,4 +68,6 @@ body {
     width: 100px; }
 @media -sass-debug-info{filename{}line{font-family:\0000369}}
   #hh-header-bar #level-info {
-    margin-right: 100px; }
+    margin-right: 100px;
+    max-width: 200px;
+    overflow: hidden; }
