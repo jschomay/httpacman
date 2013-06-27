@@ -44,7 +44,7 @@ module.exports = class Director
           numExternalLinks = 0;
           headerBarEl = $('#hh-header-bar')[0]
           # start with all links on page...
-          $('a')
+          $('a:visible')
           # filter out links in the header bar
           .filter(-> !$.contains(headerBarEl, @))
           # and links that have no href (like pagers in sliders)
@@ -61,11 +61,17 @@ module.exports = class Director
               .length)
           .each ->
             # is this an internal or external link?
+
+            # quick hack to get around facebook's linkswap on mouseover to get the real like destination
+            $(this).trigger('mouseover')[0].href
+            link = this.href.replace(/https?:\/\/(www\.)?/, '').split('/')[0]
             domain = that.gameState.get('url').replace("www.", "").split('/')[0]
+            # console.log(">>", domain, link) if domain != link
+            internalOrExternal = if domain is link then 'internal' else 'external'
               # .replace(/.(com|org|gov|info|biz|mobi|name|uk|co|de|at|ch|cs|nz|au|ca|fr|us)\//g,'')
-            # testInternalOrExternal = new RegExp("^https?://(www\\.)?([^/]+\\.)?"+domain, 'i')
-            testInternalOrExternal = new RegExp(domain, 'i')
-            internalOrExternal = if testInternalOrExternal.test(this.href) then 'internal' else 'external'
+            # testInternalOrExternal = new RegExp(domain, 'i')
+            # internalOrExternal = if testInternalOrExternal.test(this.href) then 'internal' else 'external'
+            
             if internalOrExternal is 'internal'
               numInternalLinks++
             else

@@ -15,6 +15,8 @@ Do soon
 
 - think of way to make sure player doesn't start on a page over a link (or other active element?)
 
+- use session instead of form to communicate nextLevelUrl to server.  This also  has the benefit of storing the current url to serve files correctly (instead of getting /play for /favicon for example)
+
 
 
 Do later
@@ -49,6 +51,12 @@ BUGS
   - http://www.ninjavideo.net/ - reloads to video using <meta http-equiv="refresh" content="10;url=http://www.youtube.com/v/Yc7tStP_ThU?autoplay=1" />
 
   - http://www.snagfilms.com/ doesn't load
+
+  - http://www.criminalsearches.com/ redirects
+
+  - http://www.kiva.org/start claims links that dont show
+
+  - google plus pages don't work :(
 
 - I test for a <head> in server to make sure we can latch on, but some sites fail even though I see a head in there, not sure why (like answers.yahoo.com)
 
@@ -157,3 +165,7 @@ levels manifest
 - Idea from talking with Alan - when running over a <p> tag, harry highlights the word he is on, and the user can "gather" that word (not sure of the ui).  Then if harry catches a seach engine spider, he can use his gathered words to make a search phrase and be taken to the results page for it.  This way the user can control where he goes more, if we give him tasks and goals.
 
 - Social Harry - I could make a twitter page that tweets the location of harry on each new hyperlink.  Maybe this is the page you have to get to in the end?
+
+- After testing the game play with external hyperlinks working, I'm finding that it's not as awesome as I expected.  In fact, we may need to rethink this.  The problems I ran into include - getting 'stuck' in a 'site family loop', like sites where the only external links are international versions, or privacy pages or things like that with no way to get back out into the "open waters".  Also some pages don't even have external links.  This is especially a problem with important sites like some aggregators and even Facebook - instead of a rich link field, almost all are internal.  Also many pages simply don't work or are 404.  
+
+  So the question is, what to do about this?  One direction is to improve my internal/external detection to pick up some likes that are missed (like bit.ly) and pass on subdomains, but I'm not sure how much that will help.  Another is to change my strategy on what is internal and external, but I don't know what that means exactely.  Another direction is to drop the link following idea and just collect enough links to do a random jump, but this kind of loses a nice part of controlling where you are.  The only way to make that work is to make part of the story invovle random hyperjumps, or introduce some new element like the random jump button that activates after filled with link juice.  Collecting words on the page could be employed maybe to make the random jump not so random.  
