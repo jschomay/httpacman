@@ -66,11 +66,7 @@ module.exports = class Director
             $(this).trigger('mouseover')[0].href
             link = this.href.replace(/https?:\/\/(www\.)?/, '').split('/')[0]
             domain = that.gameState.get('url').replace("www.", "").split('/')[0]
-            # console.log(">>", domain, link, this) if domain != link
-            internalOrExternal = if domain is link then 'internal' else 'external'
-              # .replace(/.(com|org|gov|info|biz|mobi|name|uk|co|de|at|ch|cs|nz|au|ca|fr|us)\//g,'')
-            # testInternalOrExternal = new RegExp(domain, 'i')
-            # internalOrExternal = if testInternalOrExternal.test(this.href) then 'internal' else 'external'
+            internalOrExternal = if domain is link or link is window.location.origin.replace(/https?:\/\//,'') then 'internal' else 'external'
             
             if internalOrExternal is 'internal'
               numInternalLinks++

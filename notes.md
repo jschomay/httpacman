@@ -17,7 +17,7 @@ Do soon
 
 - use session instead of form to communicate nextLevelUrl to server.  This also  has the benefit of storing the current url to serve files correctly (instead of getting /play for /favicon for example)
 
-- deal with 0 external links situation
+- deal with 0 external links situation (better)
 
 - consider using levenshtein distance on domain vs link to determin external to avoid similar domains (like internation)
 
@@ -29,8 +29,6 @@ Do later
 ---------------------------------------------------------
 
 - use 'gameState:[event]' events to trigger info messages based on levels/state
-
-- deal with situation when there's no links on a page
 
 - make tab title and favicon be hyperlink harry instead of random site's
 

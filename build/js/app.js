@@ -157,7 +157,7 @@ window.require.register("director", function(exports, require, module) {
               $(this).trigger('mouseover')[0].href;
               link = this.href.replace(/https?:\/\/(www\.)?/, '').split('/')[0];
               domain = that.gameState.get('url').replace("www.", "").split('/')[0];
-              internalOrExternal = domain === link ? 'internal' : 'external';
+              internalOrExternal = domain === link || link === window.location.origin.replace(/https?:\/\//, '') ? 'internal' : 'external';
               if (internalOrExternal === 'internal') {
                 numInternalLinks++;
               } else {
@@ -752,6 +752,13 @@ window.require.register("main", function(exports, require, module) {
   if (!localStorage.getItem("hh-level")) {
     localStorage.setItem("hh-level", 1);
   }
+
+  document.onkeydown = function(e) {
+    if (e.keyCode === 82) {
+      window.location.href = window.location.origin + "/play";
+      return false;
+    }
+  };
 
   myJQuery(function() {
     var game;
