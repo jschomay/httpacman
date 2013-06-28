@@ -125,7 +125,7 @@ window.require.register("director", function(exports, require, module) {
 
           delay = document.height > 7000 ? 1700 : 300;
           return setTimeout((function() {
-            var headerBarEl, numExternalLinks, numInternalLinks, that;
+            var ads, headerBarEl, numExternalLinks, numInternalLinks, that;
 
             console.log("Converting hyperlinks to game entities");
             that = _this;
@@ -187,6 +187,18 @@ window.require.register("director", function(exports, require, module) {
             _this.gameState.set("numInternalLinks", numInternalLinks);
             _this.gameState.set('numExternalLinks', numExternalLinks);
             _this.gameState.set("numLinksNeeded", Math.ceil(numInternalLinks * (Math.min(_this.gameState.get('level', 10))) / 30));
+            ads = $('script, iframe').add('div').filter(function() {
+              var adIdentifiers;
+
+              adIdentifiers = [this.src, this["class"], this.id, this.name].join('  ');
+              return adIdentifiers.match(/[\s\._-]ads?[\s\._A-Z-]|doubleclick|banner/);
+            }).map(function() {
+              if (this.nodeName.match(/script|iframe/i)) {
+                return $(this).parent('div')[0];
+              } else {
+                return this;
+              }
+            }).css('border', '6px outset magenta');
             return _this.gameState.set('running', true);
           }), delay);
         }), 400);

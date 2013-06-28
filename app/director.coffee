@@ -115,7 +115,16 @@ module.exports = class Director
           ################
           # ads
           ################
-          # $('script, iframe').filter(function(){return this.src.match(/ad|doubleclick/i)}).parent('div').css('border','6px solid magenta')
+          ads = $('script, iframe').add('div').filter( -> 
+            adIdentifiers = [this.src, this.class, this.id, this.name].join '  '
+            adIdentifiers.match(/[\s\._-]ads?[\s\._A-Z-]|doubleclick|banner/)
+            )
+          .map ->
+            if this.nodeName.match /script|iframe/i
+              return $(this).parent('div')[0]
+            else
+              return this
+          .css('border','6px outset magenta')
 
           @gameState.set 'running', true
         ),  delay
