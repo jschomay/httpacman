@@ -62,6 +62,8 @@ BUGS
 
   - google plus pages don't work :(
 
+  - http://www.lynda.com/ doesn't always show the canvas elements, not sure why
+
 - I test for a <head> in server to make sure we can latch on, but some sites fail even though I see a head in there, not sure why (like answers.yahoo.com)
 
 
@@ -98,7 +100,7 @@ IDEA LOG
 - Given the above idea, the game can have a win condition.  So what would happen then on screen?
 
 - Enemies:
-  - Anti-virus bots - they seek Harry out and destroy him.  Not sure what happens when Harry "dies".  Maybe he has to restart the level.  Maybe he goes back to the previous level.  Maybe he enters a "sub game" where he has to escape "quarantine" or something.  Or maybe he gets "quarantined" on the page, but I'm not sure what that means.  Maybe it puts a bubble around him that he has to break somehow.  Anti virus bots also seek out and destroy viruses and spam bots.
+  - Anti-virus bots - they seek Harry out and destroy him.  Not sure what happens when Harry "dies".  Maybe he has to restart the level.  Maybe he goes back to the previous level.  Maybe he enters a "sub game" where he has to escape "quarantine" or something.  Or maybe he gets "quarantined" on the page, but I'm not sure what that means.  Maybe it puts a bubble around him that he has to break somehow.  Anti virus bots also seek out and destroy viruses and spam bots.  They target me, and if they hit me, they send me to a random page.  Also, they get blocked by links.
   - Search engine spiders - maybe they steal life or points or collectables from Harry, maybe they multiply or "sweep" the page in patterns.  Or, they don't multiply, but they just bounce around the page like a pong ball, so with many on a page, Harry has moving obstacles to avoid.  If one hits Harry, it "wraps" around him for a few seconds, slowing him down (or making his controls laggy?), and steals a certain amount of his link juice, then darts off the page and is gone.
   - Spambots - act like anti virus bots, but they are camouflaged, and when they hit you they "spam" you (maybe that slows you down).  Maybe this means they "plaster" a random ad (from where?) right under you, or better yet, if it hit's you, it makes a "pop-up" on the screen that covers everything under it.  Maybe an opportunity for monitization?  
   - Viruses - each virus divides at set intervals. Maybe they seek Harry out, or maybe they wander randomly (and wiggle like my first gen enemy tests).  If they hit you, maybe they mess up your controls (like randomly switch your key binding directions), or make you buggy (like you "jump" a few pixels in a random direction).  Somehow they damage you too probably.  Maybe they also leave "trails" of blackness everywhere they go?
@@ -108,6 +110,8 @@ IDEA LOG
   - Cloak - enemies cant target Harry for a period of time
   - Decoy - clone of Harry that moves in interse directions, enemies target the clone
   - Some way to destroy an enemy, or trap it?
+  - Pointer - used to collect words?
+  - Escape portal - activates the 'R' key?
 
 - Animation/transition ideas:
   - On enter/exit world Harry fades in/out with 0's and 1's particles effect.  Same on die, only bigger?
@@ -175,3 +179,5 @@ levels manifest
   So the question is, what to do about this?  One direction is to improve my internal/external detection to pick up some likes that are missed (like bit.ly) and pass on subdomains, but I'm not sure how much that will help.  Another is to change my strategy on what is internal and external, but I don't know what that means exactely.  Another direction is to drop the link following idea and just collect enough links to do a random jump, but this kind of loses a nice part of controlling where you are.  The only way to make that work is to make part of the story invovle random hyperjumps, or introduce some new element like the random jump button that activates after filled with link juice.  Collecting words on the page could be employed maybe to make the random jump not so random.  
 
 - I'VE GOT THE ENDING!!  When you finally find your way "back home" it takes you to the hyperlink harry hompage!  And you realize "oh sh!t, it's all just a game!".  Like Limbo, only cooler, because you can run around on the page that you had already entered been on to start the game.  And, since we control that page, we can inject stuff into it, like "you win" message/animation, maybe leader board, etc, plus the twitter feed of where harry has been.  Sweet B-)
+
+- Ads block Harry.

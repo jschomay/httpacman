@@ -106,10 +106,6 @@ window.require.register("director", function(exports, require, module) {
       this.addEntity = __bind(this.addEntity, this);
       $ = window.myJQuery;
       require = window.require;
-      /*
-      INITIALIZE ENTITIES
-      */
-
       console.log("Setting the main scene...");
       Entities.Entity.prototype.director = this;
       console.log("Putting the player on screen");
@@ -137,20 +133,27 @@ window.require.register("director", function(exports, require, module) {
             numExternalLinks = 0;
             headerBarEl = $('#hh-header-bar')[0];
             $('a:visible').filter(function() {
-              return !$.contains(headerBarEl, this);
-            }).filter(function() {
-              return this.href && this.href !== "javascript:void(0);";
-            }).filter(function() {
-              return !/#/.test(this.href);
-            }).filter(function() {
-              return !/mailto:|tel:/.test(this.href);
-            }).filter(function() {
               var link;
 
+              if ($.contains(headerBarEl, this)) {
+                return false;
+              }
+              if (!this.href || this.href === "javascript:void(0);") {
+                return false;
+              }
+              if (/#/.test(this.href)) {
+                return false;
+              }
+              if (/mailto:|tel:/.test(this.href)) {
+                return false;
+              }
               link = $(this);
-              return !link.parents("[class*='nav']").filter(function() {
+              if (link.parents("[class*='nav']").filter(function() {
                 return $(link).parents('ul').length > 1;
-              }).length;
+              }).length) {
+                return false;
+              }
+              return true;
             }).each(function() {
               var $this, child, domain, headerBarHeight, internalOrExternal, link, offset;
 
@@ -183,7 +186,7 @@ window.require.register("director", function(exports, require, module) {
             }
             _this.gameState.set("numInternalLinks", numInternalLinks);
             _this.gameState.set('numExternalLinks', numExternalLinks);
-            _this.gameState.set("numLinksNeeded", Math.ceil(numInternalLinks * (Math.min(_this.gameState.get('level', 10))) / 20));
+            _this.gameState.set("numLinksNeeded", Math.ceil(numInternalLinks * (Math.min(_this.gameState.get('level', 10))) / 30));
             return _this.gameState.set('running', true);
           }), delay);
         }), 400);
@@ -862,7 +865,7 @@ window.require.register("views/templates/header_bar", function(exports, require,
   var interp;
   buf.push('<div id="hh-logo" class="hh-section"><h1>Hyperlink Harry</h1></div><div id="level-info" class="hh-section"><h2>level ' + escape((interp = level) == null ? '' : interp) + '</h2><h3> \nSite:&nbsp<a');
   buf.push(attrs({ 'href':('http://' + (url) + ''), 'target':('_blank') }, {"href":true,"target":true}));
-  buf.push('>' + escape((interp = displayUrl) == null ? '' : interp) + '</a></h3></div><div class="hh-section"><p>Internal links: ');
+  buf.push('>' + escape((interp = displayUrl) == null ? '' : interp) + '</a></h3></div><div class="hh-section"><p>Internal links remaining: ');
   var __val__ = numInternalLinks
   buf.push(escape(null == __val__ ? "" : __val__));
   buf.push('</p><p>External links: ');

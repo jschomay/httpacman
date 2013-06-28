@@ -10,9 +10,9 @@ module.exports = class Director
     require = window.require
 
 
-    ###
-    INITIALIZE ENTITIES
-    ###
+    #####################
+    # INITIALIZE ENTITIES
+    #####################
 
     console.log "Setting the main scene..."
 
@@ -30,14 +30,20 @@ module.exports = class Director
       @addEntity(new Entities.Enemy {id:@lastId})
 
 
+    ###################################################
     # crate playing field objects from the DirectorModel
+    ###################################################
     $(window).load =>
       # wait just a bit after page loads, to catch content appended with ajax
       setTimeout (=>
         # wait just a bit more, trying to optimize delay time by speculating on load time based on page height
         delay = if document.height > 7000 then 1700 else 300
         setTimeout (=>
+          # Page should be ready to scrape by now
+
+          ############
           # hyperlinks
+          ############
           console.log "Converting hyperlinks to game entities"
           that = @
           numInternalLinks = 0;
@@ -45,20 +51,21 @@ module.exports = class Director
           headerBarEl = $('#hh-header-bar')[0]
           # start with all links on page...
           $('a:visible')
-          # filter out links in the header bar
-          .filter(-> !$.contains(headerBarEl, @))
-          # and links that have no href or javascript (like pagers in sliders)
-          .filter(-> this.href and this.href isnt "javascript:void(0);")
-          # and links that are just anchors
-          .filter( -> !/#/.test(this.href))
-          # and mailto: and tel:
-          .filter(-> !/mailto:|tel:/.test this.href)
-          # and links under a nav system, but only 2nd tier ones (to avoid hidden drop nav menues)
-          .filter(-> 
+          # filter out links we dont want to use, including:
+          .filter -> 
+            # links in the header bar
+            return false if $.contains(headerBarEl, this)
+            # links that have no href or javascript (like pagers in sliders)
+            return false if !this.href or this.href is "javascript:void(0);"
+            # links that are just anchors
+            return false if /#/.test(this.href)
+            # mailto: and tel:
+            return false if /mailto:|tel:/.test this.href
+            # links under a nav system, but only 2nd tier ones (to avoid hidden drop nav menues)
             link = $ this
-            !link.parents("[class*='nav']")
-              .filter(-> $(link).parents('ul').length>1)
-              .length)
+            return false if link.parents("[class*='nav']").filter(-> $(link).parents('ul').length>1).length
+            # if we're still going then don't filter out this link
+            return true
           .each ->
             # is this an internal or external link?
 
@@ -66,18 +73,22 @@ module.exports = class Director
             $(this).trigger('mouseover')[0].href
             link = this.href.replace(/https?:\/\/(www\.)?/, '').split('/')[0]
             domain = that.gameState.get('url').replace("www.", "").split('/')[0]
+
             internalOrExternal = if domain is link or link is window.location.origin.replace(/https?:\/\//,'') then 'internal' else 'external'
             
             if internalOrExternal is 'internal'
               numInternalLinks++
             else
               numExternalLinks++
+
             # if the anchor element wraps another element, return that, otherwise return the anchor
             # this way the hyperlink entity will hopefully always have a width and height > 0
             child = $(this).children()
             $this = if child.length > 0 then child else $ @
             offset = $this.offset()
             headerBarHeight = $('#hh-header-bar').outerHeight()
+
+            # add entity
             that.addEntity new Entities.Hyperlink
               id: that.lastId
               w: $this.width()
@@ -88,15 +99,27 @@ module.exports = class Director
               internalOrExternal: internalOrExternal
               href: this.href
 
+          # set game state variables based on number of links scraped
           if numExternalLinks is 0
+            # No links to grab, what should we do?  For now we just refresh
             window.location.href = window.location.origin+"/play"
 
           @gameState.set "numInternalLinks", numInternalLinks
           @gameState.set 'numExternalLinks', numExternalLinks
 
-          # 1/20th to 1/2 of all internal links, based on level
-          @gameState.set "numLinksNeeded", Math.ceil(numInternalLinks*(Math.min(@gameState.get('level', 10)))/20)
-          @gameState.set 'running', true),  delay), 400
+          # 1/30th to 1/3 of all internal links, based on level
+          # this will need to be adjusted later...
+          @gameState.set "numLinksNeeded", Math.ceil(numInternalLinks*(Math.min(@gameState.get('level', 10)))/30)
+
+
+          ################
+          # ads
+          ################
+          # $('script, iframe').filter(function(){return this.src.match(/ad|doubleclick/i)}).parent('div').css('border','6px solid magenta')
+
+          @gameState.set 'running', true
+        ),  delay
+      ), 400
 
 
   lastId: 1
