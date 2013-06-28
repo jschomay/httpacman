@@ -69,11 +69,12 @@ server.on('request', function(req, res) {
           relativePath = url.substring(0, url.lastIndexOf('/')+1); // includes trailng slash
           console.log(req.url, url);
 
-          // parse for relative paths
-          fixSrcUrls = /src=(["'])(?!(\/\/|http))\/?/gi;
-          fixLinkUrls = /href=(["'])(?!(\/\/|http))\/?/gi;
-          body = body.replace(fixSrcUrls, 'src=$1http://'+relativePath);
-          body = body.replace(fixLinkUrls, 'href=$1http://'+relativePath);
+          // parse for absolute paths (urls like href="/path...")
+          // relative paths will work fine becase we set <base> to the current page below
+          fixSrcUrls = /src=(["'])(?!(\/\/|http))\//gi;
+          fixLinkUrls = /href=(["'])(?!(\/\/|http))\//gi;
+          body = body.replace(fixSrcUrls, 'src=$1'+response.request.uri.protocol+'//'+host+'/');
+          body = body.replace(fixLinkUrls, 'href=$1'+response.request.uri.protocol+'//'+host+'/');
           // take out http-equiv="refresh"
           // <meta http-equiv="refresh" content="30; ,URL=http://www.metatags.info/login">
 
