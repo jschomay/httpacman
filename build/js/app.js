@@ -646,6 +646,26 @@ window.require.register("game", function(exports, require, module) {
       PREP PAGE
       */
 
+      if (!localStorage.getItem("hh-level")) {
+        localStorage.setItem("hh-level", 1);
+        this.gameState.set("level", 1);
+      }
+      document.addEventListener('keydown', function(e) {
+        var _ref;
+
+        if (e.keyCode === 82) {
+          window.location.href = window.location.origin + "/play";
+          false;
+        }
+        if ((96 <= (_ref = e.keyCode) && _ref <= 105)) {
+          console.log("cheat code - jump to level", e.keyCode - 96);
+          _this.gameState.set('level', e.keyCode - 96);
+          localStorage.setItem("hh-level", e.keyCode - 96);
+        }
+        if (e.keyCode === 80) {
+          return _this.gameState.set("running", _this.gameState.get("running") ? false : true);
+        }
+      });
       $('a').click(function(e) {
         console.log("click on link prevented");
         e.preventDefault();
@@ -731,7 +751,7 @@ window.require.register("index", function(exports, require, module) {
   var buf = [];
   with (locals || {}) {
   var interp;
-  buf.push('<!DOCTYPE html><html><head><meta charset="UTF-8"><link rel="stylesheet" href="css/app.css"><title>Hyperlink Harry - a browser based game where the web is the playing field</title></head><body><h1>Hyperlink Harry, a new spin on the browser-based game</h1><h2>Run around on top of random web pages.  Avoid enemies.  Escape through hyperlinks.  Find your way back home.</h2><h3>The story</h3><p>One day while surfing the net, Harry\'s modem had a power surge and sucked Harry into the web.  </p><p>Now Harry\'s digital consciousness is lost somewhere out in hyperspace, bouncing from site to site, evading antivirus bots and seach engine spiders, and looking for his way back home.</p><p>Can you help him?  </p><h3>How to play</h3><p>Use the keyboard arrows to move around.  Collect internal links by running over them.  Once you have enough "linkjuice", external links will "hyperjump" you to a new page.</p><h3>WARNING: THIS IS IN ACTIVE DEVELOPMENT</h3><P>Which means it is incomplete (in design and functionality) and may have some bugs and may need optimizing.  Simple gameplay should work, but if you get stuck, just hit refresh (as long as you didn\'t somehow end up at a different site in the address bar, if so, press back).</P><p>This project is currently open source.  Check out the code, comment, and fork on <a href="https://github.com/jschomay/httpacman">github.</a></p><a href="/play" style="display:block;width:200px;text-align:center;padding:5px;background:lightgray;border:1px solid black;margin:auto;">PLAY NOW</a><h3>Credits/contact</h3><p>The game concept was concieved by Jeff Schomay, who also did most of the game design and coding.  Others contributed to the coding at verious points.</p><ul><li>Jeff Schomay - <a href="https://github.com/jschomay/">/jschomay</a>- <a href="http://jeffschomay.com/">jeffschomay.com</a></li><li>Steve Manuel - <a href="https://github.com/stevemanuel">/stevemanuel</a></li><li>Kevin Sylvestre - <a href="https://github.com/ksylvest">/ksylvest</a></li></ul><h3>Technology</h3><ul><li>node</li><li>coffeescript</li><li>canvas</li><li>backbone</li><li>sass</li><li>brunch</li></ul></body></html>');
+  buf.push('<!DOCTYPE html><html><head><meta charset="UTF-8"><link rel="stylesheet" href="css/app.css"><title>Hyperlink Harry - a browser based game where the web is the playing field</title></head><body><h1>Hyperlink Harry, a new spin on the browser-based game</h1><h2>Run around on top of random web pages.  Avoid enemies.  Escape through hyperlinks.  Find your way back home.</h2><h3>The story</h3><p>One day while surfing the net, Harry\'s modem had a power surge and sucked Harry into the web.  </p><p>Now Harry\'s digital consciousness is lost somewhere out in hyperspace, bouncing from site to site, evading antivirus bots and seach engine spiders, and looking for his way back home.</p><p>Can you help him?  </p><h3>How to play</h3><p>Use the keyboard arrows to move around.  Collect internal links by running over them.  Once you have enough "linkjuice", external links will "hyperjump" you to a new page.  Pressing \'R\' will take you to a new random page.  \'P\' will pause the game.</p><h3>WARNING: THIS IS IN ACTIVE DEVELOPMENT</h3><P>Which means it is incomplete (in design and functionality) and may have some bugs and may need optimizing.  Simple gameplay should work, but if you get stuck, just hit refresh (as long as you didn\'t somehow end up at a different site in the address bar, if so, press back).</P><p>This project is currently open source.  Check out the code, comment, and fork on <a href="https://github.com/jschomay/httpacman">github.</a></p><a href="/play" style="display:block;width:200px;text-align:center;padding:5px;background:lightgray;border:1px solid black;margin:auto;">PLAY NOW</a><h3>Credits/contact</h3><p>The game concept was concieved by Jeff Schomay, who also did most of the game design and coding.  Others contributed to the coding at verious points.</p><ul><li>Jeff Schomay - <a href="https://github.com/jschomay/">/jschomay</a>- <a href="http://jeffschomay.com/">jeffschomay.com</a></li><li>Steve Manuel - <a href="https://github.com/stevemanuel">/stevemanuel</a></li><li>Kevin Sylvestre - <a href="https://github.com/ksylvest">/ksylvest</a></li></ul><h3>Technology</h3><ul><li>node</li><li>coffeescript</li><li>canvas</li><li>backbone</li><li>sass</li><li>brunch</li></ul></body></html>');
   }
   return buf.join("");
   };
@@ -748,17 +768,6 @@ window.require.register("main", function(exports, require, module) {
   $.noConflict();
 
   window.myBackbone = Backbone.noConflict();
-
-  if (!localStorage.getItem("hh-level")) {
-    localStorage.setItem("hh-level", 1);
-  }
-
-  document.onkeydown = function(e) {
-    if (e.keyCode === 82) {
-      window.location.href = window.location.origin + "/play";
-      return false;
-    }
-  };
 
   myJQuery(function() {
     var game;

@@ -14,6 +14,27 @@ module.exports = class Game extends window.atom.Game
     PREP PAGE
     ###
 
+    # make sure we have a level set
+    if not localStorage.getItem "hh-level"
+      localStorage.setItem "hh-level", 1
+      @gameState.set "level", 1
+
+    # keyboard shortcuts
+    document.addEventListener 'keydown', (e) => 
+      # press 'R' (or command R for restart) to "refresh" - gets around the "resubmit form comfirmation" prompt
+      if e.keyCode is 82
+        window.location.href = window.location.origin+"/play"
+        false
+      # pressing a number key will take you to that level (0-9 on the num pad)
+      if 96 <= e.keyCode <= 105
+        console.log "cheat code - jump to level", e.keyCode - 96
+        @gameState.set 'level', e.keyCode - 96
+        localStorage.setItem "hh-level", e.keyCode - 96
+      #  press 'P' to pause
+      if e.keyCode is 80
+        @gameState.set "running", if (@gameState.get "running") then false else true
+
+
     # disable links (even though the canvas covers them all)
     $('a').click (e) -> console.log "click on link prevented"; e.preventDefault(); return false;
     
