@@ -148,7 +148,7 @@ window.require.register("director", function(exports, require, module) {
                 return false;
               }
               link = $(this);
-              if (link.parents("[class*='nav']").filter(function() {
+              if (link.parents("[class*='nav'], [class*='Nav'], [class*='NAV']").filter(function() {
                 return $(link).parents('ul').length > 1;
               }).length) {
                 return false;

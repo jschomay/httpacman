@@ -52,11 +52,9 @@ BUGS
 
   - studio.inmobi.com/ui/index.html - same 'different origins error', I don't think we can get around that, the page is all blank
 
-  - http://www.ninjavideo.net/ - reloads to video using <meta http-equiv="refresh" content="10;url=http://www.youtube.com/v/Yc7tStP_ThU?autoplay=1" />
-
   - http://www.snagfilms.com/ doesn't load
 
-  - http://www.criminalsearches.com/ redirects
+  - http://www.criminalsearches.com/ redirects, they are doing something tricky, maybe submitting a form or using encrypted javascript.  
 
   - http://www.kiva.org/start claims links that dont show
 

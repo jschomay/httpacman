@@ -76,8 +76,7 @@ server.on('request', function(req, res) {
           body = body.replace(fixSrcUrls, 'src=$1'+response.request.uri.protocol+'//'+host+'/');
           body = body.replace(fixLinkUrls, 'href=$1'+response.request.uri.protocol+'//'+host+'/');
           // take out http-equiv="refresh"
-          // <meta http-equiv="refresh" content="30; ,URL=http://www.metatags.info/login">
-
+          body = body.replace(/<meta .*http-equiv="refresh".*\/>/, '');
           // put our script in the code
           headOpen = /<head([^>]*)>/gi;
           body = body.replace(headOpen, '<head$1><script src="js/myrequire.js"></script><link rel="stylesheet" type="text/css" href="css/app.css"><script src="js/libs.js"></script><script src="js/app.js"></script><script>require(\'main\');require = undefined;window.currentUrl = "'+url+'";</script><base href="http://'+relativePath+'">');

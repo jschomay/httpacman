@@ -63,7 +63,7 @@ module.exports = class Director
             return false if /mailto:|tel:/.test this.href
             # links under a nav system, but only 2nd tier ones (to avoid hidden drop nav menues)
             link = $ this
-            return false if link.parents("[class*='nav']").filter(-> $(link).parents('ul').length>1).length
+            return false if link.parents("[class*='nav'], [class*='Nav'], [class*='NAV']").filter(-> $(link).parents('ul').length>1).length
             # if we're still going then don't filter out this link
             return true
           .each ->
