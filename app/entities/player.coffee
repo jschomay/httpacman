@@ -32,6 +32,7 @@ module.exports = class Player extends Entity
     @onHit =
       'hyperlink': @onHitHyperlink
       'enemy': @onHitEnemy
+      'ad': @onHitAd
 
     super
 
@@ -92,3 +93,7 @@ module.exports = class Player extends Entity
 
   onHitEnemy: (obstacle) ->
     @.background = 'purple'
+
+  onHitAd: (obstacle) ->
+    @vx *= .5
+    @vy *= .5

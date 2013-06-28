@@ -115,7 +115,7 @@ module.exports = class Director
           ################
           # ads
           ################
-          ads = $('script, iframe').add('div').filter( -> 
+          $('script, iframe').add('div').filter( -> 
             adIdentifiers = [this.src, this.class, this.id, this.name].join '  '
             adIdentifiers.match(/[\s\._-]ads?[\s\._A-Z-]|doubleclick|banner/)
             )
@@ -137,6 +137,8 @@ module.exports = class Director
               y: offset.top - headerBarHeight
               x: offset.left
               $el: $this
+
+
 
           # All entities have been loaded, start the game!
           @gameState.set 'running', true

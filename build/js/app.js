@@ -125,7 +125,7 @@ window.require.register("director", function(exports, require, module) {
 
           delay = document.height > 7000 ? 1700 : 300;
           return setTimeout((function() {
-            var ads, headerBarEl, numExternalLinks, numInternalLinks, that;
+            var headerBarEl, numExternalLinks, numInternalLinks, that;
 
             console.log("Converting hyperlinks to game entities");
             that = _this;
@@ -187,7 +187,7 @@ window.require.register("director", function(exports, require, module) {
             _this.gameState.set("numInternalLinks", numInternalLinks);
             _this.gameState.set('numExternalLinks', numExternalLinks);
             _this.gameState.set("numLinksNeeded", Math.ceil(numInternalLinks * (Math.min(_this.gameState.get('level', 10))) / 30));
-            ads = $('script, iframe').add('div').filter(function() {
+            $('script, iframe').add('div').filter(function() {
               var adIdentifiers;
 
               adIdentifiers = [this.src, this["class"], this.id, this.name].join('  ');
@@ -612,7 +612,8 @@ window.require.register("entities/player", function(exports, require, module) {
       atom.input.bind(atom.key.UP_ARROW, 'up');
       this.onHit = {
         'hyperlink': this.onHitHyperlink,
-        'enemy': this.onHitEnemy
+        'enemy': this.onHitEnemy,
+        'ad': this.onHitAd
       };
       Player.__super__.constructor.apply(this, arguments);
     }
@@ -687,6 +688,11 @@ window.require.register("entities/player", function(exports, require, module) {
 
     Player.prototype.onHitEnemy = function(obstacle) {
       return this.background = 'purple';
+    };
+
+    Player.prototype.onHitAd = function(obstacle) {
+      this.vx *= .5;
+      return this.vy *= .5;
     };
 
     return Player;
