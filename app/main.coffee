@@ -11,6 +11,9 @@ window.myJQuery = $
 $.noConflict()
 window.myBackbone = Backbone.noConflict();
 
+if not localStorage.getItem "hh-level"
+  localStorage.setItem "hh-level", 1
+
 myJQuery () ->
   game = new Game()
 

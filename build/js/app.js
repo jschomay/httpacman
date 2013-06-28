@@ -116,7 +116,7 @@ window.require.register("director", function(exports, require, module) {
       this.addEntity(new Entities.Player({
         id: this.lastId
       }));
-      numEnemies = levelData.numEnemies || 10;
+      numEnemies = levelData.numEnemies || 0;
       console.log("Putting " + numEnemies + " enemies on screen");
       for (_i = 1; 1 <= numEnemies ? _i <= numEnemies : _i >= numEnemies; 1 <= numEnemies ? _i++ : _i--) {
         this.addEntity(new Entities.Enemy({
@@ -228,8 +228,17 @@ window.require.register("director", function(exports, require, module) {
     };
 
     Director.prototype.nextLevel = function(url) {
+      var level;
+
       this.gameState.set('running', false);
       console.log("NEXT LEVEL", url);
+      level = localStorage.getItem('hh-level');
+      level++;
+      localStorage.setItem("hh-level", level);
+      if (level === 10) {
+        url = "http://hyperlinkharrypoc-jschomay.rhcloud.com";
+        localStorage.removeItem("hh-level");
+      }
       return myJQuery('<form method="post" action="' + window.location.origin + '/play">\
     <input type="hidden" name="nextLevelUrl" value="' + url + '">\
     </form>').submit();
@@ -686,7 +695,7 @@ window.require.register("game", function(exports, require, module) {
       */
 
       levelData = {
-        numEnemies: 50
+        numEnemies: Math.min(this.gameState.get('level') * 5, 50)
       };
       this.director = new (require('./director'))(levelData, this.gameState);
       console.log("We have a game!");
@@ -740,6 +749,10 @@ window.require.register("main", function(exports, require, module) {
 
   window.myBackbone = Backbone.noConflict();
 
+  if (!localStorage.getItem("hh-level")) {
+    localStorage.setItem("hh-level", 1);
+  }
+
   myJQuery(function() {
     var game;
 
@@ -770,7 +783,7 @@ window.require.register("models/game_state", function(exports, require, module) 
     GameState.prototype.initialize = function() {
       return this.set({
         running: false,
-        level: 1,
+        level: localStorage.getItem("hh-level"),
         url: window.currentUrl,
         numInternalLinks: "Calculating...",
         numExternalLinks: "Calculating...",

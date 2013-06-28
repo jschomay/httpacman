@@ -24,7 +24,7 @@ module.exports = class Director
     @addEntity(new Entities.Player({id: @lastId}))
 
     # create enemies
-    numEnemies = levelData.numEnemies || 10
+    numEnemies = levelData.numEnemies || 0
     console.log "Putting #{numEnemies} enemies on screen"
     for [1..numEnemies]
       @addEntity(new Entities.Enemy {id:@lastId})
@@ -128,6 +128,12 @@ module.exports = class Director
     @gameState.set 'running', false
     # tell server to send us to a new level
     console.log "NEXT LEVEL", url
+    level = localStorage.getItem 'hh-level'
+    level++
+    localStorage.setItem "hh-level", level
+    if level is 10
+      url = "http://hyperlinkharrypoc-jschomay.rhcloud.com"
+      localStorage.removeItem "hh-level"
     myJQuery('<form method="post" action="'+window.location.origin+'/play">
     <input type="hidden" name="nextLevelUrl" value="'+url+'">
     </form>').submit()

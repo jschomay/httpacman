@@ -64,7 +64,7 @@ module.exports = class Game extends window.atom.Game
     
     # load level data
     #TODO
-    levelData = {numEnemies: 50}
+    levelData = {numEnemies: Math.min(@gameState.get('level')*5, 50)}
 
     # director manages all game entities
     @director = new (require './director')(levelData, @gameState)
