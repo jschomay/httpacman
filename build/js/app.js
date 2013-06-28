@@ -198,7 +198,21 @@ window.require.register("director", function(exports, require, module) {
               } else {
                 return this;
               }
-            }).css('border', '6px outset magenta');
+            }).each(function() {
+              var $this, headerBarHeight, offset;
+
+              $this = $(this);
+              offset = $this.offset();
+              headerBarHeight = $('#hh-header-bar').outerHeight();
+              return that.addEntity(new Entities.Ad({
+                id: that.lastId,
+                w: $this.width(),
+                h: $this.height(),
+                y: offset.top - headerBarHeight,
+                x: offset.left,
+                $el: $this
+              }));
+            });
             return _this.gameState.set('running', true);
           }), delay);
         }), 400);
@@ -262,6 +276,45 @@ window.require.register("director", function(exports, require, module) {
     return Director;
 
   })();
+  
+});
+window.require.register("entities/ad", function(exports, require, module) {
+  var Ad, Components, Entity,
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+  Components = require('./components');
+
+  Entity = require('./entity');
+
+  module.exports = Ad = (function(_super) {
+    __extends(Ad, _super);
+
+    Components.mixin(Ad, 'Sprite');
+
+    function Ad(options) {
+      this.initializeSprite({
+        type: "ad",
+        id: options.id,
+        w: options.w,
+        h: options.h,
+        x: options.x,
+        y: options.y,
+        background: 'magenta'
+      });
+      this.$el = options.$el;
+      Ad.__super__.constructor.apply(this, arguments);
+    }
+
+    Ad.prototype.draw = function(ctx) {
+      ctx.strokeStyle = 'magenta';
+      ctx.lineWidth = 5;
+      return ctx.strokeRect(this.position.x, this.position.y, this.w, this.h);
+    };
+
+    return Ad;
+
+  })(Entity);
   
 });
 window.require.register("entities/components/collidable", function(exports, require, module) {
@@ -515,7 +568,8 @@ window.require.register("entities/index", function(exports, require, module) {
     Entity: require('./entity'),
     Player: require('./player'),
     Enemy: require('./enemy'),
-    Hyperlink: require('./hyperlink')
+    Hyperlink: require('./hyperlink'),
+    Ad: require('./ad')
   };
   
 });

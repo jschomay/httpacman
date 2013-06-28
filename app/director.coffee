@@ -124,8 +124,21 @@ module.exports = class Director
               return $(this).parent('div')[0]
             else
               return this
-          .css('border','6px outset magenta')
+          .each  ->
+            $this = $ this
+            offset = $this.offset()
+            headerBarHeight = $('#hh-header-bar').outerHeight()
 
+            # add entity
+            that.addEntity new Entities.Ad
+              id: that.lastId
+              w: $this.width()
+              h: $this.height()
+              y: offset.top - headerBarHeight
+              x: offset.left
+              $el: $this
+
+          # All entities have been loaded, start the game!
           @gameState.set 'running', true
         ),  delay
       ), 400

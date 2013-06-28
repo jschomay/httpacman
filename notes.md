@@ -62,8 +62,9 @@ BUGS
 
   - http://www.lynda.com/ doesn't always show the canvas elements, not sure why
 
-- I test for a <head> in server to make sure we can latch on, but some sites fail even though I see a head in there, not sure why (like answers.yahoo.com)
+  - thesaurus.com/ didn't work at one point, but worked after pressing P, maybe test again and set running to true
 
+- Sites that use an iframe mess up the game because the iframe wont scroll.
 
 
 
