@@ -21,6 +21,8 @@ Do soon
 
 - consider using levenshtein distance on domain vs link to determin external to avoid similar domains (like internation)
 
+- figure out links that are relative to localhost:8000, try to filter them out (found on facebook)
+
 
 
 Do later

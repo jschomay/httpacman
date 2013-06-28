@@ -17,7 +17,7 @@ module.exports = class Player extends Entity
       background: 'yellow'
 
     @acceleration = 100#50 # px/s/s
-    @maxSpeed = 500000#500 # px/s
+    @maxSpeed = 5000#500 # px/s
     @vx = 0
     @vy = 0
     @drag = .8
@@ -91,4 +91,4 @@ module.exports = class Player extends Entity
       @director.nextLevel obstacle.href
 
   onHitEnemy: (obstacle) ->
-    @.background = 'black'
+    @.background = 'purple'

@@ -14,5 +14,7 @@ module.exports = class HeaderBar extends myBackbone.View
     @render()
 
   render: ->
-    html = @template(@model.attributes)
+    displayUrl = @model.get('url').replace("www.", "")
+    displayUrl = displayUrl.split('/')[0] + "/..." if displayUrl.split("/")[1]
+    html = @template(_.extend({}, @model.attributes,{displayUrl: displayUrl}))
     @$el.html html

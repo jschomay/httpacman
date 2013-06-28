@@ -178,6 +178,9 @@ window.require.register("director", function(exports, require, module) {
                 href: this.href
               }));
             });
+            if (numExternalLinks === 0) {
+              window.location.href = window.location.origin + "/play";
+            }
             _this.gameState.set("numInternalLinks", numInternalLinks);
             _this.gameState.set('numExternalLinks', numExternalLinks);
             _this.gameState.set("numLinksNeeded", Math.ceil(numInternalLinks * (Math.min(_this.gameState.get('level', 10))) / 20));
@@ -521,7 +524,7 @@ window.require.register("entities/player", function(exports, require, module) {
         background: 'yellow'
       });
       this.acceleration = 100;
-      this.maxSpeed = 500000;
+      this.maxSpeed = 5000;
       this.vx = 0;
       this.vy = 0;
       this.drag = .8;
@@ -605,7 +608,7 @@ window.require.register("entities/player", function(exports, require, module) {
     };
 
     Player.prototype.onHitEnemy = function(obstacle) {
-      return this.background = 'black';
+      return this.background = 'purple';
     };
 
     return Player;
@@ -805,9 +808,15 @@ window.require.register("views/header_bar", function(exports, require, module) {
     };
 
     HeaderBar.prototype.render = function() {
-      var html;
+      var displayUrl, html;
 
-      html = this.template(this.model.attributes);
+      displayUrl = this.model.get('url').replace("www.", "");
+      if (displayUrl.split("/")[1]) {
+        displayUrl = displayUrl.split('/')[0] + "/...";
+      }
+      html = this.template(_.extend({}, this.model.attributes, {
+        displayUrl: displayUrl
+      }));
       return this.$el.html(html);
     };
 
@@ -824,7 +833,7 @@ window.require.register("views/templates/header_bar", function(exports, require,
   var interp;
   buf.push('<div id="hh-logo" class="hh-section"><h1>Hyperlink Harry</h1></div><div id="level-info" class="hh-section"><h2>level ' + escape((interp = level) == null ? '' : interp) + '</h2><h3> \nSite:&nbsp<a');
   buf.push(attrs({ 'href':('http://' + (url) + ''), 'target':('_blank') }, {"href":true,"target":true}));
-  buf.push('>' + escape((interp = url) == null ? '' : interp) + '</a></h3></div><div class="hh-section"><p>Internal links: ');
+  buf.push('>' + escape((interp = displayUrl) == null ? '' : interp) + '</a></h3></div><div class="hh-section"><p>Internal links: ');
   var __val__ = numInternalLinks
   buf.push(escape(null == __val__ ? "" : __val__));
   buf.push('</p><p>External links: ');

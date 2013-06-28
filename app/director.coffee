@@ -91,6 +91,10 @@ module.exports = class Director
               $el: $this
               internalOrExternal: internalOrExternal
               href: this.href
+
+          if numExternalLinks is 0
+            window.location.href = window.location.origin+"/play"
+
           @gameState.set "numInternalLinks", numInternalLinks
           @gameState.set 'numExternalLinks', numExternalLinks
 
