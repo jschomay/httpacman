@@ -89,6 +89,7 @@ module.exports = class Player extends Entity
       obstacle.destroy()
     else
       return if (@director.gameState.get "numCollectedLinks") < (@director.gameState.get "numLinksNeeded")
+      @maxSpeed = 0;
       @director.nextLevel obstacle.href
 
   onHitEnemy: (obstacle) ->

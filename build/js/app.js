@@ -191,7 +191,7 @@ window.require.register("director", function(exports, require, module) {
               var adIdentifiers;
 
               adIdentifiers = [this.src, this["class"], this.id, this.name].join('  ');
-              return adIdentifiers.match(/[\s\._-]ads?[\s\._A-Z-]|doubleclick|banner/);
+              return adIdentifiers.match(/[\s\._-]ads?[\s\._A-Z-]|doubleclick/);
             }).map(function() {
               if (this.nodeName.match(/script|iframe/i)) {
                 return $(this).parent('div')[0];
@@ -257,10 +257,9 @@ window.require.register("director", function(exports, require, module) {
     };
 
     Director.prototype.nextLevel = function(url) {
-      var level;
+      var goToNextLevel, level,
+        _this = this;
 
-      this.gameState.set('running', false);
-      console.log("NEXT LEVEL", url);
       level = localStorage.getItem('hh-level');
       level++;
       localStorage.setItem("hh-level", level);
@@ -268,9 +267,44 @@ window.require.register("director", function(exports, require, module) {
         url = "http://hyperlinkharrypoc-jschomay.rhcloud.com";
         localStorage.removeItem("hh-level");
       }
-      return myJQuery('<form method="post" action="' + window.location.origin + '/play">\
-    <input type="hidden" name="nextLevelUrl" value="' + url + '">\
-    </form>').submit();
+      _.each(this.entities, function(entity) {
+        if (entity.type !== "player") {
+          return _this.removeEntity(entity.id);
+        }
+      });
+      
+      var keepOnPage = myJQuery("#hh-header-bar, #hh-canvas, #hh-stats-widget");
+      keepOnPage.remove();
+      var elems=myJQuery("body *");
+      myJQuery('body').append(keepOnPage);
+      var l=elems.length;
+      var i, c, move, x = 1;
+      var A = function (){
+          for(i=0; i-l; i++){
+              c=elems[i].style; 
+              move = elems[i].move
+              if (!move){
+                  move=(Math.random()*8*(Math.round(Math.random())?1:-1));
+              }
+              move *= x;
+              elems[i].move = move;
+              
+              c['-webkit-transform'] = "translateX(" + move + 'px)';
+          }
+          x++;
+      };
+      //Loop
+      var timer = setInterval(function(){A()},60);
+      setTimeout(function() {
+        clearInterval(timer);
+        goToNextLevel();
+      }, 2000);
+      ;
+      return goToNextLevel = function() {
+        return myJQuery('<form method="post" action="' + window.location.origin + '/play">\
+      <input type="hidden" name="nextLevelUrl" value="' + url + '">\
+      </form>').submit();
+      };
     };
 
     return Director;
@@ -682,6 +716,7 @@ window.require.register("entities/player", function(exports, require, module) {
         if ((this.director.gameState.get("numCollectedLinks")) < (this.director.gameState.get("numLinksNeeded"))) {
           return;
         }
+        this.maxSpeed = 0;
         return this.director.nextLevel(obstacle.href);
       }
     };

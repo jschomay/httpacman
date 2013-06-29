@@ -117,7 +117,7 @@ module.exports = class Director
           ################
           $('script, iframe').add('div').filter( -> 
             adIdentifiers = [this.src, this.class, this.id, this.name].join '  '
-            adIdentifiers.match(/[\s\._-]ads?[\s\._A-Z-]|doubleclick|banner/)
+            adIdentifiers.match(/[\s\._-]ads?[\s\._A-Z-]|doubleclick/)
             )
           .map ->
             if this.nodeName.match /script|iframe/i
@@ -168,17 +168,52 @@ module.exports = class Director
       entity.draw(ctx)
 
   nextLevel: (url) =>
-    @gameState.set 'running', false
-    # tell server to send us to a new level
-    console.log "NEXT LEVEL", url
+    # @gameState.set 'running', false
     level = localStorage.getItem 'hh-level'
     level++
     localStorage.setItem "hh-level", level
     if level is 10
       url = "http://hyperlinkharrypoc-jschomay.rhcloud.com"
       localStorage.removeItem "hh-level"
-    myJQuery('<form method="post" action="'+window.location.origin+'/play">
-    <input type="hidden" name="nextLevelUrl" value="'+url+'">
-    </form>').submit()
+
+
+    _.each @entities, (entity) =>
+      @removeEntity entity.id unless entity.type is "player"
+
+    # fancy page exploding effect
+    `
+    var keepOnPage = myJQuery("#hh-header-bar, #hh-canvas, #hh-stats-widget");
+    keepOnPage.remove();
+    var elems=myJQuery("body *");
+    myJQuery('body').append(keepOnPage);
+    var l=elems.length;
+    var i, c, move, x = 1;
+    var A = function (){
+        for(i=0; i-l; i++){
+            c=elems[i].style; 
+            move = elems[i].move
+            if (!move){
+                move=(Math.random()*8*(Math.round(Math.random())?1:-1));
+            }
+            move *= x;
+            elems[i].move = move;
+            
+            c['-webkit-transform'] = "translateX(" + move + 'px)';
+        }
+        x++;
+    };
+    //Loop
+    var timer = setInterval(function(){A()},60);
+    setTimeout(function() {
+      clearInterval(timer);
+      goToNextLevel();
+    }, 2000);
+    `
+
+    # tell server to send us to a new level
+    goToNextLevel = ->
+      myJQuery('<form method="post" action="'+window.location.origin+'/play">
+      <input type="hidden" name="nextLevelUrl" value="'+url+'">
+      </form>').submit()
     
 
