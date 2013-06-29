@@ -92,7 +92,7 @@ window.require.register("director", function(exports, require, module) {
 
   module.exports = Director = (function() {
     function Director(levelData, gameState) {
-      var $, numEnemies, require, _i,
+      var $, numEnemies, player, require, _i,
         _this = this;
 
       if (levelData == null) {
@@ -109,14 +109,15 @@ window.require.register("director", function(exports, require, module) {
       console.log("Setting the main scene...");
       Entities.Entity.prototype.director = this;
       console.log("Putting the player on screen");
-      this.addEntity(new Entities.Player({
+      player = this.addEntity(new Entities.Player({
         id: this.lastId
       }));
       numEnemies = levelData.numEnemies || 0;
       console.log("Putting " + numEnemies + " enemies on screen");
       for (_i = 1; 1 <= numEnemies ? _i <= numEnemies : _i >= numEnemies; 1 <= numEnemies ? _i++ : _i--) {
         this.addEntity(new Entities.Enemy({
-          id: this.lastId
+          id: this.lastId,
+          player: player
         }));
       }
       $(window).load(function() {
@@ -225,7 +226,8 @@ window.require.register("director", function(exports, require, module) {
 
     Director.prototype.addEntity = function(entity) {
       this.entities[entity.id] = entity;
-      return this.lastId++;
+      this.lastId++;
+      return entity;
     };
 
     Director.prototype.removeEntity = function(id) {
@@ -479,19 +481,23 @@ window.require.register("entities/enemy", function(exports, require, module) {
         x: options.x || (Math.random() * window.document.width),
         y: options.y || (Math.random() * window.document.height),
         background: 'brown'
-      });
+      }, this.player = options.player);
       this.speed = 100;
+      this.dx = 0;
+      this.dy = 0;
       Enemy.__super__.constructor.apply(this, arguments);
     }
 
     Enemy.prototype.update = function(dt) {
-      var directionX, directionY, _speed;
+      var tl, tx, ty;
 
-      directionX = Math.ceil(Math.random() * 3) - 2;
-      directionY = Math.ceil(Math.random() * 3) - 2;
-      _speed = directionX && directionY ? this.speed / 1.41421 : this.speed;
-      this.position.x += _speed * directionX * dt;
-      this.position.y += _speed * directionY * dt;
+      tx = this.player.position.x - this.position.x;
+      ty = this.player.position.y - this.position.y;
+      tl = Math.sqrt(Math.pow(tx, 2) + Math.pow(ty, 2));
+      this.dx = tx / tl;
+      this.dy = ty / tl;
+      this.position.x += this.speed * this.dx * dt;
+      this.position.y += this.speed * this.dy * dt;
       return Enemy.__super__.update.apply(this, arguments);
     };
 

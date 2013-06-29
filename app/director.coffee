@@ -21,13 +21,13 @@ module.exports = class Director
 
     # create a player entity
     console.log "Putting the player on screen"
-    @addEntity(new Entities.Player({id: @lastId}))
+    player = @addEntity(new Entities.Player({id: @lastId}))
 
     # create enemies
     numEnemies = levelData.numEnemies || 0
     console.log "Putting #{numEnemies} enemies on screen"
     for [1..numEnemies]
-      @addEntity(new Entities.Enemy {id:@lastId})
+      @addEntity(new Entities.Enemy {id:@lastId, player: player})
 
 
     ###################################################
@@ -153,6 +153,7 @@ module.exports = class Director
   addEntity: (entity) =>
     @entities[entity.id] = entity
     @lastId++
+    entity
 
   removeEntity: (id) =>
     delete @entities[id]
