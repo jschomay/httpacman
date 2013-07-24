@@ -32,11 +32,12 @@ module.exports = class Enemy extends Entity
     # _speed = if (directionX and directionY) then (@speed / 1.41421) else @speed
 
     # move towards player
-    tx = @player.position.x - @position.x
-    ty = @player.position.y - @position.y
-    tl = Math.sqrt(Math.pow(tx,2) + Math.pow(ty,2))
-    @dx = tx/tl
-    @dy = ty/tl
+    if Math.floor Math.random()*100
+      tx = @player.position.x - @position.x
+      ty = @player.position.y - @position.y
+      tl = Math.sqrt(Math.pow(tx,2) + Math.pow(ty,2))
+      @dx = tx/tl
+      @dy = ty/tl
 
     # distance (px) = speed (px / s) * time (s)
     @position.x += @speed * @dx * dt

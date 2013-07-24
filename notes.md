@@ -180,3 +180,9 @@ levels manifest
 - I'VE GOT THE ENDING!!  When you finally find your way "back home" it takes you to the hyperlink harry hompage!  And you realize "oh sh!t, it's all just a game!".  Like Limbo, only cooler, because you can run around on the page that you had already entered been on to start the game.  And, since we control that page, we can inject stuff into it, like "you win" message/animation, maybe leader board, etc, plus the twitter feed of where harry has been.  Sweet B-)
 
 - Ads block Harry.
+
+- Anti virus bots chase Harry, viruses and spambots.  Spambots randomly spawn ads (try to get real current ads or parodies?) that block Harry like page ads and destroy links under them?  Or do they go away if you hit the close button?  Viruses destroy random parts of the page (or what they are over?) by turning them black (or white).  
+
+- <html> "code view" where harry is literally over the html code.  He could still run around and collect links maybe.  Maybe viruses send harry to this view, or maybe it's a bonus or special level.
+
+- Anti virus bots behaviour ai upgrade - add dynamic obidience: Each bot gets a primary task (kill virus/Harry), but has other tasks it can do too (like see what's happening at nearest friend, stalk a friend, switch targets, go look at something that's not a target, nap, malfunction).  Each bot gets an "obidience quotiant" that determins upon creation if it follows the primary task or picks one of the other tasks as well.  In addition, based on the obidience quotiant, the bot may "get distracted," switch tasks, or get back on the primary task either at random times, or at certain evens (like killing a virus, or getting to far away from Harry).  This would be interesting to see what happens now that these critters have some "free will" (like game of life)

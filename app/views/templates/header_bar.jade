@@ -6,8 +6,12 @@
     | Site:&nbsp
     a(href='http://#{url}', target='_blank') #{displayUrl}
 .hh-section
+  #progress-bar-container.bar
+    #progress.bar
+    #goal.bar
+.hh-section
   p Internal links remaining: 
-    = numInternalLinks
+    = numInternalLinks - numCollectedLinks
   p External links: 
     = numExternalLinks
 .hh-section

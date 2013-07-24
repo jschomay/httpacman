@@ -18,3 +18,8 @@ module.exports = class HeaderBar extends myBackbone.View
     displayUrl = displayUrl.split('/')[0] + "/..." if displayUrl.split("/")[1]
     html = @template(_.extend({}, @model.attributes,{displayUrl: displayUrl}))
     @$el.html html
+    # set styles for progress bar
+    goal = @model.get('numLinksNeeded')/@model.get('numInternalLinks')*100
+    @$('#goal').css(left: goal + '%').show()
+    progress = @model.get('numCollectedLinks')/@model.get('numInternalLinks')*100
+    @$('#progress').css(width: progress+'%').show()

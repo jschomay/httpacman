@@ -491,11 +491,13 @@ window.require.register("entities/enemy", function(exports, require, module) {
     Enemy.prototype.update = function(dt) {
       var tl, tx, ty;
 
-      tx = this.player.position.x - this.position.x;
-      ty = this.player.position.y - this.position.y;
-      tl = Math.sqrt(Math.pow(tx, 2) + Math.pow(ty, 2));
-      this.dx = tx / tl;
-      this.dy = ty / tl;
+      if (Math.floor(Math.random() * 100)) {
+        tx = this.player.position.x - this.position.x;
+        ty = this.player.position.y - this.position.y;
+        tl = Math.sqrt(Math.pow(tx, 2) + Math.pow(ty, 2));
+        this.dx = tx / tl;
+        this.dy = ty / tl;
+      }
       this.position.x += this.speed * this.dx * dt;
       this.position.y += this.speed * this.dy * dt;
       return Enemy.__super__.update.apply(this, arguments);
@@ -715,7 +717,6 @@ window.require.register("entities/player", function(exports, require, module) {
 
     Player.prototype.onHitHyperlink = function(obstacle) {
       if (obstacle.internalOrExternal === "internal") {
-        this.director.gameState.set('numInternalLinks', this.director.gameState.get('numInternalLinks') - 1);
         this.director.gameState.set('numCollectedLinks', this.director.gameState.get('numCollectedLinks') + 1);
         return obstacle.destroy();
       } else {
@@ -953,7 +954,7 @@ window.require.register("views/header_bar", function(exports, require, module) {
     };
 
     HeaderBar.prototype.render = function() {
-      var displayUrl, html;
+      var displayUrl, goal, html, progress;
 
       displayUrl = this.model.get('url').replace("www.", "");
       if (displayUrl.split("/")[1]) {
@@ -962,7 +963,15 @@ window.require.register("views/header_bar", function(exports, require, module) {
       html = this.template(_.extend({}, this.model.attributes, {
         displayUrl: displayUrl
       }));
-      return this.$el.html(html);
+      this.$el.html(html);
+      goal = this.model.get('numLinksNeeded') / this.model.get('numInternalLinks') * 100;
+      this.$('#goal').css({
+        left: goal + '%'
+      }).show();
+      progress = this.model.get('numCollectedLinks') / this.model.get('numInternalLinks') * 100;
+      return this.$('#progress').css({
+        width: progress + '%'
+      }).show();
     };
 
     return HeaderBar;
@@ -978,8 +987,8 @@ window.require.register("views/templates/header_bar", function(exports, require,
   var interp;
   buf.push('<div id="hh-logo" class="hh-section"><h1>Hyperlink Harry</h1></div><div id="level-info" class="hh-section"><h2>level ' + escape((interp = level) == null ? '' : interp) + '</h2><h3> \nSite:&nbsp<a');
   buf.push(attrs({ 'href':('http://' + (url) + ''), 'target':('_blank') }, {"href":true,"target":true}));
-  buf.push('>' + escape((interp = displayUrl) == null ? '' : interp) + '</a></h3></div><div class="hh-section"><p>Internal links remaining: ');
-  var __val__ = numInternalLinks
+  buf.push('>' + escape((interp = displayUrl) == null ? '' : interp) + '</a></h3></div><div class="hh-section"><div id="progress-bar-container" class="bar"><div id="progress" class="bar"></div><div id="goal" class="bar"></div></div></div><div class="hh-section"><p>Internal links remaining: ');
+  var __val__ = numInternalLinks - numCollectedLinks
   buf.push(escape(null == __val__ ? "" : __val__));
   buf.push('</p><p>External links: ');
   var __val__ = numExternalLinks
