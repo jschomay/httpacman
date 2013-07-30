@@ -66,24 +66,34 @@ body {
   #hh-logo {
     width: 100px;
   }
-  #level-info {
+  #hh-level-info {
     margin-right: 100px;
     max-width: 200px;
     overflow: hidden;
   }
-  .bar {
+  .hh-bar {
     width: 100%;
     height: 100%;
-    background: yellow;
   }
-  #progress-bar-container {
+  #hh-progress-bar-container {
     position: relative;
-    #progress {
+    background: #333;
+    border: 3px  inset #777;
+    #hh-progress {
       display:none;
-      background: green;
+      background: yellow;
       width: 0%;
     }
-    #goal {
+    #hh-collected {
+      display: none;
+      top: 0;
+      height: 100%;
+      font-size: 12px;
+      position: absolute;
+      color: #FFF;
+      padding: 10px 4px;
+    }
+    #hh-goal {
       display:none;
       position: absolute;
       left: 0%;

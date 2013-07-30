@@ -4,7 +4,6 @@ module.exports = class GameState extends myBackbone.Model
       running: false
       level: localStorage.getItem "hh-level"
       url: window.currentUrl
-      numInternalLinks: "Calculating..."
-      numExternalLinks: "Calculating..."
+      numLinks: "Calculating..."
       numLinksNeeded: "Calculating..."
       numCollectedLinks: 0

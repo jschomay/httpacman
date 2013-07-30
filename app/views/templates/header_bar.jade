@@ -1,20 +1,18 @@
 .hh-section#hh-logo
   h1 Hyperlink Harry
-.hh-section#level-info
+.hh-section#hh-level-info
   h2 level #{level}
   h3 
     | Site:&nbsp
     a(href='http://#{url}', target='_blank') #{displayUrl}
 .hh-section
-  #progress-bar-container.bar
-    #progress.bar
-    #goal.bar
+  #hh-progress-bar-container.hh-bar
+    #hh-progress.hh-bar
+    #hh-collected #{numCollectedLinks}
+    #hh-goal.hh-bar
 .hh-section
-  p Internal links remaining: 
-    = numInternalLinks - numCollectedLinks
-  p External links: 
-    = numExternalLinks
-.hh-section
-  p Links needed to escape: 
+  p Total links on page: 
+    = numLinks
+    br 
+    | Links needed to escape: 
     = numLinksNeeded
-  p Links collected: #{numCollectedLinks}

@@ -83,12 +83,9 @@ module.exports = class Player extends Entity
     super # super performs collision detection
 
   onHitHyperlink: (obstacle) ->
-    if obstacle.internalOrExternal is "internal"
-      # @director.gameState.set 'numInternalLinks', @director.gameState.get('numInternalLinks') - 1
-      @director.gameState.set 'numCollectedLinks', @director.gameState.get('numCollectedLinks') + 1
-      obstacle.destroy()
-    else
-      return if (@director.gameState.get "numCollectedLinks") < (@director.gameState.get "numLinksNeeded")
+    @director.gameState.set 'numCollectedLinks', @director.gameState.get('numCollectedLinks') + 1
+    obstacle.destroy()
+    if (@director.gameState.get "numCollectedLinks") >= (@director.gameState.get "numLinksNeeded")
       @maxSpeed = 0;
       @director.nextLevel obstacle.href
 

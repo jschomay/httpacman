@@ -46,8 +46,7 @@ module.exports = class Director
           ############
           console.log "Converting hyperlinks to game entities"
           that = @
-          numInternalLinks = 0;
-          numExternalLinks = 0;
+          numLinks = 0;
           headerBarEl = $('#hh-header-bar')[0]
           # start with all links on page...
           $('a:visible')
@@ -67,19 +66,16 @@ module.exports = class Director
             # if we're still going then don't filter out this link
             return true
           .each ->
-            # is this an internal or external link?
+            # is this an internal or external link? (not using anymore)
 
             # quick hack to get around facebook's linkswap on mouseover to get the real like destination
-            $(this).trigger('mouseover')[0].href
-            link = this.href.replace(/https?:\/\/(www\.)?/, '').split('/')[0]
-            domain = that.gameState.get('url').replace("www.", "").split('/')[0]
+            # $(this).trigger('mouseover')[0].href
+            # link = this.href.replace(/https?:\/\/(www\.)?/, '').split('/')[0]
+            # domain = that.gameState.get('url').replace("www.", "").split('/')[0]
 
-            internalOrExternal = if domain is link or link is window.location.origin.replace(/https?:\/\//,'') then 'internal' else 'external'
+            # internalOrExternal = if domain is link or link is window.location.origin.replace(/https?:\/\//,'') then 'internal' else 'external'
             
-            if internalOrExternal is 'internal'
-              numInternalLinks++
-            else
-              numExternalLinks++
+            numLinks++
 
             # if the anchor element wraps another element, return that, otherwise return the anchor
             # this way the hyperlink entity will hopefully always have a width and height > 0
@@ -96,20 +92,18 @@ module.exports = class Director
               y: offset.top - headerBarHeight
               x: offset.left
               $el: $this
-              internalOrExternal: internalOrExternal
               href: this.href
 
           # set game state variables based on number of links scraped
-          if numExternalLinks is 0
+          if numLinks is 0
             # No links to grab, what should we do?  For now we just refresh
             window.location.href = window.location.origin+"/play"
 
-          @gameState.set "numInternalLinks", numInternalLinks
-          @gameState.set 'numExternalLinks', numExternalLinks
+          @gameState.set "numLinks", numLinks
 
-          # 1/30th to 1/3 of all internal links, based on level
+          # 1/20th to 1/2 of all internal links, based on level
           # this will need to be adjusted later...
-          @gameState.set "numLinksNeeded", Math.ceil(numInternalLinks*(Math.min(@gameState.get('level', 10)))/30)
+          @gameState.set "numLinksNeeded", Math.ceil(numLinks*(Math.min(@gameState.get('level', 10)))/20)
 
 
           ################

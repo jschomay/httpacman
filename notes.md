@@ -13,7 +13,7 @@ Do soon
 
 - make 'movable' a component (player overrides for scrolling movement style)
 
-- think of way to make sure player doesn't start on a page over a link (or other active element?)
+- start all enemies off screen, makes level start easier and play is better
 
 - use session instead of form to communicate nextLevelUrl to server.  This also  has the benefit of storing the current url to serve files correctly (instead of getting /play for /favicon for example)
 
@@ -186,3 +186,7 @@ levels manifest
 - <html> "code view" where harry is literally over the html code.  He could still run around and collect links maybe.  Maybe viruses send harry to this view, or maybe it's a bonus or special level.
 
 - Anti virus bots behaviour ai upgrade - add dynamic obidience: Each bot gets a primary task (kill virus/Harry), but has other tasks it can do too (like see what's happening at nearest friend, stalk a friend, switch targets, go look at something that's not a target, nap, malfunction).  Each bot gets an "obidience quotiant" that determins upon creation if it follows the primary task or picks one of the other tasks as well.  In addition, based on the obidience quotiant, the bot may "get distracted," switch tasks, or get back on the primary task either at random times, or at certain evens (like killing a virus, or getting to far away from Harry).  This would be interesting to see what happens now that these critters have some "free will" (like game of life)
+
+- remove internal/external links hyperlink concept.  Instead, once your hyperjump linkjuice meter is full enough, press 'space' to activate hyperjump.  If you don't have enough linkjuice, it warns you that you don't have enough linkjuice to escape the current domain.  You can press 'space' again to jump to an internal link (random or the last one you got) and try again, though you'll be stuck in "domain purgatory" untill you can hyperjump out and your level doesn't advance.
+
+- if a virus hits you, maybe you have ten seconds to either escape or find an antivirus bot, or health(?), and if you dont, then it jumps you to a "bad site" like the terrible 90's design sites (ooh, maybe all links give you a version from the waybackmachine?), or naptser, or a jail site, or a health site about viruses, or the wikipedia site about viruses or something like that, and your level doesn't advance.
