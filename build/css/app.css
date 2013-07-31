@@ -84,17 +84,19 @@ body {
     #hh-header-bar #hh-progress-bar-container #hh-progress {
       display: none;
       background: yellow;
-      width: 0%; }
-@media -sass-debug-info{filename{}line{font-family:\0000387}}
+      width: 0%;
+      float: left; }
+@media -sass-debug-info{filename{}line{font-family:\0000388}}
     #hh-header-bar #hh-progress-bar-container #hh-collected {
       display: none;
       top: 0;
       height: 100%;
       font-size: 12px;
-      position: absolute;
+      position: relative;
       color: #FFF;
-      padding: 10px 4px; }
-@media -sass-debug-info{filename{}line{font-family:\0000396}}
+      padding: 10px 4px;
+      float: left; }
+@media -sass-debug-info{filename{}line{font-family:\0000398}}
     #hh-header-bar #hh-progress-bar-container #hh-goal {
       display: none;
       position: absolute;
@@ -104,12 +106,12 @@ body {
       z-index: 9;
       width: 5px;
       border: none; }
-@media -sass-debug-info{filename{}line{font-family:\00003107}}
+@media -sass-debug-info{filename{}line{font-family:\00003109}}
   #hh-header-bar #hh-meter-full {
     display: none !important;
     color: yellow !important;
     font-weight: bold !important;
     font-size: 14px !important; }
-@media -sass-debug-info{filename{}line{font-family:\00003112}}
+@media -sass-debug-info{filename{}line{font-family:\00003114}}
     #hh-header-bar #hh-meter-full.show {
       display: block !important; }

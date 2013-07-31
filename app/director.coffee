@@ -173,7 +173,7 @@ module.exports = class Director
       @maxSpeed = 0;
       @nextLevel()
     else
-      # @gameState.set 'running', false
+      @gameState.set 'running', false
       if confirm "You don't have enough linkjuice to escape this domain.  You can try to collect more links, or you can hyperjump to another page on this domain and start over there (without leveling up).  Do you want to do that?"
         myJQuery('<form method="post" action="'+window.location.origin+'/play">
         <input type="hidden" name="nextLevelUrl" value="'+@gameState.get('purgatoryLink')+'">
