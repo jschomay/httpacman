@@ -64,6 +64,8 @@ BUGS
 
   - thesaurus.com/ didn't work at one point, but worked after pressing P, maybe test again and set running to true
 
+  - https://www.tripit.com/ redirects
+
 - Sites that use an iframe mess up the game because the iframe wont scroll.
 
 

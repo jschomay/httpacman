@@ -25,3 +25,8 @@ module.exports = class HeaderBar extends myBackbone.View
     @$('#hh-collected').css display: 'inline-block'
     progress = @model.get('numCollectedLinks')/@model.get('numLinks')*100
     @$('#hh-progress').css(width: progress+'%', display: 'inline-block')
+    # show hyper jump ready text
+    if (@model.get "numCollectedLinks") >= (@model.get "numLinksNeeded")
+      myJQuery('#hh-meter-full').addClass 'show'
+    else
+      myJQuery('#hh-meter-full').removeClass 'show'

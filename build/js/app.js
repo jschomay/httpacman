@@ -126,9 +126,10 @@ window.require.register("director", function(exports, require, module) {
 
           delay = document.height > 7000 ? 1700 : 300;
           return setTimeout((function() {
-            var headerBarEl, numLinks, that;
+            var headerBarEl, internalLinks, numLinks, randomIndex, that;
 
             console.log("Converting hyperlinks to game entities");
+            internalLinks = [];
             that = _this;
             numLinks = 0;
             headerBarEl = $('#hh-header-bar')[0];
@@ -155,8 +156,15 @@ window.require.register("director", function(exports, require, module) {
               }
               return true;
             }).each(function() {
-              var $this, child, headerBarHeight, offset;
+              var $this, child, domain, domainRegex, headerBarHeight, link, offset;
 
+              $(this).trigger('mouseover')[0].href;
+              link = this.href.replace(/https?:\/\/(www\.)?/, '').split('/')[0];
+              domain = that.gameState.get('url').replace("www.", "").split('/')[0];
+              domainRegex = new RegExp(domain, 'i');
+              if (domainRegex.test(link || link === window.location.origin.replace(/https?:\/\//, ''))) {
+                internalLinks.push(this.href);
+              }
               numLinks++;
               child = $(this).children();
               $this = child.length > 0 ? child : $(this);
@@ -177,6 +185,8 @@ window.require.register("director", function(exports, require, module) {
             }
             _this.gameState.set("numLinks", numLinks);
             _this.gameState.set("numLinksNeeded", Math.ceil(numLinks * (Math.min(_this.gameState.get('level', 10))) / 20));
+            randomIndex = Math.ceil(Math.random() * internalLinks.length) - 1;
+            _this.gameState.set('purgatoryLink', internalLinks[randomIndex]);
             $('script, iframe').add('div').filter(function() {
               var adIdentifiers;
 
@@ -618,6 +628,7 @@ window.require.register("entities/player", function(exports, require, module) {
     Components.mixin(Player, 'Sprite, Collidable');
 
     function Player(options) {
+      this.hyperjump = __bind(this.hyperjump, this);
       this.update = __bind(this.update, this);
       var _ref, _ref1;
 
@@ -704,9 +715,14 @@ window.require.register("entities/player", function(exports, require, module) {
 
     Player.prototype.onHitHyperlink = function(obstacle) {
       this.director.gameState.set('numCollectedLinks', this.director.gameState.get('numCollectedLinks') + 1);
-      obstacle.destroy();
+      return obstacle.destroy();
+    };
+
+    Player.prototype.hyperjump = function() {
       if ((this.director.gameState.get("numCollectedLinks")) >= (this.director.gameState.get("numLinksNeeded"))) {
         this.maxSpeed = 0;
+        return this.director.nextLevel(obstacle.href);
+      } else {
         return this.director.nextLevel(obstacle.href);
       }
     };
@@ -956,10 +972,15 @@ window.require.register("views/header_bar", function(exports, require, module) {
         display: 'inline-block'
       });
       progress = this.model.get('numCollectedLinks') / this.model.get('numLinks') * 100;
-      return this.$('#hh-progress').css({
+      this.$('#hh-progress').css({
         width: progress + '%',
         display: 'inline-block'
       });
+      if ((this.model.get("numCollectedLinks")) >= (this.model.get("numLinksNeeded"))) {
+        return myJQuery('#hh-meter-full').addClass('show');
+      } else {
+        return myJQuery('#hh-meter-full').removeClass('show');
+      }
     };
 
     return HeaderBar;
@@ -981,7 +1002,7 @@ window.require.register("views/templates/header_bar", function(exports, require,
   buf.push('<br/>Links needed to escape: ');
   var __val__ = numLinksNeeded
   buf.push(escape(null == __val__ ? "" : __val__));
-  buf.push('</p></div>');
+  buf.push('</p></div><div class="hh-section"><p id="hh-meter-full">Ready to hyperjump! <br/>(Press \'space\')</p></div>');
   }
   return buf.join("");
   };

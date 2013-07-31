@@ -45,6 +45,7 @@ module.exports = class Director
           # hyperlinks
           ############
           console.log "Converting hyperlinks to game entities"
+          internalLinks = []
           that = @
           numLinks = 0;
           headerBarEl = $('#hh-header-bar')[0]
@@ -69,11 +70,13 @@ module.exports = class Director
             # is this an internal or external link? (not using anymore)
 
             # quick hack to get around facebook's linkswap on mouseover to get the real like destination
-            # $(this).trigger('mouseover')[0].href
-            # link = this.href.replace(/https?:\/\/(www\.)?/, '').split('/')[0]
-            # domain = that.gameState.get('url').replace("www.", "").split('/')[0]
+            $(this).trigger('mouseover')[0].href
+            link = this.href.replace(/https?:\/\/(www\.)?/, '').split('/')[0]
+            domain = that.gameState.get('url').replace("www.", "").split('/')[0]
+            domainRegex = new RegExp domain, 'i'
 
-            # internalOrExternal = if domain is link or link is window.location.origin.replace(/https?:\/\//,'') then 'internal' else 'external'
+            if domainRegex.test link or link is window.location.origin.replace(/https?:\/\//,'')
+              internalLinks.push this.href
             
             numLinks++
 
@@ -105,6 +108,9 @@ module.exports = class Director
           # this will need to be adjusted later...
           @gameState.set "numLinksNeeded", Math.ceil(numLinks*(Math.min(@gameState.get('level', 10)))/20)
 
+          # set randome internal link for when user is caught in "domain purgatory"
+          randomIndex = Math.ceil(Math.random()*internalLinks.length)-1
+          @gameState.set 'purgatoryLink', internalLinks[randomIndex]
 
           ################
           # ads

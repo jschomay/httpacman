@@ -85,9 +85,14 @@ module.exports = class Player extends Entity
   onHitHyperlink: (obstacle) ->
     @director.gameState.set 'numCollectedLinks', @director.gameState.get('numCollectedLinks') + 1
     obstacle.destroy()
+
+  hyperjump: =>    
     if (@director.gameState.get "numCollectedLinks") >= (@director.gameState.get "numLinksNeeded")
       @maxSpeed = 0;
       @director.nextLevel obstacle.href
+    else
+      @director.nextLevel obstacle.href
+
 
   onHitEnemy: (obstacle) ->
     @.background = 'purple'

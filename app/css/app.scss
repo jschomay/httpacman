@@ -104,4 +104,13 @@ body {
       border: none;
     }
   }
+  #hh-meter-full{
+    display: none !important;
+    color: yellow !important;
+    font-weight: bold !important;
+    font-size: 14px !important;
+    &.show{
+      display: block !important;
+    }
+  }
 }
