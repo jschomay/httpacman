@@ -257,8 +257,23 @@ window.require.register("director", function(exports, require, module) {
       return _results;
     };
 
+    Director.prototype.hyperjump = function() {
+      if ((this.gameState.get("numCollectedLinks")) >= (this.gameState.get("numLinksNeeded"))) {
+        this.maxSpeed = 0;
+        return this.nextLevel();
+      } else {
+        if (confirm("You don't have enough linkjuice to escape this domain.  You can try to collect more links, or you can hyperjump to another page on this domain and start over there (without leveling up).  Do you want to do that?")) {
+          return myJQuery('<form method="post" action="' + window.location.origin + '/play">\
+        <input type="hidden" name="nextLevelUrl" value="' + this.gameState.get('purgatoryLink') + '">\
+        </form>').submit();
+        } else {
+          return this.gameState.set('running', true);
+        }
+      }
+    };
+
     Director.prototype.nextLevel = function(url) {
-      var goToNextLevel, level,
+      var A, c, elems, i, keepOnPage, l, level, move, timer, x,
         _this = this;
 
       level = localStorage.getItem('hh-level');
@@ -273,39 +288,37 @@ window.require.register("director", function(exports, require, module) {
           return _this.removeEntity(entity.id);
         }
       });
-      
-      var keepOnPage = myJQuery("#hh-header-bar, #hh-canvas, #hh-stats-widget");
+      keepOnPage = myJQuery("#hh-header-bar, #hh-canvas, #hh-stats-widget");
       keepOnPage.remove();
-      var elems=myJQuery("body *");
-      myJQuery('body').append(keepOnPage);
-      var l=elems.length;
-      var i, c, move, x = 1;
-      var A = function (){
-          for(i=0; i-l; i++){
-              c=elems[i].style; 
-              move = elems[i].move
-              if (!move){
-                  move=(Math.random()*8*(Math.round(Math.random())?1:-1));
-              }
-              move *= x;
-              elems[i].move = move;
-              
-              c['-webkit-transform'] = "translateX(" + move + 'px)';
+      elems = myJQuery("body *");
+      myJQuery("body").append(keepOnPage);
+      l = elems.length;
+      i = void 0;
+      c = void 0;
+      move = void 0;
+      x = 1;
+      A = function() {
+        i = 0;
+        while (i - l) {
+          c = elems[i].style;
+          move = elems[i].move;
+          if (!move) {
+            move = Math.random() * 8 * (Math.round(Math.random()) ? 1 : -1);
           }
-          x++;
+          move *= x;
+          elems[i].move = move;
+          c["-webkit-transform"] = "translateX(" + move + "px)";
+          i++;
+        }
+        return x++;
       };
-      //Loop
-      var timer = setInterval(function(){A()},60);
-      setTimeout(function() {
+      timer = setInterval(function() {
+        return A();
+      }, 60);
+      return setTimeout((function() {
         clearInterval(timer);
-        goToNextLevel();
-      }, 2000);
-      ;
-      return goToNextLevel = function() {
-        return myJQuery('<form method="post" action="' + window.location.origin + '/play">\
-      <input type="hidden" name="nextLevelUrl" value="' + url + '">\
-      </form>').submit();
-      };
+        return window.location.href = window.location.origin + "/play";
+      }), 2000);
     };
 
     return Director;
@@ -628,7 +641,6 @@ window.require.register("entities/player", function(exports, require, module) {
     Components.mixin(Player, 'Sprite, Collidable');
 
     function Player(options) {
-      this.hyperjump = __bind(this.hyperjump, this);
       this.update = __bind(this.update, this);
       var _ref, _ref1;
 
@@ -718,15 +730,6 @@ window.require.register("entities/player", function(exports, require, module) {
       return obstacle.destroy();
     };
 
-    Player.prototype.hyperjump = function() {
-      if ((this.director.gameState.get("numCollectedLinks")) >= (this.director.gameState.get("numLinksNeeded"))) {
-        this.maxSpeed = 0;
-        return this.director.nextLevel(obstacle.href);
-      } else {
-        return this.director.nextLevel(obstacle.href);
-      }
-    };
-
     Player.prototype.onHitEnemy = function(obstacle) {
       return this.background = 'purple';
     };
@@ -779,7 +782,10 @@ window.require.register("game", function(exports, require, module) {
           localStorage.setItem("hh-level", e.keyCode - 96);
         }
         if (e.keyCode === 80) {
-          return _this.gameState.set("running", _this.gameState.get("running") ? false : true);
+          _this.gameState.set("running", _this.gameState.get("running") ? false : true);
+        }
+        if (e.keyCode === 32) {
+          return _this.director.hyperjump();
         }
       });
       $('a').click(function(e) {
@@ -840,6 +846,9 @@ window.require.register("game", function(exports, require, module) {
     Game.prototype.update = function(dt) {
       if (!this.gameState.get('running')) {
         return;
+      }
+      if (dt > 1) {
+        dt = 0;
       }
       this.stats.update();
       return this.director.update(dt);

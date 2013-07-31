@@ -33,6 +33,9 @@ module.exports = class Game extends window.atom.Game
       #  press 'P' to pause
       if e.keyCode is 80
         @gameState.set "running", if (@gameState.get "running") then false else true
+      #  press 'space' to hyperjump
+      if e.keyCode is 32
+        @director.hyperjump()
 
 
     # disable links (even though the canvas covers them all)
@@ -96,6 +99,9 @@ module.exports = class Game extends window.atom.Game
 
   update: (dt) ->
     return if not @gameState.get 'running'
+    # hack because some times when paused or blurred the dt is huge and the entities jump
+    if dt > 1
+      dt = 0
     # update fps widget
     @stats.update()
     # tell director to update everything

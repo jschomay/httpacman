@@ -168,6 +168,22 @@ module.exports = class Director
     for id, entity of @entities
       entity.draw(ctx)
 
+  hyperjump: ->    
+    if (@gameState.get "numCollectedLinks") >= (@gameState.get "numLinksNeeded")
+      @maxSpeed = 0;
+      @nextLevel()
+    else
+      # @gameState.set 'running', false
+      if confirm "You don't have enough linkjuice to escape this domain.  You can try to collect more links, or you can hyperjump to another page on this domain and start over there (without leveling up).  Do you want to do that?"
+        myJQuery('<form method="post" action="'+window.location.origin+'/play">
+        <input type="hidden" name="nextLevelUrl" value="'+@gameState.get('purgatoryLink')+'">
+        </form>').submit()
+      else
+        @gameState.set 'running', true
+
+
+
+
   nextLevel: (url) =>
     # @gameState.set 'running', false
     level = localStorage.getItem 'hh-level'
@@ -182,39 +198,35 @@ module.exports = class Director
       @removeEntity entity.id unless entity.type is "player"
 
     # fancy page exploding effect
-    `
-    var keepOnPage = myJQuery("#hh-header-bar, #hh-canvas, #hh-stats-widget");
-    keepOnPage.remove();
-    var elems=myJQuery("body *");
-    myJQuery('body').append(keepOnPage);
-    var l=elems.length;
-    var i, c, move, x = 1;
-    var A = function (){
-        for(i=0; i-l; i++){
-            c=elems[i].style; 
-            move = elems[i].move
-            if (!move){
-                move=(Math.random()*8*(Math.round(Math.random())?1:-1));
-            }
-            move *= x;
-            elems[i].move = move;
-            
-            c['-webkit-transform'] = "translateX(" + move + 'px)';
-        }
-        x++;
-    };
-    //Loop
-    var timer = setInterval(function(){A()},60);
-    setTimeout(function() {
-      clearInterval(timer);
-      goToNextLevel();
-    }, 2000);
-    `
+    keepOnPage = myJQuery("#hh-header-bar, #hh-canvas, #hh-stats-widget")
+    keepOnPage.remove()
+    elems = myJQuery("body *")
+    myJQuery("body").append keepOnPage
+    l = elems.length
+    i = undefined
+    c = undefined
+    move = undefined
+    x = 1
+    A = ->
+      i = 0
+      while i - l
+        c = elems[i].style
+        move = elems[i].move
+        move = (Math.random() * 8 * ((if Math.round(Math.random()) then 1 else -1)))  unless move
+        move *= x
+        elems[i].move = move
+        c["-webkit-transform"] = "translateX(" + move + "px)"
+        i++
+      x++
 
-    # tell server to send us to a new level
-    goToNextLevel = ->
-      myJQuery('<form method="post" action="'+window.location.origin+'/play">
-      <input type="hidden" name="nextLevelUrl" value="'+url+'">
-      </form>').submit()
+
+    #Loop
+    timer = setInterval(->
+      A()
+    , 60)
+    setTimeout (->
+      clearInterval timer
+      window.location.href = window.location.origin + "/play"
+    ), 2000
     
 

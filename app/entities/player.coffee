@@ -27,7 +27,7 @@ module.exports = class Player extends Entity
     atom.input.bind atom.key.RIGHT_ARROW, 'right'
     atom.input.bind atom.key.DOWN_ARROW, 'down'
     atom.input.bind atom.key.UP_ARROW, 'up'
-
+    
     # define collision reactions for player hitting obstacle by type
     @onHit =
       'hyperlink': @onHitHyperlink
@@ -85,14 +85,6 @@ module.exports = class Player extends Entity
   onHitHyperlink: (obstacle) ->
     @director.gameState.set 'numCollectedLinks', @director.gameState.get('numCollectedLinks') + 1
     obstacle.destroy()
-
-  hyperjump: =>    
-    if (@director.gameState.get "numCollectedLinks") >= (@director.gameState.get "numLinksNeeded")
-      @maxSpeed = 0;
-      @director.nextLevel obstacle.href
-    else
-      @director.nextLevel obstacle.href
-
 
   onHitEnemy: (obstacle) ->
     @.background = 'purple'
