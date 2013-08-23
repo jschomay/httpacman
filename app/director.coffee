@@ -226,7 +226,7 @@ module.exports = class Director
     , 60)
     setTimeout (->
       clearInterval timer
-      window.location.href = window.location.origin + "/play"
+      window.location.href = window.location.origin + "/play?td_url="+url
     ), 2000
     
 

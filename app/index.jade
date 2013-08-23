@@ -9,7 +9,7 @@ html
       #logo
         #headline
           h1 Hyperlink Harry
-          h2 A HTML5 game where the web is your playground
+          h2 A HTML5 game set aross the landscape of the web
 
       section#about
         #harry
@@ -19,39 +19,48 @@ html
 
         p Can you help him?  
 
-        p
-          b Please note: This game is in active development! 
-          | It is fully playable, but lacks many features, may have bugs, and uses stand in art.  If you get stuck, try refreshing for a new level.
+        #baddies(style="text-align:center;")
+          #bot
+          #spider
 
         h3 How to play
         p Use the keyboard arrows to move around.  Collect links to fill up your hyperlink bar.  Once you have enough "linkjuice", press 'space' to "hyperjump" to a new level.  'P' will pause the game.
       
         a#play(href="/play") PLAY NOW
 
+        p
+          b Please note: This game is in active development! 
+          | It is fully playable, but lacks many features, may have bugs, and uses stand in art.  If you get stuck, try refreshing for a new level.
+
     section#bottom
-      p This project is currently open source.  Check out the code, comment, and fork on 
-        a(href="https://github.com/jschomay/httpacman") github.
+      section#technology
+        h3 Technology
+        p Built with:
+        ul
+          li node.js
+          li coffeescript
+          li jade
+          li sass
+          li html5 canvas
+          li custom game engine based on atom and crafty
+          li brunch
+        p This project is currently open source.  View the source, comment, and fork on 
+          a(href="https://github.com/jschomay/httpacman") Github.
 
+      section#contact
+        h3 Credits/contact
+        p Game concept, game design, and principle coding by Jeff Schomay.  A few others contributed to the coding at verious points.
 
-      h3 Credits/contact
-      p The game concept was concieved by Jeff Schomay, who also did most of the game design and coding.  Others contributed to the coding at verious points.
-
-      ul
-        li Jeff Schomay - 
-          a(href="https://github.com/jschomay/") /jschomay
-          | - 
-          a(href="http://jeffschomay.com/") jeffschomay.com
-        li Steve Manuel - 
-          a(href="https://github.com/stevemanuel") /stevemanuel
-        li Kevin Sylvestre - 
-          a(href="https://github.com/ksylvest") /ksylvest
-
-      h3 Technology
-      ul
-        li node
-        li coffeescript
-        li canvas
-        li backbone
-        li sass
-        li brunch
+        ul
+          li Jeff Schomay
+            br
+            a(href="https://github.com/jschomay/") On Github
+            |  / 
+            a(href="http://jeffschomay.com/") jeffschomay.com
+          li Steve Manuel (helped with backend)
+            br
+            a(href="https://github.com/stevemanuel") On Github
+          li Kevin Sylvestre (helped with component system)
+            br
+            a(href="https://github.com/ksylvest") On Github
 

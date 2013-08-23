@@ -4,7 +4,7 @@ var request = require('request');
 var util = require('util');
 var qs = require('querystring');
 var server = http.createServer();
-
+var url = require('url');
 
 server.on('request', function(req, res) {
 
@@ -25,7 +25,9 @@ server.on('request', function(req, res) {
     *********************************/
     defineUrl = '';
 
-    // if an url was provided in a post request (next level request), use that one
+    // if an url was provided as an url parameter (next level request), use that one
+    var queryObject = url.parse(req.url,true).query;
+    // console.log(queryObject);
     var body = "";
       req.on('data', function (chunk) {
         body += chunk;
@@ -33,8 +35,8 @@ server.on('request', function(req, res) {
       req.on('end', function () {
         body = qs.parse(body);
         // console.log('POSTed: ' + JSON.stringify(body));
-        if (body.nextLevelUrl)
-          defineUrl = body.nextLevelUrl;
+        if (queryObject.td_url)
+          defineUrl = queryObject.td_url;
         if(defineUrl)
           console.log("Specific url requested:", defineUrl);
         getRandomSite(defineUrl);

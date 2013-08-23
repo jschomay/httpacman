@@ -1,7 +1,8 @@
-$green: #05683C;
 $orange: #D56F11;
 $tan: #D5C589;
 $hightlight: #F0CA3D;
+$green: #498527;
+$red: #863609;
 
 
 @mixin border-radius($radius) {
@@ -57,7 +58,7 @@ header{
   #logo {
       background: $orange;    
       display: relative;
-      margin-top: 30px;
+      margin-top: 10px;
       margin-bottom: 20px;
       padding: 10px 0;
       @include shadow();
@@ -84,6 +85,21 @@ header{
     background-image: url('../images/harry.png');
     background-size: 200px;
     margin: auto;
+  }
+  #bot{
+    width: 37px;
+    height: 54px;
+    background-image: url('../images/bot.gif');
+    background-size: 40px;
+    display: inline-block;
+    margin-right: 40px;
+  }
+  #spider{
+    width: 65px;
+    height: 58px;
+    background-image: url('../images/spider1.png');
+    background-size: 330px;
+    display: inline-block;
   }
 
   #about {
@@ -115,18 +131,37 @@ header{
     font-weight: bold;
     background:$orange;
     cursor: pointer;
+    text-decoration: none;
     @include three-d-out();
     @include border-radius(5px);
     &:hover {
-      color: $hightlight;
-      width: 205px;
+      background: $green;
+    }
+    &:active {
+      width: 195px;
     }
   }
 }
 
 #bottom {
   overflow: auto;
-  color: $green;
+  width: 70%;
+  margin: auto;
+  color: $red;
+  a {
+    color: #555;
+    &:hover {
+      color: $green;
+    }
+  }
+  section {
+    width: 50%;
+    float: left;
+    padding: 20px;
+  }
+  #contact li {
+    margin-bottom: 10px;
+  }
 
 }
 
