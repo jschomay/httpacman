@@ -4,47 +4,54 @@ html
     meta(charset="UTF-8")
     link(rel="stylesheet", href="css/app.css")
     title Hyperlink Harry - a browser based game where the web is the playing field
-  body
-    h1 Hyperlink Harry, a new spin on the browser-based game
-    h2 Run around on top of random web pages.  Avoid enemies.  Escape through hyperlinks.  Find your way back home.
+  body.home
+    header
+      #logo
+        #headline
+          h1 Hyperlink Harry
+          h2 A HTML5 game where the web is your playground
 
-    h3 The story
-    p One day while surfing the net, Harry's modem had a power surge and sucked Harry into the web.  
+      section#about
+        #harry
+        p One day while surfing the net, Harry's modem had a power surge and he got sucked into the web.  
 
-    p Now Harry's digital consciousness is lost somewhere out in hyperspace, bouncing from site to site, evading antivirus bots and seach engine spiders, and looking for his way back home.
+        p Now Harry's digital consciousness is lost somewhere out in hyperspace, bouncing from site to site, evading antivirus bots and seach engine spiders, and looking for his way back home.
 
-    p Can you help him?  
+        p Can you help him?  
 
-    h3 How to play
-    p Use the keyboard arrows to move around.  Collect internal links by running over them.  Once you have enough "linkjuice", press 'space' to hyperjump to a new level.  Pressing 'R' will take you to a new random page if you get stuck (it doesn't up your level).  'P' will pause the game.
+        p
+          b Please note: This game is in active development! 
+          | It is fully playable, but lacks many features, may have bugs, and uses stand in art.  If you get stuck, try refreshing for a new level.
 
-    h3 WARNING: THIS IS IN ACTIVE DEVELOPMENT
-    P Which means it is incomplete (in design and functionality) and may have some bugs and may need optimizing.  Simple gameplay should work, but if you get stuck, just hit refresh (as long as you didn't somehow end up at a different site in the address bar, if so, press back).
+        h3 How to play
+        p Use the keyboard arrows to move around.  Collect links to fill up your hyperlink bar.  Once you have enough "linkjuice", press 'space' to "hyperjump" to a new level.  'P' will pause the game.
+      
+        a#play(href="/play") PLAY NOW
 
-    p This project is currently open source.  Check out the code, comment, and fork on 
-      a(href="https://github.com/jschomay/httpacman") github.
+    section#bottom
+      p This project is currently open source.  Check out the code, comment, and fork on 
+        a(href="https://github.com/jschomay/httpacman") github.
 
-    a(href="/play", style="display:block;width:200px;text-align:center;padding:5px;background:lightgray;border:1px solid black;margin:auto;") PLAY NOW
 
-    h3 Credits/contact
-    p The game concept was concieved by Jeff Schomay, who also did most of the game design and coding.  Others contributed to the coding at verious points.
+      h3 Credits/contact
+      p The game concept was concieved by Jeff Schomay, who also did most of the game design and coding.  Others contributed to the coding at verious points.
 
-    ul
-      li Jeff Schomay - 
-        a(href="https://github.com/jschomay/") /jschomay
-        | - 
-        a(href="http://jeffschomay.com/") jeffschomay.com
-      li Steve Manuel - 
-        a(href="https://github.com/stevemanuel") /stevemanuel
-      li Kevin Sylvestre - 
-        a(href="https://github.com/ksylvest") /ksylvest
+      ul
+        li Jeff Schomay - 
+          a(href="https://github.com/jschomay/") /jschomay
+          | - 
+          a(href="http://jeffschomay.com/") jeffschomay.com
+        li Steve Manuel - 
+          a(href="https://github.com/stevemanuel") /stevemanuel
+        li Kevin Sylvestre - 
+          a(href="https://github.com/ksylvest") /ksylvest
 
-    h3 Technology
-    ul
-      li node
-      li coffeescript
-      li canvas
-      li backbone
-      li sass
-      li brunch
+      h3 Technology
+      ul
+        li node
+        li coffeescript
+        li canvas
+        li backbone
+        li sass
+        li brunch
 

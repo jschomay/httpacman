@@ -192,3 +192,13 @@ levels manifest
 - remove internal/external links hyperlink concept.  Instead, once your hyperjump linkjuice meter is full enough, press 'space' to activate hyperjump.  If you don't have enough linkjuice, it warns you that you don't have enough linkjuice to escape the current domain.  You can press 'space' again to jump to an internal link (random or the last one you got) and try again, though you'll be stuck in "domain purgatory" untill you can hyperjump out and your level doesn't advance.
 
 - if a virus hits you, maybe you have ten seconds to either escape or find an antivirus bot, or health(?), and if you dont, then it jumps you to a "bad site" like the terrible 90's design sites (ooh, maybe all links give you a version from the waybackmachine?), or naptser, or a jail site, or a health site about viruses, or the wikipedia site about viruses or something like that, and your level doesn't advance.
+
+- if an anti virus bot hits you, you get 'quarantined' - the screen gets covered in white or black, with just a small (growing?) viewable area around your character
+
+- spambots or viruses turn images on page into something else?
+
+- viruses maybe affects Harry in different ways - some send him to a virus page, maybe others make him glitch, or mirror the world under Harry, or shrink Harry.
+
+- boss pages - at specific levels, load a pag that is extra difficult (like where's waldo maybe) or has a boss on it, or their facebook page or something special
+
+- make links and adds "shimmer" as you scroll

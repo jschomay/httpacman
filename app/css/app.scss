@@ -1,8 +1,138 @@
+$green: #05683C;
+$orange: #D56F11;
+$tan: #D5C589;
+$hightlight: #F0CA3D;
+
+
+@mixin border-radius($radius) {
+  -moz-border-radius: $radius;
+  -webkit-border-radius: $radius;
+  -ms-border-radius: $radius;
+  border-radius: $radius;
+}
+
+// $params = "top left blur color inset[, top left blur color inset...]""
+@mixin box-shadow($params) {
+  -webkit-box-shadow: $params;
+  -moz-box-shadow: $params;
+  box-shadow: $params;
+}
+
+$global-shadow: 0px 4px 10px #222;
+@mixin shadow() {
+  @include box-shadow($global-shadow);
+}
+$three-d-out: $global-shadow, inset 0px 1px 0px #aaa;
+@mixin three-d-out() {
+  @include box-shadow($three-d-out);
+}
+$three-d-in: inset $global-shadow, 0px 1px 2px #777;
+@mixin three-d-in() {
+  @include box-shadow($three-d-in);
+}
+
+* {
+  box-sizing: border-box;
+}
 body {
   margin-top: 65px !important;
   overflow-x: hidden !important;
+  font-family: arial;
+  font-size: 12pt;
+  &.home {
+    margin: 0px !important;
+    background: $tan;
+  }
 }
 
+// homepage styles
+
+header{
+  overflow: auto;
+  background: #333;
+  border-bottom: 10px solid lightgray;
+  color: white;
+  @include shadow();
+
+  #logo {
+      background: $orange;    
+      display: relative;
+      margin-top: 30px;
+      margin-bottom: 20px;
+      padding: 10px 0;
+      @include shadow();
+    #headline {
+      display: block;
+      border-top: 2px dashed $tan;
+      border-bottom: 2px dashed $tan;
+      text-align: center;
+      text-align: center;
+    }
+    h1 {
+      font-size: 250%;
+      margin-bottom: 10px;
+    }
+    h2 {
+      font-size: 110%;
+      font-weight: normal;
+    }
+  }
+
+  #harry{
+    width: 50px;
+    height: 75px;
+    background-image: url('../images/harry.png');
+    background-size: 200px;
+    margin: auto;
+  }
+
+  #about {
+    width: 50%;
+    height: auto;
+    margin-left:auto;
+    margin-right:auto;
+    margin-bottom: 20px;
+    padding: 15px;
+    background: #555;
+    color: #eee;
+    @include border-radius(20px);
+    @include three-d-in();
+    h3 {
+      text-align: center;
+    }
+  }
+
+  #play {
+    display:block;
+    width:200px;
+    text-align:center;
+    margin: auto;
+    margin-top: 40px;
+    margin-bottom: 10px;
+    padding:15px;
+    color: white;
+    font-size: 100%;
+    font-weight: bold;
+    background:$orange;
+    cursor: pointer;
+    @include three-d-out();
+    @include border-radius(5px);
+    &:hover {
+      color: $hightlight;
+      width: 205px;
+    }
+  }
+}
+
+#bottom {
+  overflow: auto;
+  color: $green;
+
+}
+
+
+
+// game styles
 
 #hh-header-bar {
   position: fixed;

@@ -16,7 +16,7 @@ server.on('request', function(req, res) {
 
 
   // any request besides one of our assets pulls a random url
-  if(!req.url.match(/^\/(index.html|js|css)/)) {
+  if(!req.url.match(/^\/(index.html|js|css|images)/)) {
 
     res.writeHead(200, { 'content-type': 'text/html'});
     
