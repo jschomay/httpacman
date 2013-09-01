@@ -20,7 +20,7 @@ module.exports = class Ad extends Entity
     super
 
   draw: (ctx) ->
-    ctx.strokeStyle = 'magenta'
-    ctx.lineWidth = 5
-    ctx.strokeRect @position.x, @position.y, @w, @h
+    # ctx.strokeStyle = 'magenta'
+    # ctx.lineWidth = 5
+    # ctx.strokeRect @position.x, @position.y, @w, @h
 

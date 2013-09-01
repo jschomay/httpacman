@@ -20,8 +20,8 @@ $red: #863609;
 }
 
 $global-shadow: 0px 4px 10px #222;
-@mixin shadow() {
-  @include box-shadow($global-shadow);
+@mixin shadow($shadow: $global-shadow) {
+  @include box-shadow($shadow);
 }
 $three-d-out: $global-shadow, inset 0px 1px 0px #aaa;
 @mixin three-d-out() {
@@ -176,10 +176,11 @@ header{
   box-sizing: border-box;
   width: 100%;
   height: 60px;
-  background: #222;
+  background: $orange;
   z-index: 9999999999;
   padding: 10px;
   overflow: hidden;
+  @include shadow();
   .hh-section {
     display: block;
     float:left;
@@ -243,12 +244,16 @@ header{
   #hh-progress-bar-container {
     position: relative;
     background: #333;
-    border: 3px  inset #777;
+    border: 2px solid #ccc;
+    @include border-radius(10px);
+    @include three-d-in();
+    overflow: hidden;
     #hh-progress {
       display:none;
       background: yellow;
       width: 0%;
       float: left;
+      @include shadow(inset 1px 2px 7px 0px #555);
     }
     #hh-collected {
       display: none;
@@ -269,6 +274,7 @@ header{
       z-index: 9;
       width: 5px;
       border: none;
+      @include shadow(inset 0px 2px 7px -1px #555);
     }
   }
   #hh-meter-full{
@@ -276,6 +282,17 @@ header{
     color: yellow !important;
     font-weight: bold !important;
     font-size: 14px !important;
+    text-align:center  !important;
+    width: 300px !important;
+    margin-left: 10px !important;
+    margin-top: -4px !important;
+    padding: 6px 10px  !important;
+    color: white  !important;
+    font-weight: bold  !important;
+    background:$green  !important;
+    text-decoration: none  !important;
+    @include three-d-out();
+    @include border-radius(5px);
     &.show{
       display: block !important;
     }
