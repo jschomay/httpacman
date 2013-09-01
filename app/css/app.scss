@@ -40,131 +40,131 @@ body {
   overflow-x: hidden !important;
   font-family: arial;
   font-size: 12pt;
-  &.home {
+  &#hh-home {
     margin: 0px !important;
     background: $tan;
   }
 }
 
 // homepage styles
+#hh-home {
+  header{
+    overflow: auto;
+    background: #333;
+    border-bottom: 10px solid lightgray;
+    color: white;
+    @include shadow();
 
-header{
-  overflow: auto;
-  background: #333;
-  border-bottom: 10px solid lightgray;
-  color: white;
-  @include shadow();
-
-  #logo {
-      background: $orange;    
-      display: relative;
-      margin-top: 10px;
-      margin-bottom: 20px;
-      padding: 10px 0;
-      @include shadow();
-    #headline {
-      display: block;
-      border-top: 2px dashed $tan;
-      border-bottom: 2px dashed $tan;
-      text-align: center;
-      text-align: center;
+    #logo {
+        background: $orange;    
+        display: relative;
+        margin-top: 10px;
+        margin-bottom: 20px;
+        padding: 10px 0;
+        @include shadow();
+      #headline {
+        display: block;
+        border-top: 2px dashed $tan;
+        border-bottom: 2px dashed $tan;
+        text-align: center;
+        text-align: center;
+      }
+      h1 {
+        font-size: 250%;
+        margin-bottom: 10px;
+      }
+      h2 {
+        font-size: 110%;
+        font-weight: normal;
+      }
     }
-    h1 {
-      font-size: 250%;
+
+    #harry{
+      width: 50px;
+      height: 75px;
+      background-image: url('../images/harry.png');
+      background-size: 200px;
+      margin: auto;
+    }
+    #bot{
+      width: 37px;
+      height: 54px;
+      background-image: url('../images/bot.gif');
+      background-size: 40px;
+      display: inline-block;
+      margin-right: 40px;
+    }
+    #spider{
+      width: 65px;
+      height: 58px;
+      background-image: url('../images/spider1.png');
+      background-size: 330px;
+      display: inline-block;
+    }
+
+    #about {
+      width: 50%;
+      height: auto;
+      margin-left:auto;
+      margin-right:auto;
+      margin-bottom: 20px;
+      padding: 15px;
+      background: #555;
+      color: #eee;
+      @include border-radius(20px);
+      @include three-d-in();
+      h3 {
+        text-align: center;
+      }
+    }
+
+    #play {
+      display:block;
+      width:200px;
+      text-align:center;
+      margin: auto;
+      margin-top: 40px;
+      margin-bottom: 10px;
+      padding:15px;
+      color: white;
+      font-size: 100%;
+      font-weight: bold;
+      background:$orange;
+      cursor: pointer;
+      text-decoration: none;
+      @include three-d-out();
+      @include border-radius(5px);
+      &:hover {
+        background: $green;
+      }
+      &:active {
+        width: 195px;
+      }
+    }
+  }
+
+  #bottom {
+    overflow: auto;
+    width: 70%;
+    margin: auto;
+    color: $red;
+    a {
+      color: #555;
+      &:hover {
+        color: $green;
+      }
+    }
+    section {
+      width: 50%;
+      float: left;
+      padding: 20px;
+    }
+    #contact li {
       margin-bottom: 10px;
     }
-    h2 {
-      font-size: 110%;
-      font-weight: normal;
-    }
-  }
 
-  #harry{
-    width: 50px;
-    height: 75px;
-    background-image: url('../images/harry.png');
-    background-size: 200px;
-    margin: auto;
-  }
-  #bot{
-    width: 37px;
-    height: 54px;
-    background-image: url('../images/bot.gif');
-    background-size: 40px;
-    display: inline-block;
-    margin-right: 40px;
-  }
-  #spider{
-    width: 65px;
-    height: 58px;
-    background-image: url('../images/spider1.png');
-    background-size: 330px;
-    display: inline-block;
-  }
-
-  #about {
-    width: 50%;
-    height: auto;
-    margin-left:auto;
-    margin-right:auto;
-    margin-bottom: 20px;
-    padding: 15px;
-    background: #555;
-    color: #eee;
-    @include border-radius(20px);
-    @include three-d-in();
-    h3 {
-      text-align: center;
-    }
-  }
-
-  #play {
-    display:block;
-    width:200px;
-    text-align:center;
-    margin: auto;
-    margin-top: 40px;
-    margin-bottom: 10px;
-    padding:15px;
-    color: white;
-    font-size: 100%;
-    font-weight: bold;
-    background:$orange;
-    cursor: pointer;
-    text-decoration: none;
-    @include three-d-out();
-    @include border-radius(5px);
-    &:hover {
-      background: $green;
-    }
-    &:active {
-      width: 195px;
-    }
   }
 }
-
-#bottom {
-  overflow: auto;
-  width: 70%;
-  margin: auto;
-  color: $red;
-  a {
-    color: #555;
-    &:hover {
-      color: $green;
-    }
-  }
-  section {
-    width: 50%;
-    float: left;
-    padding: 20px;
-  }
-  #contact li {
-    margin-bottom: 10px;
-  }
-
-}
-
 
 
 // game styles

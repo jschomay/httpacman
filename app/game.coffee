@@ -20,7 +20,7 @@ module.exports = class Game extends window.atom.Game
       @gameState.set "level", 1
 
     # keyboard shortcuts
-    document.addEventListener 'keydown', (e) => 
+    myJQuery(document).on 'keydown', (e) => 
       # press 'R' (or command R for restart) to "refresh" - gets around the "resubmit form comfirmation" prompt
       if e.keyCode is 82
         window.location.href = window.location.origin+"/play"

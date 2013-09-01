@@ -71,11 +71,11 @@ module.exports = class Director
 
             # quick hack to get around facebook's linkswap on mouseover to get the real like destination
             $(this).trigger('mouseover')[0].href
-            link = this.href.replace(/https?:\/\/(www\.)?/, '').split('/')[0]
-            domain = that.gameState.get('url').replace("www.", "").split('/')[0]
+            link = this.href#.replace(/https?:\/\/(www\.)?/, '').split('/')[0]
+            domain = that.gameState.get('url').split('/')[0]
             domainRegex = new RegExp domain, 'i'
 
-            if domainRegex.test link or link is window.location.origin.replace(/https?:\/\//,'')
+            if domainRegex.test link or link is window.location.origin
               internalLinks.push this.href
             
             numLinks++
@@ -170,63 +170,86 @@ module.exports = class Director
 
   hyperjump: ->    
     if (@gameState.get "numCollectedLinks") >= (@gameState.get "numLinksNeeded")
-      @maxSpeed = 0;
+      # @maxSpeed = 0;
       @nextLevel()
     else
+      # if you press space before the links load you get undefined, so don't allow that
+      return if !@gameState.get('purgatoryLink')
       @gameState.set 'running', false
-      if confirm "You don't have enough linkjuice to escape this domain.  You can try to collect more links, or you can hyperjump to another page on this domain and start over there (without leveling up).  Do you want to do that?"
-        myJQuery('<form method="post" action="'+window.location.origin+'/play">
-        <input type="hidden" name="nextLevelUrl" value="'+@gameState.get('purgatoryLink')+'">
-        </form>').submit()
+      if confirm "You don't have enough linkjuice to escape this domain.  You can try to collect more links, or you can hyperjump within this current domain right now (without leveling up).  Do you want to do that?"
+        # unbind keys so you don't press space again
+        myJQuery(document).off 'keydown' 
+        @nextLevel @gameState.get('purgatoryLink'), true
       else
         @gameState.set 'running', true
 
 
 
 
-  nextLevel: (url) =>
-    # @gameState.set 'running', false
-    level = localStorage.getItem 'hh-level'
-    level++
-    localStorage.setItem "hh-level", level
-    if level is 10
-      url = "http://hyperlinkharrypoc-jschomay.rhcloud.com"
-      localStorage.removeItem "hh-level"
+  nextLevel: (url, noLevelUp) =>
+    unless noLevelUp
+      level = localStorage.getItem 'hh-level'
+      level++
+      localStorage.setItem "hh-level", level
+      if level is 10
+        url = "http://hyperlinkharrypoc-jschomay.rhcloud.com"
+        localStorage.removeItem "hh-level"
 
 
-    _.each @entities, (entity) =>
-      @removeEntity entity.id unless entity.type is "player"
+    # my_.each @entities, (entity) =>
+    #   @removeEntity entity.id unless entity.type is "player"
+    
+    @gameState.set 'running', false
 
     # fancy page exploding effect
-    keepOnPage = myJQuery("#hh-header-bar, #hh-canvas, #hh-stats-widget")
-    keepOnPage.remove()
-    elems = myJQuery("body *")
-    myJQuery("body").append keepOnPage
-    l = elems.length
-    i = undefined
-    c = undefined
-    move = undefined
-    x = 1
-    A = ->
-      i = 0
-      while i - l
-        c = elems[i].style
-        move = elems[i].move
-        move = (Math.random() * 8 * ((if Math.round(Math.random()) then 1 else -1)))  unless move
-        move *= x
-        elems[i].move = move
-        c["-webkit-transform"] = "translateX(" + move + "px)"
-        i++
-      x++
+    explodePage = -> 
+      keepOnPage = myJQuery("#hh-header-bar, #hh-canvas, #hh-stats-widget")
+      keepOnPage.remove()
+      elems = myJQuery("body *")
+      myJQuery("body").append keepOnPage
+      l = elems.length
+      i = undefined
+      c = undefined
+      move = undefined
+      x = 1
 
+      A = ->
+        i = 0
+        while i - l
+          c = elems[i].style
+          move = elems[i].move
+          move = (Math.random() * 8 * ((if Math.round(Math.random()) then 1 else -1)))  unless move
+          move *= x
+          elems[i].move = move
+          c["-webkit-transform"] = "translateX(" + move + "px)"
+          i++
+        x++
 
-    #Loop
-    timer = setInterval(->
-      A()
-    , 60)
-    setTimeout (->
-      clearInterval timer
-      window.location.href = window.location.origin + "/play?td_url="+url
-    ), 2000
+      #Loop
+      timer = setInterval(->
+        A()
+      , 60)
+
+      # jump after page has time to explode
+      setTimeout (->
+        clearInterval timer
+        jump url
+      ), 2000
+
+    explodePage()
+    
+
+    jump = (url) ->
+      # note that url params get removed from url on page load
+      if not url?
+        url = ''
+      window.location.href = window.location.origin + "/play?hhNextLevelUrl="+url+"&hhCurrentUrl="+window.currentUrl
+
+    # alternate POST based method to "jump"
+    # needs server.js to use POST vars instead of GET vars to work
+    # jump = ->
+    #   myJQuery('<form method="post" action="'+window.location.origin+'/play">
+    #     <input type="hidden" name="hhNextLevelUrl" value="'+url+'">
+    #     </form>').submit()
     
 

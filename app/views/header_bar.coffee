@@ -14,9 +14,9 @@ module.exports = class HeaderBar extends myBackbone.View
     @render()
 
   render: ->
-    displayUrl = @model.get('url').replace("www.", "")
+    displayUrl = @model.get('url').replace(/https?:\/\/(www\.)?/, '')
     displayUrl = displayUrl.split('/')[0] + "/..." if displayUrl.split("/")[1]
-    html = @template(_.extend({}, @model.attributes,{displayUrl: displayUrl}))
+    html = @template(my_.extend({}, @model.attributes,{displayUrl: displayUrl}))
     @$el.html html
     # set styles for progress bar
     goal = @model.get('numLinksNeeded')/@model.get('numLinks')*100

@@ -10,6 +10,7 @@ Game = require 'game'
 window.myJQuery = $
 $.noConflict()
 window.myBackbone = Backbone.noConflict();
+window.my_ = window._
 
 myJQuery () ->
   game = new Game()

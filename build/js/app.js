@@ -159,10 +159,10 @@ window.require.register("director", function(exports, require, module) {
               var $this, child, domain, domainRegex, headerBarHeight, link, offset;
 
               $(this).trigger('mouseover')[0].href;
-              link = this.href.replace(/https?:\/\/(www\.)?/, '').split('/')[0];
-              domain = that.gameState.get('url').replace("www.", "").split('/')[0];
+              link = this.href;
+              domain = that.gameState.get('url').split('/')[0];
               domainRegex = new RegExp(domain, 'i');
-              if (domainRegex.test(link || link === window.location.origin.replace(/https?:\/\//, ''))) {
+              if (domainRegex.test(link || link === window.location.origin)) {
                 internalLinks.push(this.href);
               }
               numLinks++;
@@ -259,67 +259,76 @@ window.require.register("director", function(exports, require, module) {
 
     Director.prototype.hyperjump = function() {
       if ((this.gameState.get("numCollectedLinks")) >= (this.gameState.get("numLinksNeeded"))) {
-        this.maxSpeed = 0;
         return this.nextLevel();
       } else {
+        if (!this.gameState.get('purgatoryLink')) {
+          return;
+        }
         this.gameState.set('running', false);
-        if (confirm("You don't have enough linkjuice to escape this domain.  You can try to collect more links, or you can hyperjump to another page on this domain and start over there (without leveling up).  Do you want to do that?")) {
-          return myJQuery('<form method="post" action="' + window.location.origin + '/play">\
-        <input type="hidden" name="nextLevelUrl" value="' + this.gameState.get('purgatoryLink') + '">\
-        </form>').submit();
+        if (confirm("You don't have enough linkjuice to escape this domain.  You can try to collect more links, or you can hyperjump within this current domain right now (without leveling up).  Do you want to do that?")) {
+          myJQuery(document).off('keydown');
+          return this.nextLevel(this.gameState.get('purgatoryLink'), true);
         } else {
           return this.gameState.set('running', true);
         }
       }
     };
 
-    Director.prototype.nextLevel = function(url) {
-      var A, c, elems, i, keepOnPage, l, level, move, timer, x,
-        _this = this;
+    Director.prototype.nextLevel = function(url, noLevelUp) {
+      var explodePage, jump, level;
 
-      level = localStorage.getItem('hh-level');
-      level++;
-      localStorage.setItem("hh-level", level);
-      if (level === 10) {
-        url = "http://hyperlinkharrypoc-jschomay.rhcloud.com";
-        localStorage.removeItem("hh-level");
+      if (!noLevelUp) {
+        level = localStorage.getItem('hh-level');
+        level++;
+        localStorage.setItem("hh-level", level);
+        if (level === 10) {
+          url = "http://hyperlinkharrypoc-jschomay.rhcloud.com";
+          localStorage.removeItem("hh-level");
+        }
       }
-      _.each(this.entities, function(entity) {
-        if (entity.type !== "player") {
-          return _this.removeEntity(entity.id);
-        }
-      });
-      keepOnPage = myJQuery("#hh-header-bar, #hh-canvas, #hh-stats-widget");
-      keepOnPage.remove();
-      elems = myJQuery("body *");
-      myJQuery("body").append(keepOnPage);
-      l = elems.length;
-      i = void 0;
-      c = void 0;
-      move = void 0;
-      x = 1;
-      A = function() {
-        i = 0;
-        while (i - l) {
-          c = elems[i].style;
-          move = elems[i].move;
-          if (!move) {
-            move = Math.random() * 8 * (Math.round(Math.random()) ? 1 : -1);
+      this.gameState.set('running', false);
+      explodePage = function() {
+        var A, c, elems, i, keepOnPage, l, move, timer, x;
+
+        keepOnPage = myJQuery("#hh-header-bar, #hh-canvas, #hh-stats-widget");
+        keepOnPage.remove();
+        elems = myJQuery("body *");
+        myJQuery("body").append(keepOnPage);
+        l = elems.length;
+        i = void 0;
+        c = void 0;
+        move = void 0;
+        x = 1;
+        A = function() {
+          i = 0;
+          while (i - l) {
+            c = elems[i].style;
+            move = elems[i].move;
+            if (!move) {
+              move = Math.random() * 8 * (Math.round(Math.random()) ? 1 : -1);
+            }
+            move *= x;
+            elems[i].move = move;
+            c["-webkit-transform"] = "translateX(" + move + "px)";
+            i++;
           }
-          move *= x;
-          elems[i].move = move;
-          c["-webkit-transform"] = "translateX(" + move + "px)";
-          i++;
-        }
-        return x++;
+          return x++;
+        };
+        timer = setInterval(function() {
+          return A();
+        }, 60);
+        return setTimeout((function() {
+          clearInterval(timer);
+          return jump(url);
+        }), 2000);
       };
-      timer = setInterval(function() {
-        return A();
-      }, 60);
-      return setTimeout((function() {
-        clearInterval(timer);
-        return window.location.href = window.location.origin + "/play?td_url=" + url;
-      }), 2000);
+      explodePage();
+      return jump = function(url) {
+        if (url == null) {
+          url = '';
+        }
+        return window.location.href = window.location.origin + "/play?hhNextLevelUrl=" + url + "&hhCurrentUrl=" + window.currentUrl;
+      };
     };
 
     return Director;
@@ -766,7 +775,7 @@ window.require.register("game", function(exports, require, module) {
         localStorage.setItem("hh-level", 1);
         this.gameState.set("level", 1);
       }
-      document.addEventListener('keydown', function(e) {
+      myJQuery(document).on('keydown', function(e) {
         var _ref;
 
         if (e.keyCode === 82) {
@@ -873,7 +882,7 @@ window.require.register("index", function(exports, require, module) {
   var buf = [];
   with (locals || {}) {
   var interp;
-  buf.push('<!DOCTYPE html><html><head><meta charset="UTF-8"><link rel="stylesheet" href="css/app.css"><title>Hyperlink Harry - a browser based game where the web is the playing field</title></head><body class="home"><header><div id="logo"><div id="headline"><h1>&lt;Hyperlink&gt;&lt;/Harry&gt;</h1><h2>A HTML5 game set across the landscape of the web</h2></div></div><section id="about"><div id="harry"></div><p>One day while surfing the net, Harry\'s modem had a power surge and he got sucked into the web.  </p><p>Now Harry\'s digital consciousness is lost somewhere out in hyperspace, bouncing from site to site, evading antivirus bots and seach engine spiders, and looking for his way back home.</p><p>Can you help him?  </p><div id="baddies" style="text-align:center;"><div id="bot"></div><div id="spider"></div></div><h3>How to play</h3><p>Use the keyboard arrows to move around.  Collect links to fill up your hyperlink bar.  Once you have enough "linkjuice", press \'space\' to "hyperjump" to a new level.  \'P\' will pause the game.</p><a id="play" href="/play">PLAY NOW</a><p><b>Please note: This game is in active development! </b>It is fully playable, but lacks many features, may have bugs, and uses stand in art.  If you get stuck, try refreshing for a new level.</p></section></header><section id="bottom"><section id="technology"><h3>Technology</h3><p>Built with:</p><ul><li>node.js</li><li>coffeescript</li><li>jade</li><li>sass</li><li>html5 canvas</li><li>custom game engine based on atom and crafty</li><li>brunch</li></ul><p>This project is currently open source.  View the source, comment, and fork on <a href="https://github.com/jschomay/httpacman">Github.</a></p></section><section id="contact"><h3>Credits/contact</h3><p>Game concept, game design, and principle coding by Jeff Schomay.  A few others contributed to the coding at verious points.</p><ul><li>Jeff Schomay<br><a href="https://github.com/jschomay/">On Github</a> / <a href="http://jeffschomay.com/">jeffschomay.com</a></li><li>Steve Manuel (helped with backend)<br><a href="https://github.com/stevemanuel">On Github</a></li><li>Kevin Sylvestre (helped with component system)<br><a href="https://github.com/ksylvest">On Github</a></li></ul></section></section></body></html>');
+  buf.push('<!DOCTYPE html><html><head><meta charset="UTF-8"><link rel="stylesheet" href="css/app.css"><title>Hyperlink Harry - a browser based game where the web is the playing field</title></head><body id="hh-home"><header><div id="logo"><div id="headline"><h1>&lt;Hyperlink&gt;&lt;/Harry&gt;</h1><h2>A HTML5 game set across the landscape of the web</h2></div></div><section id="about"><div id="harry"></div><p>One day while surfing the net, Harry\'s modem had a power surge and he got sucked into the web.  </p><p>Now Harry\'s digital consciousness is lost somewhere out in hyperspace, bouncing from site to site, evading antivirus bots and seach engine spiders, and looking for his way back home.</p><p>Can you help him?  </p><div id="baddies" style="text-align:center;"><div id="bot"></div><div id="spider"></div></div><h3>How to play</h3><p>Use the keyboard arrows to move around.  Collect links to fill up your hyperlink bar.  Once you have enough "linkjuice", press \'space\' to "hyperjump" to a new level.  \'P\' will pause the game.</p><a id="play" href="/play">PLAY NOW</a><p><b>Please note: This game is in active development! </b>It is fully playable, but lacks many features, may have bugs, and uses stand in art.  If you get stuck, try refreshing for a new level.</p></section></header><section id="bottom"><section id="technology"><h3>Technology</h3><p>Built with:</p><ul><li>node.js</li><li>coffeescript</li><li>jade</li><li>sass</li><li>html5 canvas</li><li>custom game engine based on atom and crafty</li><li>brunch</li></ul><p>This project is currently open source.  View the source, comment, and fork on <a href="https://github.com/jschomay/httpacman">Github.</a></p></section><section id="contact"><h3>Credits/contact</h3><p>Game concept, game design, and principle coding by Jeff Schomay.  A few others contributed to the coding at verious points.</p><ul><li>Jeff Schomay<br><a href="https://github.com/jschomay/">On Github</a> / <a href="http://jeffschomay.com/">jeffschomay.com</a></li><li>Steve Manuel (helped with backend)<br><a href="https://github.com/stevemanuel">On Github</a></li><li>Kevin Sylvestre (helped with component system)<br><a href="https://github.com/ksylvest">On Github</a></li></ul></section></section></body></html>');
   }
   return buf.join("");
   };
@@ -890,6 +899,8 @@ window.require.register("main", function(exports, require, module) {
   $.noConflict();
 
   window.myBackbone = Backbone.noConflict();
+
+  window.my_ = window._;
 
   myJQuery(function() {
     var game;
@@ -960,11 +971,11 @@ window.require.register("views/header_bar", function(exports, require, module) {
     HeaderBar.prototype.render = function() {
       var collected, displayUrl, goal, html, progress;
 
-      displayUrl = this.model.get('url').replace("www.", "");
+      displayUrl = this.model.get('url').replace(/https?:\/\/(www\.)?/, '');
       if (displayUrl.split("/")[1]) {
         displayUrl = displayUrl.split('/')[0] + "/...";
       }
-      html = this.template(_.extend({}, this.model.attributes, {
+      html = this.template(my_.extend({}, this.model.attributes, {
         displayUrl: displayUrl
       }));
       this.$el.html(html);

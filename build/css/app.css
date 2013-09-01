@@ -9,12 +9,12 @@ body {
   font-family: arial;
   font-size: 12pt; }
 @media -sass-debug-info{filename{}line{font-family:\0000343}}
-  body.home {
+  body#hh-home {
     margin: 0px !important;
     background: #d5c589; }
 
 @media -sass-debug-info{filename{}line{font-family:\0000351}}
-header {
+#hh-home header {
   overflow: auto;
   background: #333;
   border-bottom: 10px solid lightgrey;
@@ -23,7 +23,7 @@ header {
   -moz-box-shadow: 0px 4px 10px #222222;
   box-shadow: 0px 4px 10px #222222; }
 @media -sass-debug-info{filename{}line{font-family:\0000358}}
-  header #logo {
+  #hh-home header #logo {
     background: #d56f11;
     display: relative;
     margin-top: 10px;
@@ -33,29 +33,29 @@ header {
     -moz-box-shadow: 0px 4px 10px #222222;
     box-shadow: 0px 4px 10px #222222; }
 @media -sass-debug-info{filename{}line{font-family:\0000365}}
-    header #logo #headline {
+    #hh-home header #logo #headline {
       display: block;
       border-top: 2px dashed #d5c589;
       border-bottom: 2px dashed #d5c589;
       text-align: center;
       text-align: center; }
 @media -sass-debug-info{filename{}line{font-family:\0000372}}
-    header #logo h1 {
+    #hh-home header #logo h1 {
       font-size: 250%;
       margin-bottom: 10px; }
 @media -sass-debug-info{filename{}line{font-family:\0000376}}
-    header #logo h2 {
+    #hh-home header #logo h2 {
       font-size: 110%;
       font-weight: normal; }
 @media -sass-debug-info{filename{}line{font-family:\0000382}}
-  header #harry {
+  #hh-home header #harry {
     width: 50px;
     height: 75px;
     background-image: url("../images/harry.png");
     background-size: 200px;
     margin: auto; }
 @media -sass-debug-info{filename{}line{font-family:\0000389}}
-  header #bot {
+  #hh-home header #bot {
     width: 37px;
     height: 54px;
     background-image: url("../images/bot.gif");
@@ -63,14 +63,14 @@ header {
     display: inline-block;
     margin-right: 40px; }
 @media -sass-debug-info{filename{}line{font-family:\0000397}}
-  header #spider {
+  #hh-home header #spider {
     width: 65px;
     height: 58px;
     background-image: url("../images/spider1.png");
     background-size: 330px;
     display: inline-block; }
 @media -sass-debug-info{filename{}line{font-family:\00003105}}
-  header #about {
+  #hh-home header #about {
     width: 50%;
     height: auto;
     margin-left: auto;
@@ -87,10 +87,10 @@ header {
     -moz-box-shadow: inset 0px 4px 10px #222222, 0px 1px 2px #777777;
     box-shadow: inset 0px 4px 10px #222222, 0px 1px 2px #777777; }
 @media -sass-debug-info{filename{}line{font-family:\00003116}}
-    header #about h3 {
+    #hh-home header #about h3 {
       text-align: center; }
 @media -sass-debug-info{filename{}line{font-family:\00003121}}
-  header #play {
+  #hh-home header #play {
     display: block;
     width: 200px;
     text-align: center;
@@ -112,31 +112,30 @@ header {
     -ms-border-radius: 5px;
     border-radius: 5px; }
 @media -sass-debug-info{filename{}line{font-family:\00003137}}
-    header #play:hover {
+    #hh-home header #play:hover {
       background: #498527; }
 @media -sass-debug-info{filename{}line{font-family:\00003140}}
-    header #play:active {
+    #hh-home header #play:active {
       width: 195px; }
-
 @media -sass-debug-info{filename{}line{font-family:\00003146}}
-#bottom {
+#hh-home #bottom {
   overflow: auto;
   width: 70%;
   margin: auto;
   color: #863609; }
 @media -sass-debug-info{filename{}line{font-family:\00003151}}
-  #bottom a {
+  #hh-home #bottom a {
     color: #555; }
 @media -sass-debug-info{filename{}line{font-family:\00003153}}
-    #bottom a:hover {
+    #hh-home #bottom a:hover {
       color: #498527; }
 @media -sass-debug-info{filename{}line{font-family:\00003157}}
-  #bottom section {
+  #hh-home #bottom section {
     width: 50%;
     float: left;
     padding: 20px; }
 @media -sass-debug-info{filename{}line{font-family:\00003162}}
-  #bottom #contact li {
+  #hh-home #bottom #contact li {
     margin-bottom: 10px; }
 
 @media -sass-debug-info{filename{}line{font-family:\00003172}}

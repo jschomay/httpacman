@@ -23,7 +23,7 @@ server.on('request', function(req, res) {
     /*********************************
     set this to test a specific page (use http:// prefix)
     *********************************/
-    defineUrl = '';
+    definedUrl = '';
 
     // if an url was provided as an url parameter (next level request), use that one
     var queryObject = url.parse(req.url,true).query;
@@ -35,41 +35,67 @@ server.on('request', function(req, res) {
       req.on('end', function () {
         body = qs.parse(body);
         // console.log('POSTed: ' + JSON.stringify(body));
-        if (queryObject.td_url)
-          defineUrl = queryObject.td_url;
-        if(defineUrl)
-          console.log("Specific url requested:", defineUrl);
-        getRandomSite(defineUrl);
+        if (queryObject.hhNextLevelUrl) {
+          definedUrl = queryObject.hhNextLevelUrl;
+          if (/^http/.test(definedUrl))
+            console.log("Specific url requested:", definedUrl);
+          else {
+            console.log('PROBLEM WITH definedUrl:', definedUrl);
+            currentUrl = url.parse(req.url, true).query.hhCurrentUrl;
+            currentUrlBase = url.parse(currentUrl).protocol + '//'+ url.parse(currentUrl).host;
+            console.log('using requesting site base url instead:', currentUrlBase);
+            definedUrl = currentUrlBase;
+          }
+        }
+        getRandomSite(definedUrl);
       });
 
-    getRandomSite = function(defineUrl) {
-      var url = !!defineUrl ? defineUrl : 'http://www.randomwebsitemachine.com/random_website/';
-      request({url: (url), headers:{'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.110 Safari/537.36'}}, function(err, response, body) {
+    getRandomSite = function(definedUrl) {
+      var urlToRequest = !!definedUrl ? definedUrl : 'http://www.randomwebsitemachine.com/random_website/';
+      request({url: (urlToRequest), headers:{'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.110 Safari/537.36'}}, function(err, response, body) {
         if(err) {
           console.log("Error:", err.message);
-          getRandomSite();
+          if(definedUrl) {
+            currentUrl = url.parse(req.url, true).query.hhCurrentUrl;
+            currentUrlBase = url.parse(currentUrl).protocol + '//'+ url.parse(currentUrl).host;
+            console.log('Error (general) trying to fetch specified url ('+definedUrl+'), using requesting site base url instead:', currentUrlBase);
+            getRandomSite(currentUrlBase);
+          } else
+            getRandomSite();
         } else if (!body.match(/<head([^>]*)>/gi)) {
           // some sites don't have a <head> for what ever reason, so our code doesn't load, so... try again
-          url = response.request.uri.host + response.request.uri.pathname;
+          urlToRequest = response.request.uri.host + response.request.uri.pathname;
           redirect = (body.match(/location\.[^\(]+\("([^"]+)"\)/));
           if (redirect){
             redirect = redirect[1].replace(/\\/g, '');
             console.log("No head on this site, looks like it wants to redirect to",redirect);
             getRandomSite(redirect);
           } else {
-            getRandomSite();
+            if(definedUrl) {
+              currentUrl = url.parse(req.url, true).query.hhCurrentUrl;
+              currentUrlBase = url.parse(currentUrl).protocol + '//'+ url.parse(currentUrl).host;
+              console.log('Error (no head) trying to fetch specified url ('+definedUrl+'), using requesting site base url instead:', currentUrlBase);
+              getRandomSite(currentUrlBase);
+            } else
+              getRandomSite();
           }
 
         } else if (body.match(/<frameset([^>]*)>/gi)) {
           // some sites use framesets so our header bar and canvas doesn't load, so... try again
-          url = response.request.uri.host + response.request.uri.pathname;
-          console.log("Error:", url, " uses <framesets>");
-          getRandomSite();
+          urlToRequest = response.request.uri.host + response.request.uri.pathname;
+          console.log("Error:", urlToRequest, " uses <framesets>");
+          if(definedUrl) {
+            currentUrl = url.parse(req.url, true).query.hhCurrentUrl;
+            currentUrlBase = url.parse(currentUrl).protocol + '//'+ url.parse(currentUrl).host;
+            console.log('Error (frameset) trying to fetch specified url ('+definedUrl+'), using requesting site base url instead:', currentUrlBase);
+            getRandomSite(currentUrlBase);
+          } else
+            getRandomSite();
         } else {
           host = response.request.uri.host;
-          url = response.request.uri.host + response.request.uri.pathname;
-          relativePath = url.substring(0, url.lastIndexOf('/')+1); // includes trailng slash
-          console.log(req.url, url);
+          urlToRequest = response.request.uri.protocol + '//' + response.request.uri.host + response.request.uri.pathname;
+          relativePath = urlToRequest.substring(0, urlToRequest.lastIndexOf('/')+1); // includes trailng slash
+          console.log('requested url: '+req.url, '\nreturned url: '+urlToRequest);
 
           // parse for absolute paths (urls like href="/path...")
           // relative paths will work fine becase we set <base> to the current page below
@@ -81,7 +107,7 @@ server.on('request', function(req, res) {
           body = body.replace(/<meta .*http-equiv="refresh".*\/>/, '');
           // put our script in the code
           headOpen = /<head([^>]*)>/gi;
-          body = body.replace(headOpen, '<head$1><script src="js/myrequire.js"></script><link rel="stylesheet" type="text/css" href="css/app.css"><script src="js/libs.js"></script><script src="js/app.js"></script><script>require(\'main\');require = undefined;window.currentUrl = "'+url+'";</script><base href="http://'+relativePath+'">');
+          body = body.replace(headOpen, '<head$1><script src="js/myrequire.js"></script><link rel="stylesheet" type="text/css" href="css/app.css"><script src="js/libs.js"></script><script src="js/app.js"></script><script>require(\'main\');require = undefined;window.currentUrl = "'+urlToRequest+'";</script><base href="http://'+relativePath+'">');
 
           // write 
           res.write(body);
