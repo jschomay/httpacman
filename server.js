@@ -66,7 +66,8 @@ server.on('request', function(req, res) {
         'http://www.theworldsworstwebsiteever.com/',
         'http://www.nyan.cat/',
         'http://www.lee.org/reading/general/Hampsterdance/',
-        'http://www.cat-gif.com/'
+        'http://www.cat-gif.com/',
+        'http://http//www.moredarkness.com/'
       ];
       definedUrl = virusLevels[Math.floor(Math.random()*virusLevels.length)];
       gameOptions.specialLevel = 'virus';

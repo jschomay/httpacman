@@ -571,13 +571,27 @@ window.require.register("entities/enemy", function(exports, require, module) {
     Components.mixin(Enemy, 'Sprite, Collidable');
 
     function Enemy(options) {
-      this.update = __bind(this.update, this);    this.initializeSprite({
+      this.update = __bind(this.update, this);
+      var chooseLeft, chooseTop, offset, xOffset, yOffset;
+
+      if (Math.round(Math.random())) {
+        chooseLeft = Math.round(Math.random());
+        offset = Math.floor(Math.random() * 400);
+        xOffset = chooseLeft ? offset * -1 : window.document.width + offset;
+        yOffset = Math.random() * window.document.height;
+      } else {
+        chooseTop = Math.round(Math.random());
+        offset = Math.floor(Math.random() * 400);
+        yOffset = chooseTop ? offset * -1 : window.document.height + offset;
+        xOffset = Math.random() * window.document.width;
+      }
+      this.initializeSprite({
         type: "enemy",
         id: options.id,
         w: options.w,
         h: options.h,
-        x: options.x || (Math.random() * window.document.width),
-        y: options.y || (Math.random() * window.document.height),
+        x: options.x || xOffset,
+        y: options.y || yOffset,
         background: 'brown'
       }, this.player = options.player);
       this.speed = 100;
@@ -592,14 +606,19 @@ window.require.register("entities/enemy", function(exports, require, module) {
     }
 
     Enemy.prototype.update = function(dt) {
-      var tl, tx, ty;
+      var q, tl, tx, ty;
 
-      if (Math.floor(Math.random() * 5)) {
+      if (!Math.floor(Math.random() * 40)) {
         tx = this.player.position.x - this.position.x;
         ty = this.player.position.y - this.position.y;
         tl = Math.sqrt(Math.pow(tx, 2) + Math.pow(ty, 2));
         this.dx = tx / tl;
         this.dy = ty / tl;
+        if (!Math.floor(Math.random() * 2)) {
+          q = Math.random() + 1;
+          this.dx *= q;
+          this.dy *= q;
+        }
       }
       this.position.x += this.speed * this.dx * dt;
       this.position.y += this.speed * this.dy * dt;

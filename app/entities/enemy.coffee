@@ -7,13 +7,28 @@ module.exports = class Enemy extends Entity
   
   # expects and object with 'id', 'position'.  Only 'id' is required.
   constructor: (options) ->
+    # enemies should start offscreen
+    if Math.round Math.random()
+      # position off sides
+      chooseLeft = Math.round(Math.random())
+      offset = Math.floor(Math.random() * 400)
+      xOffset = if chooseLeft then offset * -1 else window.document.width + offset
+      yOffset = (Math.random() * window.document.height)
+    else
+      # position off top/bottom
+      chooseTop = Math.round(Math.random())
+      offset = Math.floor(Math.random() * 400)
+      yOffset = if chooseTop then offset * -1 else window.document.height + offset
+      xOffset = (Math.random() * window.document.width)
+
+
     @initializeSprite
       type:  "enemy"
       id: options.id
       w: options.w
       h: options.h
-      x: options.x || (Math.random() * window.document.width)
-      y: options.y || (Math.random() * window.document.height)
+      x: options.x || xOffset
+      y: options.y || yOffset
       background: 'brown'
       @player = options.player
 
@@ -37,13 +52,19 @@ module.exports = class Enemy extends Entity
     # divide speed by sqrt 2 to get constant speed on diagonals
     # _speed = if (directionX and directionY) then (@speed / 1.41421) else @speed
 
-    # move towards player
-    if Math.floor Math.random()*5
+    # move towards player with some random wrong directions
+    if !Math.floor(Math.random()*40)
       tx = @player.position.x - @position.x
       ty = @player.position.y - @position.y
       tl = Math.sqrt(Math.pow(tx,2) + Math.pow(ty,2))
       @dx = tx/tl
       @dy = ty/tl
+
+      # randomize their heading a bit
+      if !Math.floor(Math.random()*2)
+        q = Math.random() + 1 
+        @dx *= q
+        @dy *= q
 
     # distance (px) = speed (px / s) * time (s)
     @position.x += @speed * @dx * dt
