@@ -418,14 +418,50 @@ window.require.register("entities/ad", function(exports, require, module) {
 window.require.register("entities/components/collidable", function(exports, require, module) {
   module.exports = {
     _init: function() {
-      this._onHit = function(obstacle) {
+      this._onHit = function(obstacle, side) {
         var _ref;
 
-        return (_ref = this.onHit[obstacle.type]) != null ? _ref.call(this, obstacle) : void 0;
+        return (_ref = this.onHit[obstacle.type]) != null ? _ref.call(this, obstacle, side) : void 0;
       };
       return this.on('enterFrame', function() {
-        var id, obstacle, obstacleBottom, obstacleLeft, obstacleRight, obstacleTop, potentialObstacles, thisBottom, thisLeft, thisRight, thisTop, _results;
+        var id, obstacle, obstacleBottom, obstacleLeft, obstacleRight, obstacleTop, potentialObstacles, sideOfHit, thisBottom, thisLeft, thisRight, thisTop, _results,
+          _this = this;
 
+        sideOfHit = function() {
+          var sideDeltas, sideHit;
+
+          sideDeltas = my_.map([
+            {
+              delta: obstacleTop - thisBottom,
+              side: 'bottom'
+            }, {
+              delta: obstacleRight - thisLeft,
+              side: 'left'
+            }, {
+              delta: obstacleBottom - thisTop,
+              side: 'top'
+            }, {
+              delta: obstacleLeft - thisRight,
+              side: 'right'
+            }
+          ], function(item) {
+            return {
+              delta: Math.abs(item.delta),
+              side: item.side
+            };
+          });
+          return sideHit = (my_.reduce(sideDeltas, function(lowestItem, item) {
+            if (lowestItem) {
+              if (lowestItem.delta < item.delta) {
+                return lowestItem;
+              } else {
+                return item;
+              }
+            } else {
+              return item;
+            }
+          }, null)).side;
+        };
         potentialObstacles = this.director.entities;
         _results = [];
         for (id in potentialObstacles) {
@@ -440,7 +476,7 @@ window.require.register("entities/components/collidable", function(exports, requ
             thisTop = this.position.y;
             thisBottom = this.position.y + this.h;
             if (Math.max(obstacleRight, thisRight) - Math.min(obstacleLeft, thisLeft) <= obstacle.w + this.w && Math.max(obstacleBottom, thisBottom) - Math.min(obstacleTop, thisTop) <= obstacle.h + this.h) {
-              _results.push(this._onHit(obstacle));
+              _results.push(this._onHit(obstacle, sideOfHit()));
             } else {
               _results.push(void 0);
             }
@@ -571,9 +607,22 @@ window.require.register("entities/enemy", function(exports, require, module) {
       return Enemy.__super__.update.apply(this, arguments);
     };
 
-    Enemy.prototype.onHitHyperlink = function(obstacle) {
-      this.position.x -= this.speed * this.dx * .03;
-      this.position.y -= this.speed * this.dy * .03;
+    Enemy.prototype.onHitHyperlink = function(obstacle, side) {
+      var dtApproximation;
+
+      dtApproximation = 0.016;
+      if (side === 'top') {
+        this.position.y += this.speed * this.dy * dtApproximation;
+      }
+      if (side === 'bottom') {
+        this.position.y -= this.speed * this.dy * dtApproximation;
+      }
+      if (side === 'left') {
+        this.position.x -= this.speed * this.dx * dtApproximation;
+      }
+      if (side === 'right') {
+        this.position.y += this.speed * this.dx * dtApproximation;
+      }
       return false;
     };
 
@@ -704,8 +753,8 @@ window.require.register("entities/player", function(exports, require, module) {
         y: (options != null ? (_ref1 = options.position) != null ? _ref1.y : void 0 : void 0) || 200,
         background: 'yellow'
       });
-      this.acceleration = 100;
-      this.maxSpeed = 5000;
+      this.acceleration = 50;
+      this.maxSpeed = 500;
       this.vx = 0;
       this.vy = 0;
       this.drag = .8;

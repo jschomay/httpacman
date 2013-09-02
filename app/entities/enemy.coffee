@@ -55,10 +55,17 @@ module.exports = class Enemy extends Entity
     super
 
 
-  onHitHyperlink: (obstacle) ->
-    # fake 'bounce'
-    @position.x -= @speed * @dx * .03
-    @position.y -= @speed * @dy * .03
+  onHitHyperlink: (obstacle, side) ->
+    # bounce off links
+    dtApproximation = 0.016
+    if side is 'top'
+      @position.y += @speed * @dy * dtApproximation
+    if side is 'bottom'
+      @position.y -= @speed * @dy * dtApproximation
+    if side is 'left'
+      @position.x -= @speed * @dx * dtApproximation
+    if side is 'right'
+      @position.y += @speed * @dx * dtApproximation
 
     false
 
