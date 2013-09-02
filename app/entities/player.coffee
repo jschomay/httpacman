@@ -87,7 +87,8 @@ module.exports = class Player extends Entity
     obstacle.destroy()
 
   onHitEnemy: (obstacle) ->
-    @.background = 'purple'
+    # @.background = 'purple'
+    @director.nextLevel '', true, hhVirus: true
 
   onHitAd: (obstacle) ->
     @vx *= .5

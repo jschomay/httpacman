@@ -112,13 +112,15 @@ window.require.register("director", function(exports, require, module) {
       player = this.addEntity(new Entities.Player({
         id: this.lastId
       }));
-      numEnemies = levelData.numEnemies || 0;
-      console.log("Putting " + numEnemies + " enemies on screen");
-      for (_i = 1; 1 <= numEnemies ? _i <= numEnemies : _i >= numEnemies; 1 <= numEnemies ? _i++ : _i--) {
-        this.addEntity(new Entities.Enemy({
-          id: this.lastId,
-          player: player
-        }));
+      if (this.gameState.get('gameOptions').specialLevel !== 'virus') {
+        numEnemies = levelData.numEnemies || 0;
+        console.log("Putting " + numEnemies + " enemies on screen");
+        for (_i = 1; 1 <= numEnemies ? _i <= numEnemies : _i >= numEnemies; 1 <= numEnemies ? _i++ : _i--) {
+          this.addEntity(new Entities.Enemy({
+            id: this.lastId,
+            player: player
+          }));
+        }
       }
       $(window).load(function() {
         return setTimeout((function() {
@@ -293,10 +295,16 @@ window.require.register("director", function(exports, require, module) {
       }
     };
 
-    Director.prototype.nextLevel = function(url, noLevelUp) {
+    Director.prototype.nextLevel = function(url, noLevelUp, params) {
       var explodePage, jump, level,
         _this = this;
 
+      if (noLevelUp == null) {
+        noLevelUp = false;
+      }
+      if (params == null) {
+        params = {};
+      }
       if (!noLevelUp) {
         level = localStorage.getItem('hh-level');
         level++;
@@ -344,15 +352,22 @@ window.require.register("director", function(exports, require, module) {
         }, 60);
         return setTimeout((function() {
           clearInterval(timer);
-          return jump(url);
+          return jump(url, params);
         }), 2000);
       };
       explodePage();
-      return jump = function(url) {
+      return jump = function(url, params) {
+        var nextLevelUrl, param, value;
+
         if (url == null) {
           url = '';
         }
-        return window.location.href = window.location.origin + "/play?hhNextLevelUrl=" + url + "&hhCurrentUrl=" + _this.gameState.get('gameOptions').currentUrl;
+        nextLevelUrl = window.location.origin + "/play?hhNextLevelUrl=" + url + "&hhCurrentUrl=" + _this.gameState.get('gameOptions').currentUrl;
+        for (param in params) {
+          value = params[param];
+          nextLevelUrl += '&' + param + '=' + value;
+        }
+        return window.location.href = nextLevelUrl;
       };
     };
 
@@ -762,7 +777,9 @@ window.require.register("entities/player", function(exports, require, module) {
     };
 
     Player.prototype.onHitEnemy = function(obstacle) {
-      return this.background = 'purple';
+      return this.director.nextLevel('', true, {
+        hhVirus: true
+      });
     };
 
     Player.prototype.onHitAd = function(obstacle) {

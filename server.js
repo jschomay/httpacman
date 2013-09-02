@@ -7,81 +7,75 @@ var server = http.createServer();
 var url = require('url');
 
 
-var virusLevels = [
-  'http://www.omfgdogs.com/',
-  'http://www.hristu.net/',
-  'http://www.fromthedarkpast.com/',
-  'http://www.innerdoubts.com/',
-  'http://www.sanger.dk/',
-  'http://www.haneke.net/',
-  'http://cat-bounce.com/',
-  'http://www.theendofreason.com/',
-  'http://www.wutdafuk.com/',
-  'http://chickenonaraft.com/',
-  'http://www.donothingfor2minutes.com/',
-  'http://www.arngren.net/',
-  'http://www.theworldsworstwebsiteever.com/',
-  'http://www.nyan.cat/',
-  'http://www.lee.org/reading/general/Hampsterdance/',
-  'http://www.cat-gif.com/'
-];
-
-
 server.on('request', function(req, res) {
 
 
   // home page
   if(req.url === '/' && req.method === 'GET') {
     req.url = "/index.html";
-  } 
+  }
 
 
   // any request besides one of our assets pulls a random url
   if(!req.url.match(/^\/(index.html|js|css|images)/)) {
 
     res.writeHead(200, { 'content-type': 'text/html'});
-    
+
+
     /*********************************
     set this to test a specific page (use http:// prefix)
     *********************************/
     definedUrl = '';
 
-    // test virus pages
-    definedUrl = virusLevels[Math.floor(Math.random()*virusLevels.length)];
-    gameOptions = {specialLevel: 'virus'};
 
-    // if an url was provided as an url parameter (next level request), use that one
+    gameOptions = {};
+
+    // data is passed as url params
     var queryObject = url.parse(req.url,true).query;
-    // console.log(queryObject);
-    var body = "";
-      req.on('data', function (chunk) {
-        body += chunk;
-      });
-      req.on('end', function () {
-        body = qs.parse(body);
-        // console.log('POSTed: ' + JSON.stringify(body));
-        if (queryObject.hhCurrentUrl) {
-          gameOptions.lastUrl = url.parse(req.url, true).query.hhCurrentUrl;
-        }
-        if (queryObject.hhNextLevelUrl) {
-          definedUrl = queryObject.hhNextLevelUrl;
-          if (/^http/.test(definedUrl))
-            console.log("Specific url requested:", definedUrl);
-          else {
-            console.log('PROBLEM WITH definedUrl:', definedUrl);
-            currentUrl = url.parse(req.url, true).query.hhCurrentUrl;
-            currentUrlBase = url.parse(currentUrl).protocol + '//'+ url.parse(currentUrl).host;
-            console.log('using requesting site base url instead:', currentUrlBase);
-            definedUrl = currentUrlBase;
-          }
-        }
-        getRandomSite(definedUrl);
-      });
 
-    getRandomSite = function(definedUrl) {
+    if (queryObject.hhCurrentUrl) {
+      gameOptions.lastUrl = url.parse(req.url, true).query.hhCurrentUrl;
+    }
+    // see if a specific level has been requested
+    if (queryObject.hhNextLevelUrl) {
+      definedUrl = queryObject.hhNextLevelUrl;
+      if (/^http/.test(definedUrl))
+        console.log("Specific url requested:", definedUrl);
+      else {
+        console.log('PROBLEM WITH definedUrl:', definedUrl);
+        currentUrl = url.parse(req.url, true).query.hhCurrentUrl; // assume there is a hhCurrentUrl if there is a hhNextLevelUrl
+        currentUrlBase = url.parse(currentUrl).protocol + '//'+ url.parse(currentUrl).host;
+        console.log('using requesting site base url instead:', currentUrlBase);
+        definedUrl = currentUrlBase;
+      }
+    }
+    // set these if virus attack
+    if(queryObject.hhVirus){
+      var virusLevels = [
+        'http://www.omfgdogs.com/',
+        'http://www.hristu.net/',
+        'http://www.fromthedarkpast.com/',
+        'http://www.innerdoubts.com/',
+        'http://www.sanger.dk/',
+        'http://www.haneke.net/',
+        'http://cat-bounce.com/',
+        'http://www.theendofreason.com/',
+        'http://www.wutdafuk.com/',
+        'http://chickenonaraft.com/',
+        'http://www.donothingfor2minutes.com/',
+        'http://www.theworldsworstwebsiteever.com/',
+        'http://www.nyan.cat/',
+        'http://www.lee.org/reading/general/Hampsterdance/',
+        'http://www.cat-gif.com/'
+      ];
+      definedUrl = virusLevels[Math.floor(Math.random()*virusLevels.length)];
+      gameOptions.specialLevel = 'virus';
+    }
+    getRandomSite(definedUrl);
+
+    function getRandomSite(definedUrl) {
       var urlToRequest = !!definedUrl ? definedUrl : 'http://www.randomwebsitemachine.com/random_website/';
       request({url: (urlToRequest), headers:{'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.110 Safari/537.36'}}, function(err, response, body) {
-        returnedUrl = response.request.uri.protocol + '//' + response.request.uri.host + response.request.uri.pathname;
         if(err) {
           console.log("Error:", err.message);
           if(definedUrl) {
@@ -110,7 +104,7 @@ server.on('request', function(req, res) {
 
         } else if (body.match(/<frameset([^>]*)>/gi)) {
           // some sites use framesets so our header bar and canvas doesn't load, so... try again
-          console.log("Error:", returnedUrl, " uses <framesets>");
+          console.log("Error: requested url uses <framesets>");
           if(definedUrl) {
             currentUrl = url.parse(req.url, true).query.hhCurrentUrl;
             currentUrlBase = url.parse(currentUrl).protocol + '//'+ url.parse(currentUrl).host;
@@ -119,6 +113,7 @@ server.on('request', function(req, res) {
           } else
             getRandomSite();
         } else {
+          returnedUrl = response.request.uri.protocol + '//' + response.request.uri.host + response.request.uri.pathname;
           host = response.request.uri.host;
           relativePath = returnedUrl.substring(0, returnedUrl.lastIndexOf('/')+1); // includes trailng slash
           console.log('requested url: '+req.url, '\nreturned url: '+returnedUrl);
@@ -143,7 +138,9 @@ server.on('request', function(req, res) {
           res.end();
         }
       });
-    };
+    }
+
+  // not /play route
   } else {
 
     // static content loading

@@ -26,10 +26,11 @@ module.exports = class Director
     player = @addEntity(new Entities.Player({id: @lastId}))
 
     # create enemies
-    numEnemies = levelData.numEnemies || 0
-    console.log "Putting #{numEnemies} enemies on screen"
-    for [1..numEnemies]
-      @addEntity(new Entities.Enemy {id:@lastId, player: player})
+    unless @gameState.get('gameOptions').specialLevel is 'virus'
+      numEnemies = levelData.numEnemies || 0
+      console.log "Putting #{numEnemies} enemies on screen"
+      for [1..numEnemies]
+        @addEntity(new Entities.Enemy {id:@lastId, player: player})
 
 
     ###################################################
@@ -211,7 +212,7 @@ module.exports = class Director
 
 
 
-  nextLevel: (url, noLevelUp) =>
+  nextLevel: (url, noLevelUp = false, params = {}) =>
     unless noLevelUp
       level = localStorage.getItem 'hh-level'
       level++
@@ -262,17 +263,20 @@ module.exports = class Director
       # jump after page has time to explode
       setTimeout (->
         clearInterval timer
-        jump url
+        jump url, params
       ), 2000
 
     explodePage()
     
 
-    jump = (url) =>
+    jump = (url, params) =>
       # note that url params get removed from url on page load
       if not url?
         url = ''
-      window.location.href = window.location.origin + "/play?hhNextLevelUrl="+url+"&hhCurrentUrl="+@gameState.get('gameOptions').currentUrl
+      nextLevelUrl = window.location.origin + "/play?hhNextLevelUrl="+url+"&hhCurrentUrl="+@gameState.get('gameOptions').currentUrl
+      for param, value of params
+        nextLevelUrl += '&'+param+'='+value
+      window.location.href = nextLevelUrl
 
     # alternate POST based method to "jump"
     # needs server.js to use POST vars instead of GET vars to work
