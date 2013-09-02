@@ -280,7 +280,11 @@ window.require.register("director", function(exports, require, module) {
 
     Director.prototype.hyperjump = function() {
       if ((this.gameState.get("numCollectedLinks")) >= (this.gameState.get("numLinksNeeded"))) {
-        return this.nextLevel();
+        if (this.gameState.get('gameOptions').specialLevel === 'virus') {
+          return this.nextLevel('', true);
+        } else {
+          return this.nextLevel();
+        }
       } else {
         if (!this.gameState.get('purgatoryLink')) {
           return;
@@ -543,13 +547,18 @@ window.require.register("entities/enemy", function(exports, require, module) {
       this.speed = 100;
       this.dx = 0;
       this.dy = 0;
+      this.onHit = {
+        'hyperlink': this.onHitHyperlink,
+        'enemy': this.onHitEnemy,
+        'ad': this.onHitAd
+      };
       Enemy.__super__.constructor.apply(this, arguments);
     }
 
     Enemy.prototype.update = function(dt) {
       var tl, tx, ty;
 
-      if (Math.floor(Math.random() * 100)) {
+      if (Math.floor(Math.random() * 5)) {
         tx = this.player.position.x - this.position.x;
         ty = this.player.position.y - this.position.y;
         tl = Math.sqrt(Math.pow(tx, 2) + Math.pow(ty, 2));
@@ -558,26 +567,22 @@ window.require.register("entities/enemy", function(exports, require, module) {
       }
       this.position.x += this.speed * this.dx * dt;
       this.position.y += this.speed * this.dy * dt;
+      this.speed = 100;
       return Enemy.__super__.update.apply(this, arguments);
     };
 
-    Enemy.prototype.onHit = function(obstacle) {
-      var _ref;
-
-      return (_ref = this._onHitFunctions[obstacle.type]) != null ? _ref.call(this, obstacle) : void 0;
-    };
-
     Enemy.prototype.onHitHyperlink = function(obstacle) {
-      return obstacle.background = 'brown';
+      this.position.x -= this.speed * this.dx * .03;
+      this.position.y -= this.speed * this.dy * .03;
+      return false;
     };
 
     Enemy.prototype.onHitEnemy = function(obstacle) {
       return false;
     };
 
-    Enemy.prototype._onHitFunctions = {
-      'hyperlink': Enemy.prototype.onHitHyperlink,
-      'enemy': Enemy.prototype.onHitEnemy
+    Enemy.prototype.onHitAd = function(obstacle) {
+      return this.speed *= .5;
     };
 
     return Enemy;

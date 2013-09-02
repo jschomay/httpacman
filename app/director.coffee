@@ -196,8 +196,11 @@ module.exports = class Director
 
   hyperjump: ->    
     if (@gameState.get "numCollectedLinks") >= (@gameState.get "numLinksNeeded")
-      # @maxSpeed = 0;
-      @nextLevel()
+      if @gameState.get('gameOptions').specialLevel is 'virus'
+        # no level up from virus levels
+        @nextLevel '', true
+      else
+        @nextLevel()
     else
       # if you press space before the links load you get undefined, so don't allow that
       return if !@gameState.get('purgatoryLink')

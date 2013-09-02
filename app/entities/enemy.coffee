@@ -21,6 +21,12 @@ module.exports = class Enemy extends Entity
     @speed = 100
     @dx = 0
     @dy = 0
+
+    @onHit =
+      'hyperlink': @onHitHyperlink
+      'enemy': @onHitEnemy
+      'ad': @onHitAd
+
     super
 
   update: (dt) =>
@@ -32,7 +38,7 @@ module.exports = class Enemy extends Entity
     # _speed = if (directionX and directionY) then (@speed / 1.41421) else @speed
 
     # move towards player
-    if Math.floor Math.random()*100
+    if Math.floor Math.random()*5
       tx = @player.position.x - @position.x
       ty = @player.position.y - @position.y
       tl = Math.sqrt(Math.pow(tx,2) + Math.pow(ty,2))
@@ -42,19 +48,22 @@ module.exports = class Enemy extends Entity
     # distance (px) = speed (px / s) * time (s)
     @position.x += @speed * @dx * dt
     @position.y += @speed * @dy * dt
+
+    # reset from any ads
+    @speed = 100
+
     super
 
-  onHit: (obstacle) ->
-    # @background = 'red'
-    # run right behaviour based on obstacle type
-    @_onHitFunctions[obstacle.type]?.call(@, obstacle)
 
   onHitHyperlink: (obstacle) ->
-    obstacle.background = 'brown'
+    # fake 'bounce'
+    @position.x -= @speed * @dx * .03
+    @position.y -= @speed * @dy * .03
+
+    false
 
   onHitEnemy: (obstacle) ->
     false
 
-  _onHitFunctions: 
-    'hyperlink': @::onHitHyperlink
-    'enemy': @::onHitEnemy
+  onHitAd: (obstacle) ->
+    @speed *= .5
