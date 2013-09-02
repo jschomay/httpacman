@@ -1181,7 +1181,7 @@ window.require.register("views/templates/header_bar", function(exports, require,
   with (locals || {}) {
   var interp;
   buf.push('<div id="hh-logo" class="hh-section"><h1>&lt;Hyperlink&gt;&lt;/Harry&gt;</h1></div><div id="hh-level-info" class="hh-section"><h2>level ' + escape((interp = level) == null ? '' : interp) + '</h2><h3> \nSite:&nbsp<a');
-  buf.push(attrs({ 'href':('http://' + (url) + ''), 'target':('_blank') }, {"href":true,"target":true}));
+  buf.push(attrs({ 'href':('' + (url) + ''), 'target':('_blank') }, {"href":true,"target":true}));
   buf.push('>' + escape((interp = displayUrl) == null ? '' : interp) + '</a></h3></div><div class="hh-section"><div id="hh-progress-bar-container" class="hh-bar"><div id="hh-progress" class="hh-bar"></div><div id="hh-collected">' + escape((interp = numCollectedLinks) == null ? '' : interp) + '</div><div id="hh-goal" class="hh-bar"></div></div></div><div class="hh-section"><p>Total links on page: ');
   var __val__ = numLinks
   buf.push(escape(null == __val__ ? "" : __val__));
