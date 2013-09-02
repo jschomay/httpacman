@@ -135,59 +135,64 @@ window.require.register("director", function(exports, require, module) {
             that = _this;
             numLinks = 0;
             headerBarEl = $('#hh-header-bar')[0];
-            $('a:visible').filter(function() {
-              var link;
+            if (_this.gameState.get('gameOptions').specialLevel !== 'virus') {
+              $('a:visible').filter(function() {
+                var link;
 
-              if ($.contains(headerBarEl, this)) {
-                return false;
-              }
-              if (!this.href || this.href === "javascript:void(0);") {
-                return false;
-              }
-              if (/#/.test(this.href)) {
-                return false;
-              }
-              if (/mailto:|tel:/.test(this.href)) {
-                return false;
-              }
-              link = $(this);
-              if (link.parents("[class*='nav'], [class*='Nav'], [class*='NAV']").filter(function() {
-                return $(link).parents('ul').length > 1;
-              }).length) {
-                return false;
-              }
-              return true;
-            }).each(function() {
-              var $this, child, domain, domainRegex, headerBarHeight, link, offset;
+                if ($.contains(headerBarEl, this)) {
+                  return false;
+                }
+                if (!this.href || this.href === "javascript:void(0);") {
+                  return false;
+                }
+                if (/#/.test(this.href)) {
+                  return false;
+                }
+                if (/mailto:|tel:/.test(this.href)) {
+                  return false;
+                }
+                link = $(this);
+                if (link.parents("[class*='nav'], [class*='Nav'], [class*='NAV']").filter(function() {
+                  return $(link).parents('ul').length > 1;
+                }).length) {
+                  return false;
+                }
+                return true;
+              }).each(function() {
+                var $this, child, domain, domainRegex, headerBarHeight, link, offset;
 
-              $(this).trigger('mouseover')[0].href;
-              link = this.href;
-              domain = that.gameState.get('url').split('/')[0];
-              domainRegex = new RegExp(domain, 'i');
-              if (domainRegex.test(link || link === window.location.origin)) {
-                internalLinks.push(this.href);
-              }
-              numLinks++;
-              child = $(this).children();
-              $this = child.length > 0 ? child : $(this);
-              offset = $this.offset();
-              headerBarHeight = $('#hh-header-bar').outerHeight();
-              return that.addEntity(new Entities.Hyperlink({
-                id: that.lastId,
-                w: $this.width(),
-                h: $this.height(),
-                y: offset.top - headerBarHeight,
-                x: offset.left,
-                $el: $this,
-                href: this.href
-              }));
-            });
+                $(this).trigger('mouseover')[0].href;
+                link = this.href;
+                domain = that.gameState.get('url').split('/')[0];
+                domainRegex = new RegExp(domain, 'i');
+                if (domainRegex.test(link || link === window.location.origin)) {
+                  internalLinks.push(this.href);
+                }
+                numLinks++;
+                child = $(this).children();
+                $this = child.length > 0 ? child : $(this);
+                offset = $this.offset();
+                headerBarHeight = $('#hh-header-bar').outerHeight();
+                return that.addEntity(new Entities.Hyperlink({
+                  id: that.lastId,
+                  w: $this.width(),
+                  h: $this.height(),
+                  y: offset.top - headerBarHeight,
+                  x: offset.left,
+                  $el: $this,
+                  href: this.href
+                }));
+              });
+            }
             if (numLinks === 0) {
-              manualLink = $('<a href="' + _this.gameState.get('gameOptions').lastUrl + '">Escape here!</a>').appendTo('body').css({
+              manualLink = $('<a href="' + _this.gameState.get('gameOptions').lastUrl + '">Find me to escape!</a>').appendTo('body').css({
                 'position': 'absolute',
                 'top': Math.floor(Math.random() * (window.document.height - 150)) + 100 + 'px',
                 'left': Math.floor(Math.random() * (window.document.width - 400)) + 200 + 'px',
-                'z-index': 99999999
+                'z-index': 99999999,
+                'opacity': 1,
+                'display': 'block',
+                'visibility': 'visible'
               });
               offset = manualLink.offset();
               headerBarHeight = $('#hh-header-bar').outerHeight();

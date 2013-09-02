@@ -53,63 +53,68 @@ module.exports = class Director
           numLinks = 0;
           headerBarEl = $('#hh-header-bar')[0]
           # start with all links on page...
-          $('a:visible')
-          # filter out links we dont want to use, including:
-          .filter -> 
-            # links in the header bar
-            return false if $.contains(headerBarEl, this)
-            # links that have no href or javascript (like pagers in sliders)
-            return false if !this.href or this.href is "javascript:void(0);"
-            # links that are just anchors
-            return false if /#/.test(this.href)
-            # mailto: and tel:
-            return false if /mailto:|tel:/.test this.href
-            # links under a nav system, but only 2nd tier ones (to avoid hidden drop nav menues)
-            link = $ this
-            return false if link.parents("[class*='nav'], [class*='Nav'], [class*='NAV']").filter(-> $(link).parents('ul').length>1).length
-            # if we're still going then don't filter out this link
-            return true
-          .each ->
-            # is this an internal or external link? (not using anymore)
+          # unless we are on a virus level
+          unless @gameState.get('gameOptions').specialLevel is 'virus'
+            $('a:visible')
+            # filter out links we dont want to use, including:
+            .filter -> 
+              # links in the header bar
+              return false if $.contains(headerBarEl, this)
+              # links that have no href or javascript (like pagers in sliders)
+              return false if !this.href or this.href is "javascript:void(0);"
+              # links that are just anchors
+              return false if /#/.test(this.href)
+              # mailto: and tel:
+              return false if /mailto:|tel:/.test this.href
+              # links under a nav system, but only 2nd tier ones (to avoid hidden drop nav menues)
+              link = $ this
+              return false if link.parents("[class*='nav'], [class*='Nav'], [class*='NAV']").filter(-> $(link).parents('ul').length>1).length
+              # if we're still going then don't filter out this link
+              return true
+            .each ->
+              # is this an internal or external link? (not using anymore)
 
-            # quick hack to get around facebook's linkswap on mouseover to get the real like destination
-            $(this).trigger('mouseover')[0].href
-            link = this.href#.replace(/https?:\/\/(www\.)?/, '').split('/')[0]
-            domain = that.gameState.get('url').split('/')[0]
-            domainRegex = new RegExp domain, 'i'
+              # quick hack to get around facebook's linkswap on mouseover to get the real like destination
+              $(this).trigger('mouseover')[0].href
+              link = this.href#.replace(/https?:\/\/(www\.)?/, '').split('/')[0]
+              domain = that.gameState.get('url').split('/')[0]
+              domainRegex = new RegExp domain, 'i'
 
-            if domainRegex.test link or link is window.location.origin
-              internalLinks.push this.href
-            
-            numLinks++
+              if domainRegex.test link or link is window.location.origin
+                internalLinks.push this.href
+              
+              numLinks++
 
-            # if the anchor element wraps another element, return that, otherwise return the anchor
-            # this way the hyperlink entity will hopefully always have a width and height > 0
-            child = $(this).children()
-            $this = if child.length > 0 then child else $ @
-            offset = $this.offset()
-            headerBarHeight = $('#hh-header-bar').outerHeight()
+              # if the anchor element wraps another element, return that, otherwise return the anchor
+              # this way the hyperlink entity will hopefully always have a width and height > 0
+              child = $(this).children()
+              $this = if child.length > 0 then child else $ @
+              offset = $this.offset()
+              headerBarHeight = $('#hh-header-bar').outerHeight()
 
-            # add entity
-            that.addEntity new Entities.Hyperlink
-              id: that.lastId
-              w: $this.width()
-              h: $this.height()
-              y: offset.top - headerBarHeight
-              x: offset.left
-              $el: $this
-              href: this.href
+              # add entity
+              that.addEntity new Entities.Hyperlink
+                id: that.lastId
+                w: $this.width()
+                h: $this.height()
+                y: offset.top - headerBarHeight
+                x: offset.left
+                $el: $this
+                href: this.href
 
           if numLinks is 0
             # No links to grab, what should we do?  For now we just refresh
             # window.location.href = window.location.origin+"/play"
             # or...
             # let's populate a single link in a random place
-            manualLink = $('<a href="'+@gameState.get('gameOptions').lastUrl+'">Escape here!</a>').appendTo('body').css
+            manualLink = $('<a href="'+@gameState.get('gameOptions').lastUrl+'">Find me to escape!</a>').appendTo('body').css
               'position': 'absolute'
               'top': Math.floor(Math.random()*(window.document.height-150)) + 100 + 'px'
               'left': Math.floor(Math.random()*(window.document.width-400)) + 200 + 'px'
               'z-index': 99999999
+              'opacity': 1
+              'display': 'block'
+              'visibility': 'visible'
             offset = manualLink.offset()
             headerBarHeight = $('#hh-header-bar').outerHeight()
 
