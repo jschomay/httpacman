@@ -7,13 +7,14 @@ body {
   margin-top: 65px !important;
   overflow-x: hidden !important;
   font-family: arial;
-  font-size: 12pt; }
-@media -sass-debug-info{filename{}line{font-family:\0000343}}
+  font-size: 12pt;
+  position: relative !important; }
+@media -sass-debug-info{filename{}line{font-family:\0000344}}
   body#hh-home {
     margin: 0px !important;
     background: #d5c589; }
 
-@media -sass-debug-info{filename{}line{font-family:\0000351}}
+@media -sass-debug-info{filename{}line{font-family:\0000352}}
 #hh-home header {
   overflow: auto;
   background: #333;
@@ -22,7 +23,7 @@ body {
   -webkit-box-shadow: 0px 4px 10px #222222;
   -moz-box-shadow: 0px 4px 10px #222222;
   box-shadow: 0px 4px 10px #222222; }
-@media -sass-debug-info{filename{}line{font-family:\0000358}}
+@media -sass-debug-info{filename{}line{font-family:\0000359}}
   #hh-home header #logo {
     background: #d56f11;
     display: relative;
@@ -32,29 +33,29 @@ body {
     -webkit-box-shadow: 0px 4px 10px #222222;
     -moz-box-shadow: 0px 4px 10px #222222;
     box-shadow: 0px 4px 10px #222222; }
-@media -sass-debug-info{filename{}line{font-family:\0000365}}
+@media -sass-debug-info{filename{}line{font-family:\0000366}}
     #hh-home header #logo #headline {
       display: block;
       border-top: 2px dashed #d5c589;
       border-bottom: 2px dashed #d5c589;
       text-align: center;
       text-align: center; }
-@media -sass-debug-info{filename{}line{font-family:\0000372}}
+@media -sass-debug-info{filename{}line{font-family:\0000373}}
     #hh-home header #logo h1 {
       font-size: 250%;
       margin-bottom: 10px; }
-@media -sass-debug-info{filename{}line{font-family:\0000376}}
+@media -sass-debug-info{filename{}line{font-family:\0000377}}
     #hh-home header #logo h2 {
       font-size: 110%;
       font-weight: normal; }
-@media -sass-debug-info{filename{}line{font-family:\0000382}}
+@media -sass-debug-info{filename{}line{font-family:\0000383}}
   #hh-home header #harry {
     width: 50px;
     height: 75px;
     background-image: url("../images/harry.png");
     background-size: 200px;
     margin: auto; }
-@media -sass-debug-info{filename{}line{font-family:\0000389}}
+@media -sass-debug-info{filename{}line{font-family:\0000390}}
   #hh-home header #bot {
     width: 37px;
     height: 54px;
@@ -62,14 +63,14 @@ body {
     background-size: 40px;
     display: inline-block;
     margin-right: 40px; }
-@media -sass-debug-info{filename{}line{font-family:\0000397}}
+@media -sass-debug-info{filename{}line{font-family:\0000398}}
   #hh-home header #spider {
     width: 65px;
     height: 58px;
     background-image: url("../images/spider1.png");
     background-size: 330px;
     display: inline-block; }
-@media -sass-debug-info{filename{}line{font-family:\00003105}}
+@media -sass-debug-info{filename{}line{font-family:\00003106}}
   #hh-home header #about {
     width: 50%;
     height: auto;
@@ -86,10 +87,10 @@ body {
     -webkit-box-shadow: inset 0px 4px 10px #222222, 0px 1px 2px #777777;
     -moz-box-shadow: inset 0px 4px 10px #222222, 0px 1px 2px #777777;
     box-shadow: inset 0px 4px 10px #222222, 0px 1px 2px #777777; }
-@media -sass-debug-info{filename{}line{font-family:\00003116}}
+@media -sass-debug-info{filename{}line{font-family:\00003117}}
     #hh-home header #about h3 {
       text-align: center; }
-@media -sass-debug-info{filename{}line{font-family:\00003121}}
+@media -sass-debug-info{filename{}line{font-family:\00003122}}
   #hh-home header #play {
     display: block;
     width: 200px;
@@ -111,34 +112,34 @@ body {
     -webkit-border-radius: 5px;
     -ms-border-radius: 5px;
     border-radius: 5px; }
-@media -sass-debug-info{filename{}line{font-family:\00003137}}
+@media -sass-debug-info{filename{}line{font-family:\00003138}}
     #hh-home header #play:hover {
       background: #498527; }
-@media -sass-debug-info{filename{}line{font-family:\00003140}}
+@media -sass-debug-info{filename{}line{font-family:\00003141}}
     #hh-home header #play:active {
       width: 195px; }
-@media -sass-debug-info{filename{}line{font-family:\00003146}}
+@media -sass-debug-info{filename{}line{font-family:\00003147}}
 #hh-home #bottom {
   overflow: auto;
   width: 70%;
   margin: auto;
   color: #863609; }
-@media -sass-debug-info{filename{}line{font-family:\00003151}}
+@media -sass-debug-info{filename{}line{font-family:\00003152}}
   #hh-home #bottom a {
     color: #555; }
-@media -sass-debug-info{filename{}line{font-family:\00003153}}
+@media -sass-debug-info{filename{}line{font-family:\00003154}}
     #hh-home #bottom a:hover {
       color: #498527; }
-@media -sass-debug-info{filename{}line{font-family:\00003157}}
+@media -sass-debug-info{filename{}line{font-family:\00003158}}
   #hh-home #bottom section {
     width: 50%;
     float: left;
     padding: 20px; }
-@media -sass-debug-info{filename{}line{font-family:\00003162}}
+@media -sass-debug-info{filename{}line{font-family:\00003163}}
   #hh-home #bottom #contact li {
     margin-bottom: 10px; }
 
-@media -sass-debug-info{filename{}line{font-family:\00003172}}
+@media -sass-debug-info{filename{}line{font-family:\00003173}}
 #hh-header-bar {
   position: fixed;
   top: 0;
@@ -153,7 +154,7 @@ body {
   -webkit-box-shadow: 0px 4px 10px #222222;
   -moz-box-shadow: 0px 4px 10px #222222;
   box-shadow: 0px 4px 10px #222222; }
-@media -sass-debug-info{filename{}line{font-family:\00003184}}
+@media -sass-debug-info{filename{}line{font-family:\00003185}}
   #hh-header-bar .hh-section {
     display: block;
     float: left;
@@ -165,7 +166,7 @@ body {
     width: auto;
     min-width: 150px;
     margin-right: 20px; }
-@media -sass-debug-info{filename{}line{font-family:\00003196}}
+@media -sass-debug-info{filename{}line{font-family:\00003197}}
   #hh-header-bar h1, #hh-header-bar h2, #hh-header-bar h3, #hh-header-bar p, #hh-header-bar a {
     text-align: left !important;
     display: block !important;
@@ -179,41 +180,41 @@ body {
     color: white !important;
     border: 0 !important;
     background: none !important; }
-@media -sass-debug-info{filename{}line{font-family:\00003210}}
+@media -sass-debug-info{filename{}line{font-family:\00003211}}
   #hh-header-bar a {
     display: inline !important;
     font-weight: normal !important; }
-@media -sass-debug-info{filename{}line{font-family:\00003214}}
+@media -sass-debug-info{filename{}line{font-family:\00003215}}
   #hh-header-bar a:hover {
     color: #cccccc !important;
     background: none !important; }
-@media -sass-debug-info{filename{}line{font-family:\00003218}}
+@media -sass-debug-info{filename{}line{font-family:\00003219}}
   #hh-header-bar h1 {
     font-weight: bold !important;
     font-size: 18px !important;
     line-height: 18px !important; }
-@media -sass-debug-info{filename{}line{font-family:\00003223}}
+@media -sass-debug-info{filename{}line{font-family:\00003224}}
   #hh-header-bar h2 {
     font-weight: bold !important;
     font-size: 15px !important;
     line-height: 15px !important; }
-@media -sass-debug-info{filename{}line{font-family:\00003228}}
+@media -sass-debug-info{filename{}line{font-family:\00003229}}
   #hh-header-bar h3 {
     font-size: 12px !important;
     line-height: 12px !important; }
-@media -sass-debug-info{filename{}line{font-family:\00003232}}
+@media -sass-debug-info{filename{}line{font-family:\00003233}}
   #hh-header-bar #hh-logo {
     width: 100px; }
-@media -sass-debug-info{filename{}line{font-family:\00003235}}
+@media -sass-debug-info{filename{}line{font-family:\00003236}}
   #hh-header-bar #hh-level-info {
     margin-right: 100px;
     max-width: 200px;
     overflow: hidden; }
-@media -sass-debug-info{filename{}line{font-family:\00003240}}
+@media -sass-debug-info{filename{}line{font-family:\00003241}}
   #hh-header-bar .hh-bar {
     width: 100%;
     height: 100%; }
-@media -sass-debug-info{filename{}line{font-family:\00003244}}
+@media -sass-debug-info{filename{}line{font-family:\00003245}}
   #hh-header-bar #hh-progress-bar-container {
     position: relative;
     background: #333;
@@ -226,7 +227,7 @@ body {
     -moz-box-shadow: inset 0px 4px 10px #222222, 0px 1px 2px #777777;
     box-shadow: inset 0px 4px 10px #222222, 0px 1px 2px #777777;
     overflow: hidden; }
-@media -sass-debug-info{filename{}line{font-family:\00003251}}
+@media -sass-debug-info{filename{}line{font-family:\00003252}}
     #hh-header-bar #hh-progress-bar-container #hh-progress {
       display: none;
       background: yellow;
@@ -235,7 +236,7 @@ body {
       -webkit-box-shadow: inset 1px 2px 7px 0px #555555;
       -moz-box-shadow: inset 1px 2px 7px 0px #555555;
       box-shadow: inset 1px 2px 7px 0px #555555; }
-@media -sass-debug-info{filename{}line{font-family:\00003258}}
+@media -sass-debug-info{filename{}line{font-family:\00003259}}
     #hh-header-bar #hh-progress-bar-container #hh-collected {
       display: none;
       top: 0;
@@ -245,7 +246,7 @@ body {
       color: #FFF;
       padding: 10px 4px;
       float: left; }
-@media -sass-debug-info{filename{}line{font-family:\00003268}}
+@media -sass-debug-info{filename{}line{font-family:\00003269}}
     #hh-header-bar #hh-progress-bar-container #hh-goal {
       display: none;
       position: absolute;
@@ -258,7 +259,7 @@ body {
       -webkit-box-shadow: inset 0px 2px 7px -1px #555555;
       -moz-box-shadow: inset 0px 2px 7px -1px #555555;
       box-shadow: inset 0px 2px 7px -1px #555555; }
-@media -sass-debug-info{filename{}line{font-family:\00003280}}
+@media -sass-debug-info{filename{}line{font-family:\00003281}}
   #hh-header-bar #hh-meter-full {
     display: none !important;
     color: yellow !important;
@@ -280,6 +281,6 @@ body {
     -webkit-border-radius: 5px;
     -ms-border-radius: 5px;
     border-radius: 5px; }
-@media -sass-debug-info{filename{}line{font-family:\00003296}}
+@media -sass-debug-info{filename{}line{font-family:\00003297}}
     #hh-header-bar #hh-meter-full.show {
       display: block !important; }

@@ -126,7 +126,7 @@ window.require.register("director", function(exports, require, module) {
 
           delay = document.height > 7000 ? 1700 : 300;
           return setTimeout((function() {
-            var headerBarEl, internalLinks, numLinks, randomIndex, that;
+            var headerBarEl, headerBarHeight, internalLinks, manualLink, numLinks, offset, randomIndex, that;
 
             console.log("Converting hyperlinks to game entities");
             internalLinks = [];
@@ -181,7 +181,26 @@ window.require.register("director", function(exports, require, module) {
               }));
             });
             if (numLinks === 0) {
-              window.location.href = window.location.origin + "/play";
+              manualLink = $('<a href="' + _this.gameState.get('gameOptions').lastUrl + '">Escape here!</a>').appendTo('body').css({
+                'position': 'absolute',
+                'top': Math.floor(Math.random() * (window.document.height - 150)) + 100 + 'px',
+                'left': Math.floor(Math.random() * (window.document.width - 400)) + 200 + 'px',
+                'z-index': 99999999
+              });
+              offset = manualLink.offset();
+              headerBarHeight = $('#hh-header-bar').outerHeight();
+              _this.addEntity(new Entities.Hyperlink({
+                id: _this.lastId,
+                w: manualLink.width(),
+                h: manualLink.height(),
+                y: offset.top - headerBarHeight,
+                x: offset.left,
+                $el: manualLink,
+                href: manualLink[0].href
+              }));
+              numLinks++;
+              internalLinks.push(manualLink[0].href);
+              console.log(manualLink[0].href);
             }
             _this.gameState.set("numLinks", numLinks);
             _this.gameState.set("numLinksNeeded", Math.ceil(numLinks * (Math.min(_this.gameState.get('level', 10))) / 20));
@@ -199,7 +218,7 @@ window.require.register("director", function(exports, require, module) {
                 return this;
               }
             }).each(function() {
-              var $this, headerBarHeight, offset;
+              var $this;
 
               $this = $(this);
               offset = $this.offset();
@@ -275,15 +294,21 @@ window.require.register("director", function(exports, require, module) {
     };
 
     Director.prototype.nextLevel = function(url, noLevelUp) {
-      var explodePage, jump, level;
+      var explodePage, jump, level,
+        _this = this;
 
       if (!noLevelUp) {
         level = localStorage.getItem('hh-level');
         level++;
         localStorage.setItem("hh-level", level);
+        if (level === 5) {
+          url = "https://www.facebook.com/FunnyPikz";
+        }
         if (level === 10) {
           url = "http://hyperlinkharrypoc-jschomay.rhcloud.com";
-          localStorage.removeItem("hh-level");
+        }
+        if (level === 15) {
+          url = "https://github.com/jschomay/httpacman";
         }
       }
       this.gameState.set('running', false);
@@ -327,7 +352,7 @@ window.require.register("director", function(exports, require, module) {
         if (url == null) {
           url = '';
         }
-        return window.location.href = window.location.origin + "/play?hhNextLevelUrl=" + url + "&hhCurrentUrl=" + window.currentUrl;
+        return window.location.href = window.location.origin + "/play?hhNextLevelUrl=" + url + "&hhCurrentUrl=" + _this.gameState.get('gameOptions').currentUrl;
       };
     };
 
@@ -794,6 +819,10 @@ window.require.register("game", function(exports, require, module) {
           return _this.director.hyperjump();
         }
       });
+      window.cheat = function(level) {
+        _this.gameState.set('level', level);
+        return localStorage.setItem("hh-level", level);
+      };
       $('a').click(function(e) {
         console.log("click on link prevented");
         e.preventDefault();
@@ -930,14 +959,19 @@ window.require.register("models/game_state", function(exports, require, module) 
     }
 
     GameState.prototype.initialize = function() {
-      return this.set({
+      var gameOptions;
+
+      gameOptions = JSON.parse(window.hhGameOptions);
+      this.set({
         running: false,
         level: localStorage.getItem("hh-level"),
-        url: window.currentUrl,
+        gameOptions: gameOptions,
+        url: gameOptions.currentUrl,
         numLinks: "Calculating...",
         numLinksNeeded: "Calculating...",
         numCollectedLinks: 0
       });
+      return console.log(this.attributes.gameOptions);
     };
 
     return GameState;

@@ -6,6 +6,27 @@ var qs = require('querystring');
 var server = http.createServer();
 var url = require('url');
 
+
+var virusLevels = [
+  'http://www.omfgdogs.com/',
+  'http://www.hristu.net/',
+  'http://www.fromthedarkpast.com/',
+  'http://www.innerdoubts.com/',
+  'http://www.sanger.dk/',
+  'http://www.haneke.net/',
+  'http://cat-bounce.com/',
+  'http://www.theendofreason.com/',
+  'http://www.wutdafuk.com/',
+  'http://chickenonaraft.com/',
+  'http://www.donothingfor2minutes.com/',
+  'http://www.arngren.net/',
+  'http://www.theworldsworstwebsiteever.com/',
+  'http://www.nyan.cat/',
+  'http://www.lee.org/reading/general/Hampsterdance/',
+  'http://www.cat-gif.com/'
+];
+
+
 server.on('request', function(req, res) {
 
 
@@ -25,6 +46,10 @@ server.on('request', function(req, res) {
     *********************************/
     definedUrl = '';
 
+    // test virus pages
+    definedUrl = virusLevels[Math.floor(Math.random()*virusLevels.length)];
+    gameOptions = {specialLevel: 'virus'};
+
     // if an url was provided as an url parameter (next level request), use that one
     var queryObject = url.parse(req.url,true).query;
     // console.log(queryObject);
@@ -35,6 +60,9 @@ server.on('request', function(req, res) {
       req.on('end', function () {
         body = qs.parse(body);
         // console.log('POSTed: ' + JSON.stringify(body));
+        if (queryObject.hhCurrentUrl) {
+          gameOptions.lastUrl = url.parse(req.url, true).query.hhCurrentUrl;
+        }
         if (queryObject.hhNextLevelUrl) {
           definedUrl = queryObject.hhNextLevelUrl;
           if (/^http/.test(definedUrl))
@@ -53,6 +81,7 @@ server.on('request', function(req, res) {
     getRandomSite = function(definedUrl) {
       var urlToRequest = !!definedUrl ? definedUrl : 'http://www.randomwebsitemachine.com/random_website/';
       request({url: (urlToRequest), headers:{'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.110 Safari/537.36'}}, function(err, response, body) {
+        returnedUrl = response.request.uri.protocol + '//' + response.request.uri.host + response.request.uri.pathname;
         if(err) {
           console.log("Error:", err.message);
           if(definedUrl) {
@@ -64,7 +93,6 @@ server.on('request', function(req, res) {
             getRandomSite();
         } else if (!body.match(/<head([^>]*)>/gi)) {
           // some sites don't have a <head> for what ever reason, so our code doesn't load, so... try again
-          urlToRequest = response.request.uri.host + response.request.uri.pathname;
           redirect = (body.match(/location\.[^\(]+\("([^"]+)"\)/));
           if (redirect){
             redirect = redirect[1].replace(/\\/g, '');
@@ -82,8 +110,7 @@ server.on('request', function(req, res) {
 
         } else if (body.match(/<frameset([^>]*)>/gi)) {
           // some sites use framesets so our header bar and canvas doesn't load, so... try again
-          urlToRequest = response.request.uri.host + response.request.uri.pathname;
-          console.log("Error:", urlToRequest, " uses <framesets>");
+          console.log("Error:", returnedUrl, " uses <framesets>");
           if(definedUrl) {
             currentUrl = url.parse(req.url, true).query.hhCurrentUrl;
             currentUrlBase = url.parse(currentUrl).protocol + '//'+ url.parse(currentUrl).host;
@@ -93,9 +120,8 @@ server.on('request', function(req, res) {
             getRandomSite();
         } else {
           host = response.request.uri.host;
-          urlToRequest = response.request.uri.protocol + '//' + response.request.uri.host + response.request.uri.pathname;
-          relativePath = urlToRequest.substring(0, urlToRequest.lastIndexOf('/')+1); // includes trailng slash
-          console.log('requested url: '+req.url, '\nreturned url: '+urlToRequest);
+          relativePath = returnedUrl.substring(0, returnedUrl.lastIndexOf('/')+1); // includes trailng slash
+          console.log('requested url: '+req.url, '\nreturned url: '+returnedUrl);
 
           // parse for absolute paths (urls like href="/path...")
           // relative paths will work fine becase we set <base> to the current page below
@@ -105,9 +131,12 @@ server.on('request', function(req, res) {
           body = body.replace(fixLinkUrls, 'href=$1'+response.request.uri.protocol+'//'+host+'/');
           // take out http-equiv="refresh"
           body = body.replace(/<meta .*http-equiv="refresh".*\/>/, '');
+
+          gameOptions.currentUrl = returnedUrl;
+
           // put our script in the code
-          headOpen = /<head([^>]*)>/gi;
-          body = body.replace(headOpen, '<head$1><script src="js/myrequire.js"></script><link rel="stylesheet" type="text/css" href="css/app.css"><script src="js/libs.js"></script><script src="js/app.js"></script><script>require(\'main\');require = undefined;window.currentUrl = "'+urlToRequest+'";</script><base href="http://'+relativePath+'">');
+          headOpen = /<head(\s[^>]*)?>/gi;
+          body = body.replace(headOpen, '<head$1><script src="js/myrequire.js"></script><link rel="stylesheet" type="text/css" href="css/app.css"><script src="js/libs.js"></script><script src="js/app.js"></script><script>require(\'main\');require = undefined;window.hhGameOptions = \''+JSON.stringify(gameOptions)+'\';</script><base href="'+relativePath+'">');
 
           // write 
           res.write(body);

@@ -37,6 +37,12 @@ module.exports = class Game extends window.atom.Game
       if e.keyCode is 32
         @director.hyperjump()
 
+    # cheat in console
+    window.cheat = (level) =>
+      @gameState.set 'level', level
+      localStorage.setItem "hh-level", level
+
+
 
     # disable links (even though the canvas covers them all)
     $('a').click (e) -> console.log "click on link prevented"; e.preventDefault(); return false;

@@ -10,6 +10,7 @@ module.exports = class Director
     require = window.require
 
 
+
     #####################
     # INITIALIZE ENTITIES
     #####################
@@ -21,6 +22,7 @@ module.exports = class Director
 
     # create a player entity
     console.log "Putting the player on screen"
+
     player = @addEntity(new Entities.Player({id: @lastId}))
 
     # create enemies
@@ -97,11 +99,34 @@ module.exports = class Director
               $el: $this
               href: this.href
 
-          # set game state variables based on number of links scraped
           if numLinks is 0
             # No links to grab, what should we do?  For now we just refresh
-            window.location.href = window.location.origin+"/play"
+            # window.location.href = window.location.origin+"/play"
+            # or...
+            # let's populate a single link in a random place
+            manualLink = $('<a href="'+@gameState.get('gameOptions').lastUrl+'">Escape here!</a>').appendTo('body').css
+              'position': 'absolute'
+              'top': Math.floor(Math.random()*(window.document.height-150)) + 100 + 'px'
+              'left': Math.floor(Math.random()*(window.document.width-400)) + 200 + 'px'
+              'z-index': 99999999
+            offset = manualLink.offset()
+            headerBarHeight = $('#hh-header-bar').outerHeight()
 
+            # add entity
+            @addEntity new Entities.Hyperlink
+              id: @lastId
+              w: manualLink.width()
+              h: manualLink.height()
+              y: offset.top - headerBarHeight
+              x: offset.left
+              $el: manualLink
+              href: manualLink[0].href
+
+            numLinks++
+            internalLinks.push manualLink[0].href
+            console.log manualLink[0].href
+
+          # set game state variables based on number of links scraped
           @gameState.set "numLinks", numLinks
 
           # 1/20th to 1/2 of all internal links, based on level
@@ -191,9 +216,13 @@ module.exports = class Director
       level = localStorage.getItem 'hh-level'
       level++
       localStorage.setItem "hh-level", level
+      if level is 5
+        url = "https://www.facebook.com/FunnyPikz"
       if level is 10
         url = "http://hyperlinkharrypoc-jschomay.rhcloud.com"
-        localStorage.removeItem "hh-level"
+      if level is 15
+        url = "https://github.com/jschomay/httpacman"
+        # localStorage.removeItem "hh-level"
 
 
     # my_.each @entities, (entity) =>
@@ -239,11 +268,11 @@ module.exports = class Director
     explodePage()
     
 
-    jump = (url) ->
+    jump = (url) =>
       # note that url params get removed from url on page load
       if not url?
         url = ''
-      window.location.href = window.location.origin + "/play?hhNextLevelUrl="+url+"&hhCurrentUrl="+window.currentUrl
+      window.location.href = window.location.origin + "/play?hhNextLevelUrl="+url+"&hhCurrentUrl="+@gameState.get('gameOptions').currentUrl
 
     # alternate POST based method to "jump"
     # needs server.js to use POST vars instead of GET vars to work
