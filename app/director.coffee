@@ -107,7 +107,7 @@ module.exports = class Director
             # window.location.href = window.location.origin+"/play"
             # or...
             # let's populate a single link in a random place
-            manualLink = $('<a href="'+@gameState.get('gameOptions').lastUrl+'">Find me to escape!</a>').appendTo('body').css
+            manualLink = $('<a id="hh-escape-link" href="'+@gameState.get('gameOptions').lastUrl+'">Find me to escape!</a>').appendTo('body').css
               'position': 'absolute'
               'top': Math.floor(Math.random()*(window.document.height-150)) + 100 + 'px'
               'left': Math.floor(Math.random()*(window.document.width-400)) + 200 + 'px'

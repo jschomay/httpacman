@@ -37,7 +37,7 @@ module.exports = class Enemy extends Entity
       ih: 62
     ,
       src: '/images/spider1.png'
-      iw: 35
+      iw: 37
       ih: 32
     ,
     ]
@@ -104,7 +104,7 @@ module.exports = class Enemy extends Entity
 
   onHitHyperlink: (obstacle, side) ->
     # bounce off links
-    dtApproximation = 0.016
+    dtApproximation = 0.02
     if side is 'top'
       @position.y += @speed * @dy * dtApproximation
     if side is 'bottom'

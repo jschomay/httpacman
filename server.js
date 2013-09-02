@@ -67,10 +67,18 @@ server.on('request', function(req, res) {
         'http://www.nyan.cat/',
         'http://www.lee.org/reading/general/Hampsterdance/',
         'http://www.cat-gif.com/',
-        'http://http//www.moredarkness.com/'
+        'http://http//www.moredarkness.com/',
+        'http://www.google.com/404'
       ];
       definedUrl = virusLevels[Math.floor(Math.random()*virusLevels.length)];
       gameOptions.specialLevel = 'virus';
+
+      // every once in a while, show html code instead of a virus site
+      if (!(Math.floor(Math.random()*6))) {
+        var makeIntoCode = true;
+        // show code for the site they were just on
+        definedUrl = url.parse(req.url, true).query.hhCurrentUrl;
+      }
     }
     getRandomSite(definedUrl);
 
@@ -131,8 +139,19 @@ server.on('request', function(req, res) {
           gameOptions.currentUrl = returnedUrl;
 
           // put our script in the code
-          headOpen = /<head(\s[^>]*)?>/gi;
+          headOpen = /<head(\s[^>]*)?>/i;
           body = body.replace(headOpen, '<head$1><script src="js/myrequire.js"></script><link rel="stylesheet" type="text/css" href="css/app.css"><script src="js/libs.js"></script><script src="js/app.js"></script><script>require(\'main\');require = undefined;window.hhGameOptions = \''+JSON.stringify(gameOptions)+'\';</script><base href="'+relativePath+'">');
+
+
+          // turn page into code
+          if(typeof makeIntoCode !== "undefined") {
+            bodyTag = /<body(\s[^>]*)?>/i;
+            body = body.replace(bodyTag, '<body$1>|||||');
+            bodyParts = body.split('|||||');
+            bodyParts[1] = bodyParts[1].replace(/</g, '&lt;');
+            bodyParts[1] = bodyParts[1].replace(/>/g, '&gt;');
+            body = bodyParts.join('<pre style="width:100% height: 100%; overflow:hidden;font-size:12px;background:black;color:white;text-align:left;"><style>#hh-escape-link {color:#D56F11; * {background:black; color: white;}</style><code>');
+          }
 
           // write 
           res.write(body);

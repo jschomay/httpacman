@@ -185,7 +185,7 @@ window.require.register("director", function(exports, require, module) {
               });
             }
             if (numLinks === 0) {
-              manualLink = $('<a href="' + _this.gameState.get('gameOptions').lastUrl + '">Find me to escape!</a>').appendTo('body').css({
+              manualLink = $('<a id="hh-escape-link" href="' + _this.gameState.get('gameOptions').lastUrl + '">Find me to escape!</a>').appendTo('body').css({
                 'position': 'absolute',
                 'top': Math.floor(Math.random() * (window.document.height - 150)) + 100 + 'px',
                 'left': Math.floor(Math.random() * (window.document.width - 400)) + 200 + 'px',
@@ -618,7 +618,7 @@ window.require.register("entities/enemy", function(exports, require, module) {
           ih: 62
         }, {
           src: '/images/spider1.png',
-          iw: 35,
+          iw: 37,
           ih: 32
         }
       ];
@@ -671,7 +671,7 @@ window.require.register("entities/enemy", function(exports, require, module) {
     Enemy.prototype.onHitHyperlink = function(obstacle, side) {
       var dtApproximation;
 
-      dtApproximation = 0.016;
+      dtApproximation = 0.02;
       if (side === 'top') {
         this.position.y += this.speed * this.dy * dtApproximation;
       }
