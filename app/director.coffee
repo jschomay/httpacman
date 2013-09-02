@@ -115,6 +115,7 @@ module.exports = class Director
               'opacity': 1
               'display': 'block'
               'visibility': 'visible'
+              'font-size': '12px'
             offset = manualLink.offset()
             headerBarHeight = $('#hh-header-bar').outerHeight()
 

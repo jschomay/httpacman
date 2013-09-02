@@ -47,8 +47,10 @@ module.exports =
           obstacleBottom = obstacle.position.y + obstacle.h
           thisTop = @.position.y
           thisBottom = @.position.y + @.h
-          if Math.max(obstacleRight, thisRight) - Math.min(obstacleLeft, thisLeft) <= obstacle.w + @w and
-          Math.max(obstacleBottom, thisBottom) - Math.min(obstacleTop, thisTop) <= obstacle.h + @h
+          # oplap gives us some wiggle room since the images don't line up with the bounding box
+          overlap = 10
+          if Math.max(obstacleRight, thisRight) - Math.min(obstacleLeft, thisLeft) <= obstacle.w + @w - overlap and
+          Math.max(obstacleBottom, thisBottom) - Math.min(obstacleTop, thisTop) <= obstacle.h + @h - overlap
             
             # for each collision run the @onHit method for the collided type
             @_onHit(obstacle, sideOfHit())

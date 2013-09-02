@@ -192,7 +192,8 @@ window.require.register("director", function(exports, require, module) {
                 'z-index': 99999999,
                 'opacity': 1,
                 'display': 'block',
-                'visibility': 'visible'
+                'visibility': 'visible',
+                'font-size': '12px'
               });
               offset = manualLink.offset();
               headerBarHeight = $('#hh-header-bar').outerHeight();
@@ -429,7 +430,7 @@ window.require.register("entities/components/collidable", function(exports, requ
         return (_ref = this.onHit[obstacle.type]) != null ? _ref.call(this, obstacle, side) : void 0;
       };
       return this.on('enterFrame', function() {
-        var id, obstacle, obstacleBottom, obstacleLeft, obstacleRight, obstacleTop, potentialObstacles, sideOfHit, thisBottom, thisLeft, thisRight, thisTop, _results,
+        var id, obstacle, obstacleBottom, obstacleLeft, obstacleRight, obstacleTop, overlap, potentialObstacles, sideOfHit, thisBottom, thisLeft, thisRight, thisTop, _results,
           _this = this;
 
         sideOfHit = function() {
@@ -480,7 +481,8 @@ window.require.register("entities/components/collidable", function(exports, requ
             obstacleBottom = obstacle.position.y + obstacle.h;
             thisTop = this.position.y;
             thisBottom = this.position.y + this.h;
-            if (Math.max(obstacleRight, thisRight) - Math.min(obstacleLeft, thisLeft) <= obstacle.w + this.w && Math.max(obstacleBottom, thisBottom) - Math.min(obstacleTop, thisTop) <= obstacle.h + this.h) {
+            overlap = 10;
+            if (Math.max(obstacleRight, thisRight) - Math.min(obstacleLeft, thisLeft) <= obstacle.w + this.w - overlap && Math.max(obstacleBottom, thisBottom) - Math.min(obstacleTop, thisTop) <= obstacle.h + this.h - overlap) {
               _results.push(this._onHit(obstacle, sideOfHit()));
             } else {
               _results.push(void 0);
