@@ -529,7 +529,11 @@ window.require.register("entities/components/spirte", function(exports, require,
   module.exports = {
     draw: function(ctx) {
       ctx.fillStyle = this.background;
-      return ctx.fillRect(this.position.x, this.position.y, this.w, this.h);
+      if (this.src) {
+        return ctx.drawImage(this.src, 0, 0, this.iw, this.ih, this.position.x, this.position.y, this.w, this.h);
+      } else {
+        return ctx.fillRect(this.position.x, this.position.y, this.w, this.h);
+      }
     },
     setPositionAndSize: function(x, y, w, h) {
       if (x == null) {
@@ -552,10 +556,17 @@ window.require.register("entities/components/spirte", function(exports, require,
       };
     },
     initializeSprite: function(options) {
+      var img;
+
       this.setPositionAndSize(options.x, options.y, options.w, options.h);
       this.type = options.type;
       this.id = this.type + options.id;
-      return this.background = options.background || 'black';
+      this.background = options.background || 'black';
+      img = new Image();
+      img.src = window.location.origin + options.src;
+      this.src = img || null;
+      this.iw = options.iw || 30;
+      return this.ih = options.ih || 30;
     }
   };
   
@@ -577,7 +588,7 @@ window.require.register("entities/enemy", function(exports, require, module) {
 
     function Enemy(options) {
       this.update = __bind(this.update, this);
-      var chooseLeft, chooseTop, offset, xOffset, yOffset;
+      var chooseLeft, chooseTop, img, offset, virusImgs, xOffset, yOffset;
 
       if (Math.round(Math.random())) {
         chooseLeft = Math.round(Math.random());
@@ -590,15 +601,39 @@ window.require.register("entities/enemy", function(exports, require, module) {
         yOffset = chooseTop ? offset * -1 : window.document.height + offset;
         xOffset = Math.random() * window.document.width;
       }
+      virusImgs = [
+        {
+          src: '/images/bot-g.gif',
+          iw: 44,
+          ih: 42
+        }, {
+          src: '/images/bot-r.gif',
+          iw: 44,
+          ih: 42
+        }, {
+          src: '/images/bot1.gif',
+          iw: 31,
+          ih: 62
+        }, {
+          src: '/images/spider1.png',
+          iw: 35,
+          ih: 32
+        }
+      ];
+      img = virusImgs[Math.floor(Math.random() * 4)];
       this.initializeSprite({
         type: "enemy",
         id: options.id,
-        w: options.w,
-        h: options.h,
+        w: img.iw * 1,
+        h: img.ih * 1,
         x: options.x || xOffset,
         y: options.y || yOffset,
-        background: 'brown'
-      }, this.player = options.player);
+        background: 'brown',
+        src: img.src,
+        iw: img.iw,
+        ih: img.ih
+      });
+      this.player = options.player;
       this.speed = 100;
       this.dx = 0;
       this.dy = 0;
@@ -771,11 +806,14 @@ window.require.register("entities/player", function(exports, require, module) {
       this.initializeSprite({
         type: "player",
         id: options.id,
-        w: 40,
-        h: 40,
+        w: 35 * 1.5,
+        h: 50 * 1.5,
         x: (options != null ? (_ref = options.position) != null ? _ref.x : void 0 : void 0) || window.document.width / 2,
         y: (options != null ? (_ref1 = options.position) != null ? _ref1.y : void 0 : void 0) || 200,
-        background: 'yellow'
+        background: 'yellow',
+        src: '/images/harry.png',
+        iw: 35,
+        ih: 50
       });
       this.acceleration = 50;
       this.maxSpeed = 500;

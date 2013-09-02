@@ -22,15 +22,41 @@ module.exports = class Enemy extends Entity
       xOffset = (Math.random() * window.document.width)
 
 
+    # pick a random virus image 
+    virusImgs = [
+      src: '/images/bot-g.gif'
+      iw: 44
+      ih: 42
+    ,
+      src: '/images/bot-r.gif'
+      iw: 44
+      ih: 42
+    ,
+      src: '/images/bot1.gif'
+      iw: 31
+      ih: 62
+    ,
+      src: '/images/spider1.png'
+      iw: 35
+      ih: 32
+    ,
+    ]
+    img = virusImgs[Math.floor(Math.random()*4)]
+
     @initializeSprite
       type:  "enemy"
       id: options.id
-      w: options.w
-      h: options.h
+      w: img.iw * 1
+      h: img.ih * 1
       x: options.x || xOffset
       y: options.y || yOffset
       background: 'brown'
-      @player = options.player
+      src: img.src
+      iw: img.iw
+      ih: img.ih
+    
+    @player = options.player
+
 
 
     @speed = 100
