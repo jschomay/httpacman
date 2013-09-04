@@ -89,8 +89,9 @@ module.exports = class Enemy extends Entity
       # randomize their heading a bit
       if !Math.floor(Math.random()*2)
         q = Math.random() + 1 
+        p = Math.random() + 1 
         @dx *= q
-        @dy *= q
+        @dy *= p
 
     # distance (px) = speed (px / s) * time (s)
     @position.x += @speed * @dx * dt

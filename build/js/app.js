@@ -648,7 +648,7 @@ window.require.register("entities/enemy", function(exports, require, module) {
     }
 
     Enemy.prototype.update = function(dt) {
-      var q, tl, tx, ty;
+      var p, q, tl, tx, ty;
 
       if (!Math.floor(Math.random() * 40)) {
         tx = this.player.position.x - this.position.x;
@@ -658,8 +658,9 @@ window.require.register("entities/enemy", function(exports, require, module) {
         this.dy = ty / tl;
         if (!Math.floor(Math.random() * 2)) {
           q = Math.random() + 1;
+          p = Math.random() + 1;
           this.dx *= q;
-          this.dy *= q;
+          this.dy *= p;
         }
       }
       this.position.x += this.speed * this.dx * dt;

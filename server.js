@@ -74,7 +74,7 @@ server.on('request', function(req, res) {
       gameOptions.specialLevel = 'virus';
 
       // every once in a while, show html code instead of a virus site
-      if (!(Math.floor(Math.random()*6))) {
+      if (!(Math.floor(Math.random()*10))) {
         var makeIntoCode = true;
         // show code for the site they were just on
         definedUrl = url.parse(req.url, true).query.hhCurrentUrl;
@@ -150,7 +150,7 @@ server.on('request', function(req, res) {
             bodyParts = body.split('|||||');
             bodyParts[1] = bodyParts[1].replace(/</g, '&lt;');
             bodyParts[1] = bodyParts[1].replace(/>/g, '&gt;');
-            body = bodyParts.join('<pre style="width:100% height: 100%; overflow:hidden;font-size:12px;background:black;color:white;text-align:left;"><style>#hh-escape-link {color:#D56F11; * {background:black; color: white;}</style><code>');
+            body = bodyParts.join('<pre style="position:relative;top:0px;left:0px;bottom:0px;right:0px; margin:0px;width:100% height: 100%; overflow-x:hidden;font-size:12px;background:white;color:black;text-align:left;"><style>#hh-escape-link {color:blue;</style><code>');
           }
 
           // write 
