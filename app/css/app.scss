@@ -114,9 +114,6 @@ body {
       color: #eee;
       @include border-radius(20px);
       @include three-d-in();
-      h3 {
-        text-align: center;
-      }
     }
 
     #play {
@@ -284,7 +281,7 @@ body {
     font-weight: bold !important;
     font-size: 14px !important;
     text-align:center  !important;
-    width: 300px !important;
+    width: 100% !important;
     margin-left: 10px !important;
     margin-top: -4px !important;
     padding: 6px 10px  !important;
