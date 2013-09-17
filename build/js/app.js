@@ -165,7 +165,7 @@ window.require.register("director", function(exports, require, module) {
                 link = this.href;
                 domain = that.gameState.get('url').split('/')[0];
                 domainRegex = new RegExp(domain, 'i');
-                if (domainRegex.test(link || link === window.location.origin)) {
+                if (domainRegex.test(link || link === window.location.protocol + "//" + window.location.host)) {
                   internalLinks.push(this.href);
                 }
                 numLinks++;
@@ -372,7 +372,7 @@ window.require.register("director", function(exports, require, module) {
         if (url == null) {
           url = '';
         }
-        nextLevelUrl = window.location.origin + "/play?hhNextLevelUrl=" + url + "&hhCurrentUrl=" + _this.gameState.get('gameOptions').currentUrl;
+        nextLevelUrl = window.location.protocol + "//" + window.location.host + "/play?hhNextLevelUrl=" + url + "&hhCurrentUrl=" + _this.gameState.get('gameOptions').currentUrl;
         for (param in params) {
           value = params[param];
           nextLevelUrl += '&' + param + '=' + value;
@@ -565,7 +565,7 @@ window.require.register("entities/components/spirte", function(exports, require,
       this.id = this.type + options.id;
       this.background = options.background || 'black';
       img = new Image();
-      img.src = window.location.origin + options.src;
+      img.src = window.location.protocol + "//" + window.location.host + options.src;
       this.src = img || null;
       this.iw = options.iw || 30;
       return this.ih = options.ih || 30;
@@ -595,13 +595,13 @@ window.require.register("entities/enemy", function(exports, require, module) {
       if (Math.round(Math.random())) {
         chooseLeft = Math.round(Math.random());
         offset = Math.floor(Math.random() * 400);
-        xOffset = chooseLeft ? offset * -1 : window.document.width + offset;
-        yOffset = Math.random() * window.document.height;
+        xOffset = chooseLeft ? offset * -1 : window.innerWidth + offset;
+        yOffset = Math.random() * window.innerHeight;
       } else {
         chooseTop = Math.round(Math.random());
         offset = Math.floor(Math.random() * 400);
-        yOffset = chooseTop ? offset * -1 : window.document.height + offset;
-        xOffset = Math.random() * window.document.width;
+        yOffset = chooseTop ? offset * -1 : window.innerHeight + offset;
+        xOffset = Math.random() * window.innerWidth;
       }
       virusImgs = [
         {
@@ -811,7 +811,7 @@ window.require.register("entities/player", function(exports, require, module) {
         id: options.id,
         w: 35 * 1.5,
         h: 50 * 1.5,
-        x: (options != null ? (_ref = options.position) != null ? _ref.x : void 0 : void 0) || window.document.width / 2,
+        x: (options != null ? (_ref = options.position) != null ? _ref.x : void 0 : void 0) || window.innerWidth / 2,
         y: (options != null ? (_ref1 = options.position) != null ? _ref1.y : void 0 : void 0) || 200,
         background: 'yellow',
         src: '/images/harry.png',
@@ -940,7 +940,7 @@ window.require.register("game", function(exports, require, module) {
         var _ref;
 
         if (e.keyCode === 82) {
-          window.location.href = window.location.origin + "/play";
+          window.location.href = window.location.protocol + "//" + window.location.host + "/play";
           false;
         }
         if ((96 <= (_ref = e.keyCode) && _ref <= 105)) {
@@ -1047,7 +1047,7 @@ window.require.register("index", function(exports, require, module) {
   var buf = [];
   with (locals || {}) {
   var interp;
-  buf.push('<!DOCTYPE html><html><head><meta charset="UTF-8"><link rel="stylesheet" href="css/app.css"><title>Hyperlink Harry - a browser based game where the web is the playing field</title></head><body id="hh-home"><header><div id="logo"><div id="headline"><h1>&lt;Hyperlink&gt;&lt;/Harry&gt;</h1><h2>A HTML5 game set across the landscape of the web</h2></div></div><section id="about"><div id="harry"></div><p>One day while surfing the net, Harry\'s modem had a power surge and he got sucked into the web.  </p><p>Now Harry\'s digital consciousness is lost somewhere out in hyperspace, bouncing from site to site, evading antivirus bots and search engine spiders, and looking for his way back home.</p><p>Can you help him?  </p><a id="play" href="/play">PLAY NOW</a><h3>How to play (Please use Chrome to play)</h3><p>Use the keyboard arrows to move around.  Collect links to fill up your hyperlink bar.  Once you have enough "linkjuice", press \'space\' to "hyperjump" to a new level.  \'P\' will pause the game.</p><div id="baddies" style="text-align:center;"><div id="bot"></div><div id="spider"></div></div><p><b>Please note: This game is in active development! </b>It is fully playable, but lacks many features, may have bugs, and uses stand in art.  If you get stuck, try refreshing for a new level.  Because of the experimental nature of this game, it has poor cross-browser compatability and was designed to work best on Chrome.</p></section></header><section id="bottom"><section id="technology"><h3>Technology</h3><p>Built with:</p><ul><li>node.js</li><li>coffeescript</li><li>jade</li><li>sass</li><li>html5 canvas</li><li>custom game engine based on atom and crafty</li><li>brunch</li></ul><p>This project is currently open source.  View the source, comment, and fork on <a href="https://github.com/jschomay/httpacman">Github.</a></p></section><section id="contact"><h3>Credits/contact</h3><p>Game concept, game design, and principle coding by Jeff Schomay.  A few others contributed to the coding at verious points.</p><ul><li>Jeff Schomay<br><a href="https://github.com/jschomay/">On Github</a> / <a href="http://jeffschomay.com/">jeffschomay.com</a></li><li>Steve Manuel (helped with backend)<br><a href="https://github.com/stevemanuel">On Github</a></li><li>Kevin Sylvestre (helped with component system)<br><a href="https://github.com/ksylvest">On Github</a></li></ul></section></section></body></html>');
+  buf.push('<!DOCTYPE html><html><head><meta charset="UTF-8"><link rel="stylesheet" href="css/app.css"><title>Hyperlink Harry - a browser based game where the web is the playing field</title></head><body id="hh-home"><header><div id="logo"><div id="headline"><h1>&lt;Hyperlink&gt;&lt;/Harry&gt;</h1><h2>A HTML5 game set across the landscape of the web</h2></div></div><section id="about"><div id="harry"></div><p>One day while surfing the net, Harry\'s modem had a power surge and he got sucked into the web.  </p><p>Now Harry\'s digital consciousness is lost somewhere out in hyperspace, bouncing from site to site, evading antivirus bots and search engine spiders, and looking for his way back home.</p><p>Can you help him?  </p><a id="play" href="/play">PLAY NOW</a><h3>How to play</h3><p>Use the keyboard arrows to move around.  Collect links to fill up your hyperlink bar.  Once you have enough "linkjuice", press \'space\' to "hyperjump" to a new level.  \'P\' will pause the game.</p><div id="baddies" style="text-align:center;"><div id="bot"></div><div id="spider"></div></div><p><b>Please note: This game is in active development! </b>It is fully playable, but lacks many features, may have bugs, and uses stand in art.  If you get stuck, try refreshing for a new level.</p></section></header><section id="bottom"><section id="technology"><h3>Technology</h3><p>Built with:</p><ul><li>node.js</li><li>coffeescript</li><li>jade</li><li>sass</li><li>html5 canvas</li><li>custom game engine based on atom and crafty</li><li>brunch</li></ul><p>This project is currently open source.  View the source, comment, and fork on <a href="https://github.com/jschomay/httpacman">Github.</a></p></section><section id="contact"><h3>Credits/contact</h3><p>Game concept, game design, and principle coding by Jeff Schomay.  A few others contributed to the coding at verious points.</p><ul><li>Jeff Schomay<br><a href="https://github.com/jschomay/">On Github</a> / <a href="http://jeffschomay.com/">jeffschomay.com</a></li><li>Steve Manuel (helped with backend)<br><a href="https://github.com/stevemanuel">On Github</a></li><li>Kevin Sylvestre (helped with component system)<br><a href="https://github.com/ksylvest">On Github</a></li></ul></section></section></body></html>');
   }
   return buf.join("");
   };
@@ -1055,7 +1055,7 @@ window.require.register("index", function(exports, require, module) {
 window.require.register("main", function(exports, require, module) {
   var Game;
 
-  window.history.pushState('', 'Hyperlink Harry', window.location.origin + '/play');
+  window.history.pushState('', 'Hyperlink Harry', window.location.protocol + "//" + window.location.host + '/play');
 
   Game = require('game');
 

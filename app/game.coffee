@@ -23,7 +23,7 @@ module.exports = class Game extends window.atom.Game
     myJQuery(document).on 'keydown', (e) => 
       # press 'R' (or command R for restart) to "refresh" - gets around the "resubmit form comfirmation" prompt
       if e.keyCode is 82
-        window.location.href = window.location.origin+"/play"
+        window.location.href = window.location.protocol + "//" + window.location.host+"/play"
         false
       # pressing a number key will take you to that level (0-9 on the num pad)
       if 96 <= e.keyCode <= 105

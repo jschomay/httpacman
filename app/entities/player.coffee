@@ -12,7 +12,7 @@ module.exports = class Player extends Entity
       id: options.id
       w: 35*1.5
       h: 50*1.5
-      x: options?.position?.x || window.document.width / 2
+      x: options?.position?.x || window.innerWidth / 2
       y: options?.position?.y || 200
       background: 'yellow'
       src: '/images/harry.png'

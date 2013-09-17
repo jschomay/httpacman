@@ -80,7 +80,7 @@ module.exports = class Director
               domain = that.gameState.get('url').split('/')[0]
               domainRegex = new RegExp domain, 'i'
 
-              if domainRegex.test link or link is window.location.origin
+              if domainRegex.test link or link is window.location.protocol + "//" + window.location.host
                 internalLinks.push this.href
               
               numLinks++
@@ -104,7 +104,7 @@ module.exports = class Director
 
           if numLinks is 0
             # No links to grab, what should we do?  For now we just refresh
-            # window.location.href = window.location.origin+"/play"
+            # window.location.href = window.location.protocol + "//" + window.location.host+"/play"
             # or...
             # let's populate a single link in a random place
             manualLink = $('<a id="hh-escape-link" href="'+@gameState.get('gameOptions').lastUrl+'">Find me to escape!</a>').appendTo('body').css
@@ -282,7 +282,7 @@ module.exports = class Director
       # note that url params get removed from url on page load
       if not url?
         url = ''
-      nextLevelUrl = window.location.origin + "/play?hhNextLevelUrl="+url+"&hhCurrentUrl="+@gameState.get('gameOptions').currentUrl
+      nextLevelUrl = window.location.protocol + "//" + window.location.host + "/play?hhNextLevelUrl="+url+"&hhCurrentUrl="+@gameState.get('gameOptions').currentUrl
       for param, value of params
         nextLevelUrl += '&'+param+'='+value
       window.location.href = nextLevelUrl
@@ -290,7 +290,7 @@ module.exports = class Director
     # alternate POST based method to "jump"
     # needs server.js to use POST vars instead of GET vars to work
     # jump = ->
-    #   myJQuery('<form method="post" action="'+window.location.origin+'/play">
+    #   myJQuery('<form method="post" action="'+window.location.protocol + "//" + window.location.host+'/play">
     #     <input type="hidden" name="hhNextLevelUrl" value="'+url+'">
     #     </form>').submit()
     

@@ -1,5 +1,5 @@
 # set url and title (if browser allows) in case it isn't '/play'
-window.history.pushState('', 'Hyperlink Harry', window.location.origin+'/play')
+window.history.pushState('', 'Hyperlink Harry', window.location.protocol + "//" + window.location.host+'/play')
 
 Game = require 'game'
 

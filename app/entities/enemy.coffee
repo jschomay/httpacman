@@ -12,14 +12,14 @@ module.exports = class Enemy extends Entity
       # position off sides
       chooseLeft = Math.round(Math.random())
       offset = Math.floor(Math.random() * 400)
-      xOffset = if chooseLeft then offset * -1 else window.document.width + offset
-      yOffset = (Math.random() * window.document.height)
+      xOffset = if chooseLeft then offset * -1 else window.innerWidth + offset
+      yOffset = (Math.random() * window.innerHeight)
     else
       # position off top/bottom
       chooseTop = Math.round(Math.random())
       offset = Math.floor(Math.random() * 400)
-      yOffset = if chooseTop then offset * -1 else window.document.height + offset
-      xOffset = (Math.random() * window.document.width)
+      yOffset = if chooseTop then offset * -1 else window.innerHeight + offset
+      xOffset = (Math.random() * window.innerWidth)
 
 
     # pick a random virus image 
